@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">  
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>99 Cafe</title>
+    <title>99 Cafe - Menu</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="99cafe_logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="99cafe_logo.png">
+    <link rel="shortcut icon" href="99cafe_logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="99cafe_logo.png">
+    <!-- Tailwind CSS CDN - For development only. Use PostCSS plugin or CLI for production -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -52,7 +57,7 @@
     <!-- Hero Section -->
     <section class="bg-gradient-to-br from-cafe-black via-cafe-red to-cafe-black text-cafe-white py-20">
         <div class="flex flex-col items-center justify-center">
-            <img src="99cafe_logo.png" alt="99 cafe Logo" class="w-40 h-40 object-contain mb-4" />
+            <img src="99cafe_logo.png" alt="99 Cafe Logo" class="w-40 h-40 object-contain mb-4" />
             <div class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-serif text-white tracking-widest mb-2 text-center px-2" style="letter-spacing: 2px;">
                 It's more than a number
             </div>
@@ -62,9 +67,10 @@
     <!-- Menu Section -->
     <section id="menu" class="py-16 bg-cafe-gray">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center text-cafe-black mb-12 flex items-center justify-center gap-2">
-                Cafe menu
-                <img src="99cafe-logo2.png" alt="99 cafe Logo" class="inline-block w-14 h-14 object-contain align-middle" />
+            <h2 class="text-4xl font-bold text-center text-cafe-black mb-12 flex items-center justify-center gap-1">
+                menu
+                <img src="99cafe-logo2.png" alt="99 Cafe Logo" class="inline-block w-14 h-14 object-contain align-middle" />
+                Cafe
             </h2>
             
             <!-- Category Tabs -->
@@ -480,7 +486,7 @@
                             <div class="menu-item bg-cafe-gray rounded-lg p-4">
                                 <div class="flex justify-between items-center">
                                     <div>
-                                        <h4 class="font-semibold text-cafe-black">Paparono Pizza</h4>
+                                        <h4 class="font-semibold text-cafe-black">Pepperoni Pizza</h4>
                                     </div>
                                     <div class="text-right">
                                         <div class="font-bold text-cafe-red">45.99</div>
@@ -513,7 +519,7 @@
                     <!-- Appetizers -->
                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
                         <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
-                            <i class="fas fa-cheese ml-2 bg-gradient-to-r from-cafe-red via-cafe-red-light to-cafe-black text-cafe-white p-2 rounded-full"></i>
+                            <i class="fas fa-cheese ml-2" style="background: linear-gradient(to right, #D90429, #EF233C, #222); color: white; padding: 0.5rem; border-radius: 9999px;"></i>
                             Appetizers
                         </h3>
                         <div class="space-y-3">
@@ -608,7 +614,7 @@
                     <!-- Cheesecake -->
                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
                         <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
-                            <i class="fas fa-cheese ml-2 bg-gradient-to-r from-cafe-red via-cafe-red-light to-cafe-black text-cafe-white p-2 rounded-full"></i>
+                            <i class="fas fa-cheese ml-2" style="background: linear-gradient(to right, #D90429, #EF233C, #222); color: white; padding: 0.5rem; border-radius: 9999px;"></i>
                             Cheesecake
                         </h3>
                         <div class="space-y-3">
@@ -744,14 +750,14 @@
     <footer class="bg-cafe-black text-cafe-white py-8">
         <div class="container mx-auto px-4 text-center">
             <div class="flex flex-col items-center justify-center mb-4">
-                <img src="99cafe_logo.png" alt="99 cafe Logo" class="w-24 h-24 object-contain mb-3" />
+                <img src="99cafe_logo.png" alt="99 Cafe Logo" class="w-24 h-24 object-contain mb-3" />
                 <div class="text-xl md:text-2xl font-semibold italic text-cafe-red-light tracking-wide mb-2" style="font-family: 'Cairo', sans-serif; letter-spacing: 2px;">
                     It's more than a number
                 </div>
             </div>
             <p class="text-cafe-gray mb-4">Enjoy the best drinks and food in a cozy atmosphere</p>
            
-            <p class="text-cafe-gray mt-6">&copy; 2025 99 cafe. All rights reserved.</p>
+            <p class="text-cafe-gray mt-6">&copy; 2025 99 Cafe. All rights reserved.</p>
         </div>
     </footer>
 
