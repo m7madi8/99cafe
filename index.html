@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" dir="ltr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>99 Cafe - Menu</title>
-    <meta name="description" content="99 Cafe - قائمة مشروبات وطعام لذيذة في أجواء عصرية.">
+    <meta name="description" content="99 Cafe - Ù‚Ø§Ø¦Ù…Ø© Ù…Ø´Ø±ÙˆØ¨Ø§Øª ÙˆØ·Ø¹Ø§Ù… Ù„Ø°ÙŠØ°Ø© ÙÙŠ Ø£Ø¬ÙˆØ§Ø¡ Ø¹ØµØ±ÙŠØ©.">
     <meta name="theme-color" content="#D90429">
     <meta property="og:title" content="99 Cafe">
-    <meta property="og:description" content="استمتع بأفضل المشروبات والأطباق في 99 كافيه.">
+    <meta property="og:description" content="Ø§Ø³ØªÙ…ØªØ¹ Ø¨Ø£ÙØ¶Ù„ Ø§Ù„Ù…Ø´Ø±ÙˆØ¨Ø§Øª ÙˆØ§Ù„Ø£Ø·Ø¨Ø§Ù‚ ÙÙŠ 99 ÙƒØ§ÙÙŠÙ‡.">
     <meta property="og:image" content="99cafe_logo.png">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" sizes="32x32" href="99cafe_logo.png">
@@ -18,6 +18,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -79,31 +80,47 @@
         .menu-item i, .menu-item svg { transition: transform .25s ease; }
         .menu-item:hover i, .menu-item:hover svg { transform: scale(1.1); }
 
-        /* Subtle watermark bg for menu section */
-        #menu { position: relative; overflow: hidden; }
-        #menu::before {
+        /* Continuous circular spin for the die icon (stays in place) */
+        @keyframes dieSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .die-svg {
+            display: inline-block;
+            will-change: transform;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: dieSpin 3.8s linear infinite;
+        }
+
+        /* Section container */
+        #menu { position: relative; }
+        #menu > .container { position: relative; z-index: 1; }
+
+        /* Overlay watermark per group card (above content) */
+        .category-content .bg-cafe-white { position: relative; overflow: hidden; }
+        .category-content .bg-cafe-white::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: url('99cafe-logo2.png') center / 420px no-repeat;
-            opacity: 0.1; /* slightly more visible */
+            background: url('99cafe-logo2.png') center / clamp(140px, 50%, 300px) no-repeat;
+            opacity: 0.1;
             pointer-events: none;
-            z-index: 0;
+            z-index: 20;
         }
-        #menu > .container { position: relative; z-index: 1; }
 
-        /* Subtle watermark bg for category cards */
-        .category-content .bg-cafe-white { position: relative; overflow: hidden; }
+        /* Decorative corner accent for group cards (logo badge) */
         .category-content .bg-cafe-white::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: url('99cafe-logo2.png') center / 200px no-repeat;
-            opacity: 0.08; /* still light but visible under text */
+            top: -10px;
+            right: -10px;
+            width: 72px;
+            height: 72px;
+            background: url('99cafe-logo2.png') no-repeat center / contain;
+            opacity: 0.18;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
             pointer-events: none;
-            z-index: 0;
+            z-index: 15;
         }
-        .category-content .bg-cafe-white > * { position: relative; z-index: 1; }
         
         /* Typography adjustments */
         html, body, h1, h2, h3, h4, h5, h6, p, a, button, input, textarea, select, label, small, strong, em, span, div, li, ul, ol, blockquote, table, th, td {
@@ -115,6 +132,236 @@
         .category-tab {
             font-weight: 500 !important;
         }
+
+        /* Make active tab icon white (for png icons) */
+        .tab-icon-white { filter: brightness(0) invert(1); }
+
+        /* Signature font override */
+        .font-greatvibes { font-family: 'Great Vibes', cursive !important; }
+
+        /* Category tabs micro-interactions */
+        .category-tab {
+            position: relative;
+            overflow: hidden;
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+        .category-tab:hover { transform: translateY(-2px); }
+        .category-tab.active { animation: pulseGlow 2.8s ease-in-out infinite; }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 10px 25px rgba(217, 4, 41, 0.25); }
+            50% { box-shadow: 0 14px 34px rgba(217, 4, 41, 0.38); }
+        }
+
+        /* Ripple click effect */
+        .ripple-circle {
+            position: absolute;
+            width: 12px; height: 12px;
+            border-radius: 9999px;
+            background: rgba(255,255,255,.7);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: screen;
+            animation: ripple .6s ease-out forwards;
+        }
+        @keyframes ripple {
+            from { opacity: .6; transform: translate(-50%, -50%) scale(1); }
+            to   { opacity: 0;  transform: translate(-50%, -50%) scale(12); }
+        }
+
+        
+
+        /* Category cards entrance + hover */
+        @keyframes cardIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+        .category-content .grid > div { will-change: transform, opacity; }
+        .category-content.show .grid > div {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+            animation: cardIn .5s ease forwards;
+        }
+        .category-content.show .grid > div:nth-child(1)  { animation-delay: .02s; }
+        .category-content.show .grid > div:nth-child(2)  { animation-delay: .07s; }
+        .category-content.show .grid > div:nth-child(3)  { animation-delay: .12s; }
+        .category-content.show .grid > div:nth-child(4)  { animation-delay: .17s; }
+        .category-content.show .grid > div:nth-child(5)  { animation-delay: .22s; }
+        .category-content.show .grid > div:nth-child(6)  { animation-delay: .27s; }
+        .category-content.show .grid > div:nth-child(7)  { animation-delay: .32s; }
+        .category-content.show .grid > div:nth-child(8)  { animation-delay: .37s; }
+        .category-content.show .grid > div:nth-child(9)  { animation-delay: .42s; }
+        .category-content.show .grid > div:nth-child(10) { animation-delay: .47s; }
+        .category-content.show .grid > div:nth-child(11) { animation-delay: .52s; }
+        .category-content.show .grid > div:nth-child(12) { animation-delay: .57s; }
+
+        .category-content .bg-cafe-white { transition: transform .25s ease, box-shadow .25s ease; }
+        .category-content .bg-cafe-white:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 36px rgba(0,0,0,.14);
+        }
+
+        /* Price chips for drink sizes */
+        .price-group {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+        .price-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            background: #ffffff;
+            border: 1px solid rgba(217, 4, 41, 0.2);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+            font-size: 12px;
+        }
+        .price-chip .label { color: #222; opacity: .7; font-weight: 600; letter-spacing: .2px; }
+        /* neutralize horizontal spacing when stacked */
+        .price-group .price-chip + .price-chip { margin-left: 0 !important; }
+
+        /* Surprise modal modern animation */
+        #surpriseModal { opacity: 0; transition: opacity .35s ease; }
+        #surpriseModal.flex { opacity: 1; }
+        #surpriseModal .modal-backdrop { opacity: 0; backdrop-filter: blur(6px); transition: opacity .35s ease; }
+        #surpriseModal.show .modal-backdrop { opacity: 1; }
+        #surpriseModal .modal-card {
+            transform: translateY(14px) scale(0.96);
+            opacity: 0;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(255,255,255,0.35);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+            transition: transform .45s cubic-bezier(.22,1,.36,1), opacity .35s ease, box-shadow .35s ease;
+        }
+        #surpriseModal.show .modal-card { transform: translateY(0) scale(1); opacity: 1; }
+        #surpriseModal .drink-icon { animation: floatY 6s ease-in-out infinite; }
+
+        /* Exciting close animation */
+        @keyframes zoomOutPop {
+            0% { transform: translateY(0) scale(1) rotate(0); opacity: 1; }
+            60% { transform: translateY(6px) scale(0.96) rotate(-1deg); opacity: 0.9; }
+            100% { transform: translateY(20px) scale(0.88) rotate(1.5deg); opacity: 0; }
+        }
+        #surpriseModal.closing .modal-card { animation: zoomOutPop .4s cubic-bezier(.22,1,.36,1) forwards; }
+        #surpriseModal.closing .modal-backdrop { opacity: 0 !important; }
+
+        /* logoShine effect (more flexible with soft tail) */
+        .logo-shine-effect {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+        .logo-shine-effect::after {
+            content: '';
+            position: absolute;
+            top: -120%;
+            left: -170%;
+            width: 70%;
+            height: 320%;
+            background: linear-gradient(120deg,
+                rgba(255,255,255,0) 35%,
+                rgba(255,255,255,0.75) 50%,
+                rgba(255,255,255,0) 65%
+            );
+            mix-blend-mode: screen;
+            pointer-events: none;
+            transform: rotate(25deg) translateX(0);
+            opacity: 0;
+            animation: logoShine 5.2s cubic-bezier(.22,1,.36,1) infinite;
+        }
+        @keyframes logoShine {
+            0%   { transform: rotate(25deg) translateX(-180%); opacity: 0; }
+            12%  { opacity: 0; }
+            22%  { opacity: .5; }
+            50%  { transform: rotate(25deg) translateX(210%); opacity: .65; }
+            66%  { transform: rotate(25deg) translateX(250%); opacity: .22; }
+            74%  { transform: rotate(25deg) translateX(290%); opacity: 0; }
+            100% { transform: rotate(25deg) translateX(290%); opacity: 0; }
+        }
+
+        /* Animated underline for group titles */
+        .category-content .bg-cafe-white h3 { position: relative; }
+        .category-content .bg-cafe-white h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            height: 3px;
+            width: 0;
+            background: linear-gradient(90deg, #EF233C, #D90429);
+            border-radius: 9999px;
+            transition: width .4s ease;
+        }
+        .category-content .bg-cafe-white:hover h3::after { width: 90px; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #f0f0f0; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #EF233C, #D90429);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #f04b61, #ef233c); }
+
+        /* Decorative side bars for section title */
+        .decorated-title {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .decorated-title::before,
+        .decorated-title::after {
+            content: '';
+            display: inline-block;
+            height: 2px;
+            width: 56px;
+            background: linear-gradient(90deg, rgba(217,4,41,0), rgba(217,4,41,.75), rgba(217,4,41,0));
+            box-shadow: 0 6px 12px rgba(217, 4, 41, 0.18);
+        }
+
+        /* Wheel of Fortune styles */
+        #wheelModal { opacity: 0; transition: opacity .35s ease; }
+        #wheelModal.flex { opacity: 1; }
+        #wheelModal .modal-card {
+            transform: translateY(14px) scale(0.96);
+            opacity: 0;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(255,255,255,0.35);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+            transition: transform .45s cubic-bezier(.22,1,.36,1), opacity .35s ease, box-shadow .35s ease;
+        }
+        #wheelModal.show .modal-card { transform: translateY(0) scale(1); opacity: 1; }
+        .wheel-wrap { position: relative; width: min(86vw, 360px); height: min(86vw, 360px); }
+        .wheel-canvas { width: 100%; height: 100%; display: block; border-radius: 9999px; }
+        .wheel-pointer {
+            position: absolute; left: 50%; top: -8px; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 18px solid #D90429;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,.18));
+        }
+        .wheel-axle {
+            position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
+        }
+        .wheel-axle > div { width: 64px; height: 64px; border-radius: 9999px; background: white; border: 2px solid rgba(217,4,41,.3); box-shadow: 0 8px 18px rgba(0,0,0,.12); }
+        .spin-disabled { opacity: .6; cursor: not-allowed; }
+
+        /* Win effects */
+        #wheelFx { pointer-events: none; }
+        .confetti { position: absolute; top: -12px; width: 6px; height: 14px; opacity: .9; border-radius: 2px; transform: rotate(15deg); animation: fallConfetti 2.8s linear forwards; }
+        @keyframes fallConfetti {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+        .balloon { position: absolute; bottom: -50px; width: 20px; height: 28px; border-radius: 50% 50% 45% 45%/55% 55% 45% 45%; box-shadow: inset -4px -8px 12px rgba(255,255,255,.4); opacity: .9; animation: riseBalloon 4s ease-out forwards; }
+        @keyframes riseBalloon {
+            0% { transform: translateY(0) scale(.9); opacity: .8; }
+            100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
+        }
+
+        /* Win code visibility */
+        .win-code { display: inline-block; direction: ltr; word-break: break-all; letter-spacing: .08em; font-weight: 700; }
+        .copy-code-btn { font-size: 11px; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -132,44 +379,145 @@
     <!-- Hero Section -->
     <section class="bg-transparent text-cafe-black py-20">
         <div class="flex flex-col items-center justify-center">
-            <img src="99cafe-logo2.png" alt="99 Cafe Logo" class="w-40 h-40 object-contain mb-0 float-y" />
+            <div id="heroHalo" class="relative inline-block p-6 md:p-8 mb-6 md:mb-8 logo-shine-effect">
+                <img src="99cafe-logo2.png" alt="99 Cafe Logo" id="heroLogo" class="w-40 h-40 object-contain mb-0 float-y cursor-pointer" />
+            </div>
             <div class="reveal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-serif text-cafe-black tracking-widest mb-2 text-center px-2" style="letter-spacing: 2px;">
                 It's more than a number
             </div>
+            <button id="tryLuckBtn" aria-label="Try your luck" class="reveal mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-cafe-red to-cafe-red-light text-white font-semibold shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cafe-red/50 inline-flex items-center gap-2" style="display: none;">
+                <svg class="die-svg h-5 w-5" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <defs>
+                        <linearGradient id="dieGrad1" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="100%" stop-color="#f0f0f0"/>
+                        </linearGradient>
+                    </defs>
+                    <rect x="8" y="8" width="48" height="48" rx="10" ry="10" fill="url(#dieGrad1)" stroke="#e5e7eb" stroke-width="2"/>
+                    <g fill="#D90429">
+                        <circle cx="22" cy="22" r="3.2"/>
+                        <circle cx="42" cy="42" r="3.2"/>
+                        <circle cx="22" cy="42" r="3.2"/>
+                        <circle cx="42" cy="22" r="3.2"/>
+                        <circle cx="32" cy="32" r="3.2"/>
+                    </g>
+                </svg>
+                Try your luck!
+            </button>
         </div>
     </section>
 
     <!-- Menu Section -->
     <section id="menu" class="py-16 bg-cafe-gray">
         <div class="container mx-auto px-4">
-            <h2 class="reveal text-4xl font-bold text-center text-cafe-black mb-12 flex items-center justify-center gap-1">
+            <!-- Wheel of Fortune Modal -->
+            <div id="wheelModal" class="fixed inset-0 z-50 hidden items-center justify-center" >
+                <div class="absolute inset-0 bg-black/40" data-close-wheel></div>
+                <div class="relative rounded-2xl modal-card w-[92vw] max-w-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-cafe-red to-cafe-red-light text-white px-6 py-4 flex items-center justify-between select-none">
+                        <div class="flex items-center gap-2">
+                            <svg class="die-svg h-5 w-5" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                                <defs>
+                                    <linearGradient id="dieGrad2" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#ffffff"/>
+                                        <stop offset="100%" stop-color="#f0f0f0"/>
+                                    </linearGradient>
+                                </defs>
+                                <rect x="8" y="8" width="48" height="48" rx="10" ry="10" fill="url(#dieGrad2)" stroke="#e5e7eb" stroke-width="2"/>
+                                <g fill="#ffffff" opacity="0.65">
+                                    <rect x="8" y="8" width="48" height="48" rx="10" ry="10"/>
+                                </g>
+                                <g fill="#D90429">
+                                    <circle cx="22" cy="22" r="3.2"/>
+                                    <circle cx="42" cy="42" r="3.2"/>
+                                    <circle cx="22" cy="42" r="3.2"/>
+                                    <circle cx="42" cy="22" r="3.2"/>
+                                    <circle cx="32" cy="32" r="3.2"/>
+                                </g>
+                            </svg>
+                            <span class="font-semibold tracking-wide">Try your luck!</span>
+                        </div>
+                        <button id="closeWheel" class="text-white/90 hover:text-white"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="p-6 grid place-items-center gap-5">
+                        <div id="wheelFx" class="pointer-events-none fixed inset-0 z-[60]"></div>
+                        <div class="wheel-wrap">
+                            <canvas id="wheelCanvas" width="500" height="500" class="wheel-canvas bg-white rounded-full"></canvas>
+                            <div class="wheel-pointer"></div>
+                            <div class="wheel-axle"><div></div></div>
+                        </div>
+                        <button id="spinBtn" class="px-5 py-3 rounded-full bg-cafe-red text-white font-semibold shadow-md hover:shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-2">
+                            <i class="fas fa-rotate"></i>
+                            Spin the wheel
+                        </button>
+                        <div id="wheelMsg" class="text-center text-cafe-black/80 text-sm"></div>
+                        <button id="wheelCodeBtn" class="text-xs text-cafe-red underline hover:no-underline">I have a code</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Surprise Drink Modal -->
+            <div id="surpriseModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+                <div class="absolute inset-0 bg-black/40 modal-backdrop"></div>
+                <div class="relative rounded-2xl modal-card w-[92vw] max-w-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-cafe-red to-cafe-red-light text-white px-6 py-4 flex items-center justify-between select-none">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-martini-glass-citrus"></i>
+                            <span class="font-semibold tracking-wide">Your Surprise Drink</span>
+                        </div>
+                        <button id="closeSurprise" class="text-white/90 hover:text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-6 select-none">
+                        <div class="text-center mb-4">
+                            <div class="mx-auto w-24 h-24 rounded-full bg-white/70 border border-white/60 grid place-items-center text-3xl drink-icon">
+                                <i id="surpriseIcon" class="fas fa-mug-hot text-amber-600"></i>
+                            </div>
+                        </div>
+                        <h4 class="text-xl font-bold text-center text-cafe-black" id="surpriseName">...</h4>
+                        <p class="text-center text-cafe-black/60 mt-1" id="surpriseHint"></p>
+                        <div class="mt-6 flex justify-center gap-3">
+                            <button id="anotherSurprise" class="px-4 py-2 rounded-lg bg-cafe-red text-white hover:bg-cafe-red-light transition">
+                                Try another
+                            </button>
+                            <button id="gotoDrinks" class="px-4 py-2 rounded-lg border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition">
+                                Go to Drinks
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="reveal text-4xl font-bold text-center text-cafe-black mb-4 flex items-center justify-center decorated-title">
                 menu
-               
             </h2>
+            <div class="reveal flex justify-center mb-12">
+                <div class="relative group inline-flex items-center gap-2 rounded-full border border-cafe-red/30 bg-white/80 backdrop-blur px-4 py-2 shadow-sm hover:shadow-md transition">
+                    <i class="fas fa-receipt text-cafe-red"></i>
+                    <span class="text-sm font-medium text-cafe-black">10% service charge applies</span>
+                    <span class="pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-2 hidden group-hover:block whitespace-nowrap rounded-md bg-cafe-black/90 px-3 py-2 text-xs text-white shadow-lg z-40">
+                        A 10% service charge will be added to your bill
+                    </span>
+                </div>
+            </div>
             
             <!-- Category Tabs -->
             <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <button class="category-tab active bg-cafe-red text-cafe-white px-6 py-3 rounded-lg font-semibold" data-category="drinks">
-                    <span class="inline-block align-middle ml-2" style="width: 1.5em; height: 1.5em;">
-                        <i class="fas fa-coffee ml-2"></i>
+                <button class="category-tab active bg-cafe-red text-cafe-white px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2" data-category="drinks">
+                    <span class="inline-block align-middle" style="width: 1.5em; height: 1.5em;">
+                        <i class="fas fa-coffee"></i>
                     </span>
                     Drinks
                 </button>
-                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray" data-category="food">
-                    <i class="fas fa-utensils ml-2"></i>
+                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="food">
+                    <i class="fas fa-utensils"></i>
                     Food
                 </button>
-                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray" data-category="desserts">
-                    <i class="fas fa-birthday-cake ml-2"></i>
+                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="desserts">
+                    <i class="fas fa-birthday-cake"></i>
                     Desserts
                 </button>
-                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray" data-category="hookah">
-                    <span class="inline-block align-middle ml-2" style="width: 1.5em; height: 1.5em;">
-                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-                            <path d="M16 2v4m0 0c-2 0-4 1.5-4 4s2 4 4 4 4-1.5 4-4-2-4-4-4zm0 8v4m-6 0h12m-6 0v4m-6 8h12m-6 0v-4m0 4v4" stroke="#D90429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <ellipse cx="16" cy="28" rx="6" ry="2" fill="#D90429"/>
-                        </svg>
-                    </span>
+                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="hookah">
+                    <img src="hookah.png" alt="Hookah" class="w-6 h-6" data-default-icon="hookah.png" data-active-icon="arabic.png" data-white-when-active="true" />
                     Hookah
                 </button>
             </div>
@@ -183,15 +531,34 @@
                             <i class="fas fa-leaf text-green-500 ml-2"></i>
                             Fresher
                         </h3>
-                        <div class="space-y-3">
+                        
+                        <div class="menu-item bg-cafe-gray rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-semibold text-cafe-black">Tango Fresher</h4>
+                                    <p class="text-sm text-cafe-black/60">(Green Apple & Kiwi)</p>
+                                    <p class="text-sm font-semibold text-cafe-red">Soda</p>
+                                    <p class="text-sm font-semibold text-cafe-red">Red Bull + 3.99 NIS</p>
+                                </div>
+                                <div class="text-right price-group">
+                                    <div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div>
+                                    <div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3"></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4">
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Streki Fresher</h4>
-                                        <p class="text-sm text-cafe-black">(Strawberry & Kiwi)</p>
+                                        <p class="text-sm text-cafe-black/60">(Strawberry & Kiwi)</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Soda</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Red Bull + 3.99 NIS</p>
                                     </div>
-                                    <div class="text-right">
-                                        <div class="font-bold text-cafe-red">17.99</div>
+                                    <div class="text-right price-group">
+                                        <div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div>
+                                        <div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -199,10 +566,13 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Pinerazz Fresher</h4>
-                                        <p class="text-sm text-cafe-black">(Pineapple & Raspberry)</p>
+                                        <p class="text-sm text-cafe-black/60">(Pineapple & Raspberry)</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Soda</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Red Bull + 3.99 NIS</p>
                                     </div>
-                                    <div class="text-right">
-                                        <div class="font-bold text-cafe-red">17.99</div>
+                                    <div class="text-right price-group">
+                                        <div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div>
+                                        <div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -210,10 +580,13 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Hawaiian Fresher</h4>
-                                        <p class="text-sm text-cafe-black">(Tropical & Pineapple)</p>
+                                        <p class="text-sm text-cafe-black/60">(Tropical & Pineapple)</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Soda</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Red Bull + 3.99 NIS</p>
                                     </div>
-                                    <div class="text-right">
-                                        <div class="font-bold text-cafe-red">17.99</div>
+                                    <div class="text-right price-group">
+                                        <div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div>
+                                        <div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -221,21 +594,69 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Zest Fresher</h4>
-                                        <p class="text-sm text-cafe-black">(Watermelon & Green Apple)</p>
+                                        <p class="text-sm text-cafe-black/60">(Watermelon & Green Apple)</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Soda</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Red Bull + 3.99 NIS</p>
                                     </div>
-                                    <div class="text-right">
-                                        <div class="font-bold text-cafe-red">17.99</div>
+                                    <div class="text-right price-group">
+                                        <div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div>
+                                        <div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4">
                                 <div class="flex justify-between items-center">
                                     <div>
-                                        <h4 class="font-semibold text-cafe-black">Tango Fresher</h4>
-                                        <p class="text-sm text-cafe-black">(Green Apple & Kiwi)</p>
+                                        <h4 class="font-semibold text-cafe-black">
+                                            Pango Fresher</h4>
+                                        <p class="text-sm text-cafe-black/60">(Pashion Fruit & Mango)</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Soda</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Red Bull + 3.99 NIS</p>
                                     </div>
-                                    <div class="text-right">
-                                        <div class="font-bold text-cafe-red">17.99</div>
+                                    <div class="text-right price-group">
+                                        <div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div>
+                                        <div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h4 class="font-semibold text-cafe-black">
+                                            Pina Colada</h4>
+                                        <p class="text-sm text-cafe-black/60">(Pineapple & Coconut)</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Soda</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Red Bull + 3.99 NIS</p>
+                                    </div>
+                                    <div class="text-right price-group">
+                                        <div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div>
+                                        <div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h4 class="font-semibold text-cafe-black">choose Your own Fresher</h4>
+                                        <p class="text-sm text-cafe-black/60">(Pineapple)</p>
+                                        <p class="text-sm text-cafe-black/60">(Blueberry)</p>
+                                        <p class="text-sm text-cafe-black/60">(Mixberry )</p>
+                                        <p class="text-sm text-cafe-black/60">(Mango)</p>
+                                        <p class="text-sm text-cafe-black/60">(Kiwi)</p>
+                                        <p class="text-sm text-cafe-black/60">(Apple)</p>
+                                        <p class="text-sm text-cafe-black/60">(Strawberry)</p>
+                                        <p class="text-sm text-cafe-black/60">(Passion Fruit)</p>
+                                        <p class="text-sm text-cafe-black/60">(Raspberry)</p>
+                                        <p class="text-sm text-cafe-black/60">(Blu Curacao)</p>
+                                        <p class="text-sm text-cafe-black/60">(Coconut)</p>
+                                        <p class="text-sm text-cafe-black/60">(Watermelon)</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Soda</p>
+                                        <p class="text-sm font-semibold text-cafe-red">Red Bull + 3.99 NIS</p>
+                                        
+                                    </div>
+                                    <div class="text-right price-group">
+                                        <div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div>
+                                        <div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -246,16 +667,22 @@
                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
                         <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
                             <i class="fas fa-ice-cream text-blue-500 ml-2"></i>
-                            Ice Latte
+                            Iced Latte
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ice Spanish Latte</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ice Caramel Latte</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ice French Vanilla</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ice White Mocha</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ice Dark Mocha</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ice Vanilla Latte</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ice Hazelnut Latte</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">16.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Spanish Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Caramel Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced French Vanilla</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced White Mocha</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">16.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Dark Mocha</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">16.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Vanilla Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Hazelnut Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Salted Caramel Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Pistachio Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Chai Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Cuppuccino</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Iced French Hazelnut</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
                         </div>
                     </div>
 
@@ -266,11 +693,17 @@
                             Hot Latte
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Caramel Latte</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">French Vanilla</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Spanish Latte</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Vanilla Latte</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Hazelnut Latte</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Caramel Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">French Vanilla</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Spanish Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Vanilla Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Hazelnut Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Chai Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Salted Caramel Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>                            
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Hot Chocolate</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Italian Hot Chocolate </h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            
+
                         </div>
                     </div>
 
@@ -281,9 +714,14 @@
                             Hot Coffee
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Espresso</h4></div><div class="text-right"><div class="font-bold text-cafe-red">8.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Americano</h4></div><div class="text-right"><div class="font-bold text-cafe-red">12.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Cappuccino</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Espresso</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">8.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">9.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Americano</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">9.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">12.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Hot Latte</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">13.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">15.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">White Mocha</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">16.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">18.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Dark Mocha</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">16.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">18.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Cortado</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">14.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Affogado</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">14.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Turkish</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">7.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">12.99</span></div></div></div></div>
                         </div>
                     </div>
 
@@ -294,13 +732,16 @@
                             Smoothies
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Strawberry</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Mixed Berries</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Banana Dates</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Mango</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Pineapple</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Watermelon</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Lemonade</h4></div><div class="text-right"><div class="font-bold text-cafe-red">17.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Pango Mango</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Strawberry</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Mixed Berries</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Banana Dates</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">22.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Mango</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Pineapple</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Watermelon</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Strawberry Lemonade</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Strawberry</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">18.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+
                         </div>
                     </div>
 
@@ -308,13 +749,15 @@
                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
                         <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
                             <i class="fas fa-ice-cream text-cyan-600 ml-2"></i>
-                            Ice Tea
+                            Iced Tea
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Iced Tea Peach</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Iced Tea Watermelon</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Iced Tea Passionfruit</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Flavored Ice Tea</h4></div><div class="text-right"><div class="font-bold text-cafe-red">15.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Tea Peach</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Tea Watermelon</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Tea Passionfruit</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Tea Pineapple</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Iced Tea Raspberry</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+
                         </div>
                     </div>
 
@@ -325,10 +768,13 @@
                             Fresh Juice
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Orange Juice</h4></div><div class="text-right"><div class="font-bold text-cafe-red">19.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Carrots</h4></div><div class="text-right"><div class="font-bold text-cafe-red">19.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Lemon Mint</h4></div><div class="text-right"><div class="font-bold text-cafe-red">19.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Pinky Lemonade</h4></div><div class="text-right"><div class="font-bold text-cafe-red">19.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Orange Juice</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">14.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Carrots</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">14.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">17.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Lemon Mint</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">14.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">16.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Lemonade Apple Juice</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">15.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Pomegrant Juice</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Lemonade </h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">12.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">15.99</span></div></div></div></div>
+
                         </div>
                     </div>
 
@@ -339,7 +785,7 @@
                             Refresher
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Mixed Passion Fruit & Mango</h4></div><div class="text-right"><div class="font-bold text-cafe-red">17.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Pinky Lemonade</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">16.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">18.99</span></div></div></div></div>
                         </div>
                     </div>
 
@@ -350,11 +796,12 @@
                             Frappe
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Classic Vanilla Frappe</h4></div><div class="text-right"><div class="font-bold text-cafe-red">17.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Hazelnut Frappe</h4></div><div class="text-right"><div class="font-bold text-cafe-red">17.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Chocolate Frappe</h4></div><div class="text-right"><div class="font-bold text-cafe-red">17.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">French Vanilla Frappe</h4></div><div class="text-right"><div class="font-bold text-cafe-red">17.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Salted Caramel Frappe</h4></div><div class="text-right"><div class="font-bold text-cafe-red">17.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Ice Coffee Classic</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Hazelnut Frappe</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Chocolate Frappe</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">French Vanilla Frappe</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Salted Caramel Frappe</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center gap-4"><div><h4 class="font-semibold text-cafe-black">Caramel Frappe</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
                         </div>
                     </div>
 
@@ -365,12 +812,34 @@
                             Milk Shakes
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Pistachio</h4></div><div class="text-right"><div class="font-bold text-cafe-red">22.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Lotus</h4></div><div class="text-right"><div class="font-bold text-cafe-red">22.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Kinder</h4></div><div class="text-right"><div class="font-bold text-cafe-red">22.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Chocolate</h4></div><div class="text-right"><div class="font-bold text-cafe-red">22.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Pistachio</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">22.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Lotus</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">22.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Vanilla</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">22.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Chocolate</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">22.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Strawberry</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">22.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Blueberry</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">22.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Mixberry</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">22.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Red velvet</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">22.99</span></div></div></div></div>
                         </div>
                     </div>
+
+                     <!-- Beveraegs -->
+                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
+                         <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
+                             <i class="fas fa-glass-cheers text-amber-500 ml-2"></i>
+                             Beveraegs
+                         </h3>
+                         <div class="space-y-3">
+                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Water</h4></div><div class="text-right"><div class="font-bold text-cafe-red">4.99</div></div></div></div>
+                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Cola Chat</h4></div><div class="text-right"><div class="font-bold text-cafe-red">4.99</div></div></div></div>
+                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Lemon Chat</h4></div><div class="text-right"><div class="font-bold text-cafe-red">4.99</div></div></div></div>
+                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Zero Chat</h4></div><div class="text-right"><div class="font-bold text-cafe-red">4.99</div></div></div></div>
+                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Soda</h4></div><div class="text-right"><div class="font-bold text-cafe-red">4.99</div></div></div></div>
+                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Red Bull</h4></div><div class="text-right"><div class="font-bold text-cafe-red">11.99</div></div></div></div>
+
+
+                         </div>
+                     </div>
                 </div>
             </div>
 
@@ -389,7 +858,7 @@
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Popcorn Chicken</h4></div><div class="text-right"><div class="font-bold text-cafe-red">29.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Chicken Fingers</h4></div><div class="text-right"><div class="font-bold text-cafe-red">29.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Nachos</h4></div><div class="text-right"><div class="font-bold text-cafe-red">34.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Wings (buffalo, barbecue, sweet chili)</h4></div><div class="text-right"><div class="font-bold text-cafe-red">39.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Wings</h4><p class="text-sm text-cafe-black/60">(buffalo, barbecue, sweet chili)</p></div><div class="text-right"><div class="font-bold text-cafe-red">39.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Fish and chips</h4></div><div class="text-right"><div class="font-bold text-cafe-red">39.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Mix Platter</h4></div><div class="text-right"><div class="font-bold text-cafe-red">49.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Classic Fries</h4></div><div class="text-right"><div class="font-bold text-cafe-red">14.99</div></div></div></div>
@@ -411,7 +880,7 @@
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Greek Salad</h4></div><div class="text-right"><div class="font-bold text-cafe-red">33.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Haloomi Salad</h4></div><div class="text-right"><div class="font-bold text-cafe-red">33.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Quinoa Salad</h4></div><div class="text-right"><div class="font-bold text-cafe-red">33.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ceasar Salad + add chicken + 5 nis</h4></div><div class="text-right"><div class="font-bold text-cafe-red">29.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ceasar Salad</h4><p class="text-sm text-cafe-black/60">add chicken + 5 nis</p></div><div class="text-right"><div class="font-bold text-cafe-red">29.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Tabbouleh Quinoa Salad</h4></div><div class="text-right"><div class="font-bold text-cafe-red">33.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Tuna Salad</h4></div><div class="text-right"><div class="font-bold text-cafe-red">29.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Falahy Salad</h4></div><div class="text-right"><div class="font-bold text-cafe-red">28.99</div></div></div></div>
@@ -432,7 +901,7 @@
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Pesto Chicken</h4></div><div class="text-right"><div class="font-bold text-cafe-red">36.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Mexican sandwich</h4></div><div class="text-right"><div class="font-bold text-cafe-red">34.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Italian sandwich</h4></div><div class="text-right"><div class="font-bold text-cafe-red">33.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Grilled steak chicken</h4></div><div class="text-right"><div class="font-bold text-cafe-red">29.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Grilled chicken steak</h4></div><div class="text-right"><div class="font-bold text-cafe-red">29.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Quesadilla Wrap</h4></div><div class="text-right"><div class="font-bold text-cafe-red">33.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Zingar wrap</h4></div><div class="text-right"><div class="font-bold text-cafe-red">34.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Ceasar wrap</h4></div><div class="text-right"><div class="font-bold text-cafe-red">34.99</div></div></div></div>
@@ -468,7 +937,7 @@
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Alfredo Pizza</h4></div><div class="text-right"><div class="font-bold text-cafe-red">49.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">BBQ Pizza</h4></div><div class="text-right"><div class="font-bold text-cafe-red">45.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Veggies pizza</h4></div><div class="text-right"><div class="font-bold text-cafe-red">45.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Margherita</h4></div><div class="text-right"><div class="font-bold text-cafe-red">45.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Margherita Pizza</h4></div><div class="text-right"><div class="font-bold text-cafe-red">45.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Pepperoni pizza</h4></div><div class="text-right"><div class="font-bold text-cafe-red">45.99</div></div></div></div>
                         </div>
                     </div>
@@ -483,7 +952,7 @@
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">White cheese</h4></div><div class="text-right"><div class="font-bold text-cafe-red">28.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Za3tar</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Egg</h4></div><div class="text-right"><div class="font-bold text-cafe-red">27.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Mix</h4></div><div class="text-right"><div class="font-bold text-cafe-red">27.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Mix <br> (Za3tar + White cheese )</h4></div><div class="text-right"><div class="font-bold text-cafe-red">27.99</div></div></div></div>
                         </div>
                     </div>
 
@@ -511,13 +980,15 @@
                             Cakes & Sweets
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">English cake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">6.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Crimsonight</h4></div><div class="text-right"><div class="font-bold text-cafe-red">26.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><div class="flex items-center gap-2"><h4 class="font-semibold text-cafe-black">Crimsonight</h4><svg class="inline-block ml-2 h-6 w-20 text-cafe-red" aria-label="Sold out" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 67.84" fill="currentColor"><defs><style>.cls-1{fill:currentColor;}</style></defs><title>sold-out</title><path d="M.78,33.58,30.62,1.3A3,3,0,0,1,32.79.35c26.48,0,54.44-.71,80.82-.09a9.41,9.41,0,0,1,9.27,9.53c-.12,15.49-.36,32.25-.54,47.78a16.32,16.32,0,0,1-.09,2.2,9.17,9.17,0,0,1-2.78,5.43,9.58,9.58,0,0,1-5.76,2.59,20,20,0,0,1-2,0L32.9,67.15a3,3,0,0,1-2.16-.82L1,37.76a3,3,0,0,1-.18-4.18Z"/><path class="cls-1" d="M32.79,4,3.61,35.58l29.18,28,79.31.69a6.45,6.45,0,0,0,6.63-6.42l.54-47.31a6.43,6.43,0,0,0-6.42-6.63L32.79,4ZM22.52,29a7.08,7.08,0,0,1,5.1-2.24,7.26,7.26,0,0,1,5.29,2,7.34,7.34,0,0,1,.17,10.33,7.27,7.27,0,0,1-10.32.28A7.33,7.33,0,0,1,22.52,29Z"/><path d="M56.77,19.12q-3.6-.39-5.22-.39a10.24,10.24,0,0,0-1.9.09c-.4.13-.33,1.14,0,1.33,1.08.54,5.85,1.25,6.43,1.69a2.93,2.93,0,0,1,1.09,1.55,9,9,0,0,1,.27,2.46q0,3.21-1.68,4.57a7.93,7.93,0,0,1-5.07,1.37,27.53,27.53,0,0,1-3.42-.23,27.72,27.72,0,0,1-2.76-.47l-1-.23.25-4.57a46,46,0,0,0,6.39.57c1.91,0,2.06-1.38-.64-1.81-2.37-.37-4-.45-4.85-1.25a5.2,5.2,0,0,1-1.28-3.93q0-3.5,1.65-4.78a8.25,8.25,0,0,1,5.09-1.29,34.65,34.65,0,0,1,5.68.49l1.07.18-.15,4.65Zm-.68,29.36a2,2,0,0,0,3.5,0,12.69,12.69,0,0,0,0-6.36c-.54-1.29-3-1.28-3.52,0a12,12,0,0,0,0,6.32ZM66,45.32c0,3.15-.65,5.44-1.94,6.85s-3.35,2.13-6.17,2.13-4.89-.72-6.19-2.14-1.94-3.72-1.94-6.86.65-5.42,1.93-6.83,3.35-2.13,6.19-2.13,4.9.71,6.18,2.13S66,42.17,66,45.32Zm8.09-8.65V48c0,1.9,3.18,1.93,3.18,0V36.67h5.9v11c0,2.43-.61,4.16-1.8,5.15s-3.11,1.48-5.69,1.48-4.49-.48-5.69-1.45-1.81-2.65-1.81-5.08V36.67Zm11.09,4.88V36.67H98.87v4.88H95.06V54H89.15V41.55ZM65.38,22.78a8.53,8.53,0,0,0,.42,3.16,1.71,1.71,0,0,0,1.76,1A1.69,1.69,0,0,0,69.3,26a8.92,8.92,0,0,0,.41-3.19,9,9,0,0,0-.4-3.17,1.67,1.67,0,0,0-1.74-1,1.73,1.73,0,0,0-1.77,1,8.61,8.61,0,0,0-.42,3.16Zm10.28,0q0,4.72-1.93,6.86t-6.17,2.12q-4.24,0-6.19-2.14c-1.29-1.42-1.95-3.71-1.95-6.85s.65-5.42,1.94-6.84,3.35-2.13,6.18-2.13,4.9.71,6.19,2.13,1.93,3.7,1.93,6.85Zm13.91,8.65H78.12V14.14H84V26.55h5.54v4.88Zm9.74,0H91.85V14.14h7.2q4.41,0,6.34,2t1.94,6.44q0,4.43-1.86,6.63c-1.24,1.47-3.3,2.21-6.16,2.21Zm2.06-8.54a6.79,6.79,0,0,0-.47-3.1c-.55-.92-2.18-.78-3.14-.78v7.54c1,0,2.26.12,3-.67.41-.44.61-1.45.61-3Z"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-size="20" font-family="sans-serif" font-weight="700">Sold out</text></svg></div></div><div class="text-right"><div class="font-bold text-cafe-red">27.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Soufflé cake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Fudge cake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Red velvet</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">American apple pie</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Pecan pie</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Alfajours cake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Honey cake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Chocolate Mousse cake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Tiramisu</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                         </div>
                     </div>
@@ -529,8 +1000,8 @@
                             Cheesecake
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Lemon Cheesecake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Strawberry cheesecake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Blueberry Cheesecake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">San Sebastian Cheesecake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                         </div>
                     </div>
                 </div>
@@ -541,22 +1012,19 @@
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
                         <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
-                            <span class="inline-block align-middle ml-2" style="width: 1.5em; height: 1.5em;">
-                                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-                                    <path d="M16 2v4m0 0c-2 0-4 1.5-4 4s2 4 4 4 4-1.5 4-4-2-4-4-4zm0 8v4m-6 0h12m-6 0v4m-6 8h12m-6 0v-4m0 4v4" stroke="#D90429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <ellipse cx="16" cy="28" rx="6" ry="2" fill="#D90429"/>
-                                </svg>
-                            </span>
+                            <img src="hookah.png" alt="Hookah" class="w-6 h-6 ml-2 inline-block align-middle" />
                             Hookah
                         </h3>
+                     
                         <div class="space-y-3">
                             <div class="menu-item bg-cafe-gray rounded-lg p-4">
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">99 Hookah</h4>
+                                        <p class="text-sm text-cafe-black/60">(Disposable hose)</p>
                                     </div>
                                     <div class="text-right">
-                                        <div class="font-bold text-cafe-red">27.99</div>
+                                        <div class="font-bold text-cafe-red">32.99</div>
                                     </div>
                                 </div>
                             </div>
@@ -564,9 +1032,10 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Two Apples</h4>
+                                        <p class="text-sm text-cafe-black/60">(Disposable hose)</p>
                                     </div>
                                     <div class="text-right">
-                                        <div class="font-bold text-cafe-red">27.99</div>
+                                        <div class="font-bold text-cafe-red">32.99</div>
                                     </div>
                                 </div>
                             </div>
@@ -574,9 +1043,10 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Lemon and Mint</h4>
+                                        <p class="text-sm text-cafe-black/60">(Disposable hose)</p>
                                     </div>
                                     <div class="text-right">
-                                        <div class="font-bold text-cafe-red">27.99</div>
+                                        <div class="font-bold text-cafe-red">32.99</div>
                                     </div>
                                 </div>
                             </div>
@@ -584,9 +1054,10 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Love 66</h4>
+                                        <p class="text-sm text-cafe-black/60">(Disposable hose)</p>
                                     </div>
                                     <div class="text-right">
-                                        <div class="font-bold text-cafe-red">27.99</div>
+                                        <div class="font-bold text-cafe-red">32.99</div>
                                     </div>
                                 </div>
                             </div>
@@ -594,9 +1065,10 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Grape</h4>
+                                        <p class="text-sm text-cafe-black/60">(Disposable hose)</p>
                                     </div>
                                     <div class="text-right">
-                                        <div class="font-bold text-cafe-red">27.99</div>
+                                        <div class="font-bold text-cafe-red">32.99</div>
                                     </div>
                                 </div>
                             </div>
@@ -604,9 +1076,32 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Blueberry</h4>
+                                        <p class="text-sm text-cafe-black/60">(Disposable hose)</p>
                                     </div>
                                     <div class="text-right">
-                                        <div class="font-bold text-cafe-red">27.99</div>
+                                        <div class="font-bold text-cafe-red">32.99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h4 class="font-semibold text-cafe-black">Watermelon and Mint</h4>
+                                        <p class="text-sm text-cafe-black/60">(Disposable hose)</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-cafe-red">32.99</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h4 class="font-semibold text-cafe-black">Cinnamon and Gum</h4>
+                                        <p class="text-sm text-cafe-black/60">(Disposable hose)</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-cafe-red">32.99</div>
                                     </div>
                                 </div>
                             </div>
@@ -614,6 +1109,7 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Nakhla</h4>
+                                        <p class="text-sm text-cafe-black/60"></p>
                                     </div>
                                     <div class="text-right">
                                         <div class="font-bold text-cafe-red">34.99</div>
@@ -624,7 +1120,7 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <h4 class="font-semibold text-cafe-black">Fresh Hookah</h4>
-                                        <p class="text-sm text-cafe-black">(Disposable hose) + 4.99</p>
+                                        <p class="text-sm text-cafe-black/60">(Disposable hose)</p>
                                     </div>
                                     <div class="text-right">
                                         <div class="font-bold text-cafe-red">44.99</div>
@@ -641,6 +1137,9 @@
 
     <!-- Footer -->
     <footer class="bg-cafe-black text-cafe-white py-8">
+        <button id="backToTop" aria-label="Back to top" class="hidden fixed bottom-6 right-6 z-40 bg-cafe-red text-white w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 grid place-items-center">
+            <i class="fas fa-arrow-up"></i>
+        </button>
         <div class="container mx-auto px-4 text-center">
             <div class="flex flex-col items-center justify-center mb-4">
                 <img src="99cafe_logo.png" alt="99 Cafe Logo" class="w-24 h-24 object-contain mb-3" />
@@ -655,8 +1154,8 @@
             <!-- Developer Signature -->
             <div class="mt-4 pt-4 border-t border-cafe-red-light/20">
                 <p class="text-sm text-cafe-gray">
-                    Designed & Developed with ❤️ by 
-                    <a href="https://m7madi8.github.io/Mohammad/" target="_blank" class="text-cafe-red-light font-semibold hover:text-cafe-white transition-colors duration-300 font-montserrat text-lg">
+                    Developed with by <br>
+                    <a href="https://m7madi8.github.io/Mohammad/" target="_blank" class="text-cafe-red-light font-semibold hover:text-cafe-white transition-colors duration-300 font-greatvibes text-2xl">
                         Mohammad Hroub
                     </a>
                 </p>
@@ -664,15 +1163,64 @@
         </div>
     </footer>
 
+    <!-- Flavor Picker Modal -->
+    <div id="flavorModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/40" data-close-flavor></div>
+        <div class="relative rounded-2xl modal-card w-[94vw] max-w-xl overflow-hidden">
+            <div class="bg-gradient-to-r from-cafe-red to-cafe-red-light text-white px-5 py-3 flex items-center justify-between">
+                <div class="font-bold">Ø§Ø®ØªØ± Ø§Ù„Ù†ÙƒÙ‡Ø©</div>
+                <button id="closeFlavor" class="text-white/90 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="bg-white p-5">
+                <div class="mb-4">
+                    <input id="flavorSearch" type="text" placeholder="Ø§Ø¨Ø­Ø« Ø¹Ù† Ù†ÙƒÙ‡Ø©..." class="w-full rounded-lg border border-cafe-red/30 focus:border-cafe-red px-4 py-2 outline-none" />
+                </div>
+                <div id="flavorList" class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-80 overflow-auto">
+                    <!-- items injected by JS -->
+                </div>
+                <div class="mt-4 text-right">
+                    <button id="clearFlavor" class="px-3 py-2 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition">Ù…Ø³Ø­ Ø§Ù„Ø§Ø®ØªÙŠØ§Ø±</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Category switching functionality
         const categoryTabs = document.querySelectorAll('.category-tab');
         const categoryContents = document.querySelectorAll('.category-content');
 
+        function updateCategoryTabIcons() {
+            categoryTabs.forEach(tab => {
+                const img = tab.querySelector('img[data-default-icon][data-active-icon]');
+                if (!img) return;
+                const defaultSrc = img.getAttribute('data-default-icon');
+                const activeSrc = img.getAttribute('data-active-icon');
+                const isActive = tab.classList.contains('active');
+                img.src = isActive ? activeSrc : defaultSrc;
+                if (img.hasAttribute('data-white-when-active')) {
+                    if (isActive) {
+                        img.classList.add('tab-icon-white');
+                    } else {
+                        img.classList.remove('tab-icon-white');
+                    }
+                }
+            });
+        }
+
         categoryTabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const targetCategory = tab.getAttribute('data-category');
                 
+                // Ripple visual
+                const rect = tab.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple-circle';
+                ripple.style.left = rect.width / 2 + 'px';
+                ripple.style.top = rect.height / 2 + 'px';
+                tab.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 650);
+
                 // Remove active class from all tabs
                 categoryTabs.forEach(t => t.classList.remove('active'));
                 categoryTabs.forEach(t => {
@@ -684,6 +1232,7 @@
                 tab.classList.add('active');
                 tab.classList.remove('bg-cafe-gray', 'text-cafe-black');
                 tab.classList.add('bg-cafe-red', 'text-cafe-white');
+                updateCategoryTabIcons();
                 
                 // Hide all category contents
                 categoryContents.forEach(content => {
@@ -697,6 +1246,8 @@
                 requestAnimationFrame(() => target.classList.add('show'));
             });
         });
+        // Initialize icons on first load
+        updateCategoryTabIcons();
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -717,8 +1268,21 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('show');
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.08, rootMargin: '0px 0px -12% 0px' });
+        // Auto-apply reveal-on-scroll to major content blocks
+        const autoRevealEls = document.querySelectorAll('.category-content .bg-cafe-white, .menu-item');
+        autoRevealEls.forEach(el => el.classList.add('reveal'));
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // Back to top button logic
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (!backToTop) return;
+            const scrolled = window.scrollY || document.documentElement.scrollTop;
+            if (scrolled > 450) backToTop.classList.remove('hidden');
+            else backToTop.classList.add('hidden');
+        });
+        backToTop && backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
         // Preloader fade out
         window.addEventListener('load', () => {
@@ -740,6 +1304,529 @@
                 }, 100);
             }, 500);
         });
+
+        // Surprise Drink feature
+        (function surpriseDrink() {
+            const logo = document.getElementById('heroLogo');
+            const tryLuckBtn = document.getElementById('tryLuckBtn');
+            const modal = document.getElementById('surpriseModal');
+            const closeBtn = document.getElementById('closeSurprise');
+            const anotherBtn = document.getElementById('anotherSurprise');
+            const gotoBtn = document.getElementById('gotoDrinks');
+            const nameEl = document.getElementById('surpriseName');
+            const hintEl = document.getElementById('surpriseHint');
+
+            if (!logo || !modal) return;
+
+            const drinks = [
+                { name: 'Ice Spanish Latte', hint: 'Cold, creamy, and sweet', temp: 'cold' },
+                { name: 'Ice Caramel Latte', hint: 'Icy caramel delight', temp: 'cold' },
+                { name: 'Ice French Vanilla', hint: 'Vanilla chilled goodness', temp: 'cold' },
+                { name: 'Ice White Mocha', hint: 'Smooth and milky', temp: 'cold' },
+                { name: 'Ice Dark Mocha', hint: 'Rich chocolate kick', temp: 'cold' },
+                { name: 'Ice Vanilla Latte', hint: 'Classic vanilla on ice', temp: 'cold' },
+                { name: 'Ice Hazelnut Latte', hint: 'Nutty and refreshing', temp: 'cold' },
+                { name: 'Caramel Latte', hint: 'Warm and comforting', temp: 'hot' },
+                { name: 'French Vanilla', hint: 'A cozy classic', temp: 'hot' },
+                { name: 'Spanish Latte', hint: 'Balanced and smooth', temp: 'hot' },
+                { name: 'Vanilla Latte', hint: 'Gentle sweetness', temp: 'hot' },
+                { name: 'Hazelnut Latte', hint: 'Nutty aroma', temp: 'hot' },
+                { name: 'Espresso', hint: 'Strong and bold', temp: 'hot' },
+                { name: 'Americano', hint: 'Light and smooth', temp: 'hot' },
+                { name: 'Cappuccino', hint: 'Foamy delight', temp: 'hot' },
+                { name: 'Strawberry Smoothie', hint: 'Fruity and fresh', temp: 'cold' },
+                { name: 'Mixed Berries Smoothie', hint: 'Berry mix boost', temp: 'cold' },
+                { name: 'Banana Dates Smoothie', hint: 'Sweet and rich', temp: 'cold' },
+                { name: 'Mango Smoothie', hint: 'Tropical vibes', temp: 'cold' },
+                { name: 'Pineapple Smoothie', hint: 'Sunny sweetness', temp: 'cold' },
+                { name: 'Watermelon Smoothie', hint: 'Ultra refreshing', temp: 'cold' },
+                { name: 'Lemonade', hint: 'Zesty and bright', temp: 'cold' },
+                { name: 'Iced Tea Peach', hint: 'Light and fruity', temp: 'cold' },
+                { name: 'Iced Tea Watermelon', hint: 'Cool and crisp', temp: 'cold' },
+                { name: 'Iced Tea Passionfruit', hint: 'Tropical tea', temp: 'cold' },
+                { name: 'Flavored Ice Tea', hint: 'Pick your flavor', temp: 'cold' },
+                { name: 'Orange Juice', hint: 'Freshly squeezed', temp: 'cold' },
+                { name: 'Carrots Juice', hint: 'Sweet and earthy', temp: 'cold' },
+                { name: 'Lemon Mint Juice', hint: 'Minty zing', temp: 'cold' },
+                { name: 'Pinky Lemonade', hint: 'Pretty and tasty', temp: 'cold' },
+                { name: 'Classic Vanilla Frappe', hint: 'Icy vanilla cloud', temp: 'cold' },
+                { name: 'Hazelnut Frappe', hint: 'Frosty nutty treat', temp: 'cold' },
+                { name: 'Chocolate Frappe', hint: 'Cocoa chill', temp: 'cold' },
+                { name: 'French Vanilla Frappe', hint: 'Silky and sweet', temp: 'cold' },
+                { name: 'Salted Caramel Frappe', hint: 'Sweet-salty crush', temp: 'cold' },
+                { name: 'Pistachio Milkshake', hint: 'Creamy pistachio', temp: 'cold' },
+                { name: 'Lotus Milkshake', hint: 'Biscoff dream', temp: 'cold' },
+                { name: 'Kinder Milkshake', hint: 'Chocolatey classic', temp: 'cold' },
+                { name: 'Chocolate Milkshake', hint: 'Thick and rich', temp: 'cold' },
+            ];
+
+            function pickRandomDrink() {
+                return drinks[Math.floor(Math.random() * drinks.length)];
+            }
+
+            function setIconForTemp(temp) {
+                const icon = document.getElementById('surpriseIcon');
+                if (!icon) return;
+                if (temp === 'hot') {
+                    icon.className = 'fas fa-mug-hot text-amber-600';
+                } else {
+                    icon.className = 'fas fa-ice-cream text-cyan-600';
+                }
+            }
+
+            function openModal() {
+                // pre-show rolling effect
+                rollNames(900);
+                const { name, hint, temp } = pickRandomDrink();
+                nameEl.textContent = name;
+                hintEl.textContent = hint || '';
+                setIconForTemp(temp);
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                // trigger show state for CSS transitions
+                requestAnimationFrame(() => modal.classList.add('show'));
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                // play closing animation
+                modal.classList.add('closing');
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    modal.classList.remove('closing');
+                }, 420);
+                document.body.style.overflow = '';
+            }
+
+            logo.addEventListener('click', openModal);
+            closeBtn && closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal || e.target.classList.contains('bg-black/50')) closeModal();
+            });
+            function rollNames(durationMs = 800) {
+                const start = performance.now();
+                function frame(now) {
+                    const elapsed = now - start;
+                    const { name, hint, temp } = pickRandomDrink();
+                    nameEl.textContent = name;
+                    hintEl.textContent = hint || '';
+                    setIconForTemp(temp);
+                    if (elapsed < durationMs) requestAnimationFrame(frame);
+                }
+                requestAnimationFrame(frame);
+            }
+
+            anotherBtn && anotherBtn.addEventListener('click', () => {
+                rollNames(700);
+                setTimeout(() => {
+                    const { name, hint, temp } = pickRandomDrink();
+                    nameEl.textContent = name;
+                    hintEl.textContent = hint || '';
+                    setIconForTemp(temp);
+                }, 720);
+            });
+            gotoBtn && gotoBtn.addEventListener('click', () => {
+                const drinksTab = document.querySelector('.category-tab[data-category="drinks"]');
+                if (drinksTab) drinksTab.click();
+                document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                closeModal();
+            });
+        })();
+
+        // Wheel of Fortune
+        (function wheelOfFortune() {
+            // ===== Configurable settings =====
+            const SETTINGS = {
+                // Prize definitions with daily limits and weight (probability mass)
+                prizes: [
+                    { id: 'FREE_DRINK', label: 'Free drink of your choice', color: '#F87171', dailyLimit: 3, weight: 3 },
+                    { id: 'FREE_UPGRADE', label: 'Free size upgrade', color: '#60A5FA', dailyLimit: 8, weight: 8 },
+                    { id: 'OFF10', label: '10% off next order', color: '#FBBF24', dailyLimit: 12, weight: 12 },
+                    // Duplicate TRY_AGAIN to increase probability substantially
+                    { id: 'TRY_AGAIN', label: 'Better luck next time', color: '#A78BFA', dailyLimit: Infinity, weight: 45 },
+                    { id: 'TRY_AGAIN', label: 'Better luck next time', color: '#C4B5FD', dailyLimit: Infinity, weight: 45 },
+                ],
+                // Sound effect URLs (optional). You can replace with your own files
+                sounds: {
+                    spin: null, // e.g. 'sounds/spin.mp3'
+                    tick: null, // e.g. 'sounds/tick.mp3'
+                    win: null,  // e.g. 'sounds/win.mp3'
+                },
+                // storage keys
+                storage: {
+                    attemptKey: 'wheel_attempt_date',
+                    inventoryKey: 'wheel_inventory',
+                },
+                // wheel visuals
+                spinMinTurns: 4,
+                spinMaxTurns: 6,
+                tickPerSlice: 1,
+            };
+
+            // ===== Utilities =====
+            function todayKey() {
+                const d = new Date();
+                return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+            }
+            function isUnlimitedDevice() {
+                return localStorage.getItem('wheel_unlimited') === '1';
+            }
+            function loadInventory() {
+                try { return JSON.parse(localStorage.getItem(SETTINGS.storage.inventoryKey)) || {}; } catch { return {}; }
+            }
+            function saveInventory(inv) {
+                localStorage.setItem(SETTINGS.storage.inventoryKey, JSON.stringify(inv));
+            }
+            function resetInventoryIfNewDay(inv) {
+                const key = todayKey();
+                let changed = false;
+                let working = inv && typeof inv === 'object' ? { ...inv } : {};
+                if (working.__date !== key) {
+                    working = { __date: key };
+                    changed = true;
+                }
+                // Ensure all finite-limit prizes exist with today's quota
+                SETTINGS.prizes.forEach(p => {
+                    if (isFinite(p.dailyLimit)) {
+                        if (typeof working[p.id] !== 'number') {
+                            working[p.id] = p.dailyLimit;
+                            changed = true;
+                        }
+                    }
+                });
+                if (changed) saveInventory(working);
+                return working;
+            }
+            function getRemaining(inv, prizeId) {
+                if (!isFinite(findPrize(prizeId).dailyLimit)) return Infinity;
+                return inv[prizeId] ?? 0;
+            }
+            function decrement(inv, prizeId) {
+                if (!isFinite(findPrize(prizeId).dailyLimit)) return inv;
+                const next = { ...inv, [prizeId]: Math.max(0, (inv[prizeId] ?? 0) - 1) };
+                saveInventory(next);
+                return next;
+            }
+            function findPrize(id) { return SETTINGS.prizes.find(p => p.id === id); }
+            function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+            function loadUsedCodes() {
+                try { return JSON.parse(localStorage.getItem('wheel_used_codes')) || {}; } catch { return {}; }
+            }
+            function saveUsedCodes(map) {
+                localStorage.setItem('wheel_used_codes', JSON.stringify(map));
+            }
+            function markCodeUsed(code) {
+                const d = todayKey();
+                const map = loadUsedCodes();
+                const dayList = new Set(map[d] || []);
+                dayList.add(code);
+                map[d] = Array.from(dayList);
+                // keep only last 5 days to avoid unbounded growth
+                const keys = Object.keys(map).sort().slice(-5);
+                const pruned = {};
+                keys.forEach(k => pruned[k] = map[k]);
+                saveUsedCodes(pruned);
+            }
+            function isCodeUsed(code) {
+                const d = todayKey();
+                const map = loadUsedCodes();
+                const dayList = new Set(map[d] || []);
+                return dayList.has(code);
+            }
+            function generateCode(prefix = 'WIN') {
+                // Generate 6-character alphanumeric code (A-Z, 0-9), uppercase
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let code = '';
+                let attempts = 0;
+                do {
+                    code = '';
+                    for (let i = 0; i < 6; i++) {
+                        code += chars[Math.floor(Math.random() * chars.length)];
+                    }
+                    attempts++;
+                } while (isCodeUsed(code) && attempts < 50);
+                markCodeUsed(code);
+                return code;
+            }
+            function hasPlayedToday() { return isUnlimitedDevice() ? false : localStorage.getItem(SETTINGS.storage.attemptKey) === todayKey(); }
+            function lockToday() { if (isUnlimitedDevice()) return; localStorage.setItem(SETTINGS.storage.attemptKey, todayKey()); }
+
+            // Weighted pick respecting inventory
+            function pickPrize(inv) {
+                const pool = [];
+                SETTINGS.prizes.forEach((p, index) => {
+                    const remaining = getRemaining(inv, p.id);
+                    const effectiveWeight = remaining > 0 ? (p.weight ?? 0) : 0;
+                    for (let i = 0; i < effectiveWeight; i++) pool.push(index); // push slice index to differentiate duplicates
+                });
+                if (pool.length === 0) return 'TRY_AGAIN';
+                const pickedIndex = pool[Math.floor(Math.random() * pool.length)];
+                return SETTINGS.prizes[pickedIndex].id;
+            }
+
+            // ===== Wheel rendering =====
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const slices = SETTINGS.prizes.length;
+            const radius = canvas.width / 2;
+            ctx.translate(radius, radius);
+
+            function drawWheel(activeAngle = 0) {
+                ctx.save();
+                ctx.clearRect(-radius, -radius, canvas.width, canvas.height);
+                ctx.rotate(activeAngle);
+                const arc = (2 * Math.PI) / slices;
+                SETTINGS.prizes.forEach((p, i) => {
+                    const start = i * arc;
+                    const end = start + arc;
+                    // slice
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.arc(0, 0, radius - 4, start, end);
+                    ctx.closePath();
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+
+                    // label
+                    ctx.save();
+                    ctx.rotate(start + arc / 2);
+                    ctx.textAlign = 'right';
+                    ctx.fillStyle = '#111';
+                    ctx.font = 'bold 16px Montserrat, sans-serif';
+                    wrapText(ctx, p.label, radius - 16, 0, 130, 18);
+                    ctx.restore();
+                });
+                ctx.restore();
+            }
+
+            function wrapText(context, text, x, y, maxWidth, lineHeight) {
+                const words = text.split(' ');
+                let line = '';
+                let yy = y;
+                for (let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const metrics = context.measureText(testLine);
+                    const testWidth = metrics.width;
+                    if (testWidth > maxWidth && n > 0) {
+                        context.fillText(line, x, yy);
+                        line = words[n] + ' ';
+                        yy += lineHeight;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                context.fillText(line, x, yy);
+            }
+
+            drawWheel(0);
+
+            // Allow enabling unlimited-for-this-device via URL param once: ?unlimited=1
+            (function initUnlimitedToggle(){
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    if (params.get('unlimited') === '1' || params.get('wheel_unlimited') === '1') {
+                        localStorage.setItem('wheel_unlimited', '1');
+                        params.delete('unlimited');
+                        params.delete('wheel_unlimited');
+                        const clean = window.location.pathname + (params.toString() ? ('?' + params.toString()) : '') + window.location.hash;
+                        history.replaceState(null, '', clean);
+                    }
+                } catch {}
+            })();
+
+            // ===== Modal and spin logic =====
+            const wheelModal = document.getElementById('wheelModal');
+            const openBtn = document.getElementById('tryLuckBtn');
+            const closeBtn = document.getElementById('closeWheel');
+            const overlay = wheelModal.querySelector('[data-close-wheel]');
+            const spinBtn = document.getElementById('spinBtn');
+            const wheelMsg = document.getElementById('wheelMsg');
+            const wheelCodeBtn = document.getElementById('wheelCodeBtn');
+
+            function openWheel() {
+                wheelModal.classList.remove('hidden');
+                wheelModal.classList.add('flex');
+                requestAnimationFrame(() => wheelModal.classList.add('show'));
+                document.body.style.overflow = 'hidden';
+                wheelMsg.textContent = '';
+                spinBtn.disabled = hasPlayedToday();
+                spinBtn.classList.toggle('spin-disabled', spinBtn.disabled);
+                if (hasPlayedToday()) wheelMsg.textContent = 'You already played today. Come back tomorrow!';
+            }
+            function closeWheel() {
+                wheelModal.classList.remove('show');
+                setTimeout(() => {
+                    wheelModal.classList.add('hidden');
+                    wheelModal.classList.remove('flex');
+                }, 320);
+                document.body.style.overflow = '';
+            }
+
+            openBtn && openBtn.addEventListener('click', openWheel);
+            closeBtn && closeBtn.addEventListener('click', closeWheel);
+            overlay && overlay.addEventListener('click', closeWheel);
+            wheelCodeBtn && wheelCodeBtn.addEventListener('click', () => {
+                const secret = prompt('Enter secret to retry:');
+                if (!secret) return;
+                if (secret === 'Asia') {
+                    try {
+                        localStorage.removeItem(SETTINGS.storage.attemptKey);
+                        wheelMsg.textContent = 'Secret accepted. You can spin again now!';
+                        spinBtn.disabled = false;
+                        spinBtn.classList.remove('spin-disabled');
+                    } catch {}
+                } else {
+                    wheelMsg.textContent = 'Invalid code.';
+                }
+            });
+
+            let spinning = false;
+            let currentAngle = 0;
+
+            spinBtn && spinBtn.addEventListener('click', async () => {
+                if (spinning || hasPlayedToday()) return;
+                spinning = true;
+                spinBtn.disabled = true;
+                spinBtn.classList.add('spin-disabled');
+                wheelMsg.textContent = '';
+
+                // Refresh/reset inventory if new day
+                let inventory = resetInventoryIfNewDay(loadInventory());
+                // Pick prize with weights and availability
+                let prizeId = pickPrize(inventory);
+                const prizeIndex = SETTINGS.prizes.findIndex(p => p.id === prizeId);
+
+                // Target angle: pointer at 0 deg; slice center at -targetAngle after spin
+                const arc = (2 * Math.PI) / slices;
+                const sliceCenter = prizeIndex * arc + arc / 2;
+                const turns = randomInt(SETTINGS.spinMinTurns, SETTINGS.spinMaxTurns);
+                const targetAngle = (Math.PI * 2) * turns + (Math.PI * 2 - sliceCenter) + (Math.random() * (arc * 0.3) - arc * 0.15);
+
+                // Animate spin (ease-out)
+                const start = performance.now();
+                const duration = 4200;
+                let lastTickSlice = -1;
+                function frame(now) {
+                    const t = Math.min(1, (now - start) / duration);
+                    const eased = 1 - Math.pow(1 - t, 3);
+                    const angle = currentAngle + targetAngle * eased;
+                    drawWheel(angle);
+
+                    // tick sound per slice crossed (optional)
+                    if (SETTINGS.sounds.tick) {
+                        const sliceIndex = Math.floor(((angle % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI) / arc);
+                        if (sliceIndex !== lastTickSlice) {
+                            new Audio(SETTINGS.sounds.tick).play().catch(()=>{});
+                            lastTickSlice = sliceIndex;
+                        }
+                    }
+
+                    if (t < 1) requestAnimationFrame(frame);
+                    else finish();
+                }
+                requestAnimationFrame(frame);
+
+                function finish() {
+                    currentAngle = currentAngle + targetAngle;
+                    // Post-spin validation: if selected prize out of stock, fallback to TRY_AGAIN
+                    if (getRemaining(inventory, prizeId) <= 0) prizeId = 'TRY_AGAIN';
+
+                    // Lock attempt for the day
+                    lockToday();
+
+                    // Handle result
+                    const prize = findPrize(prizeId);
+                    if (prizeId !== 'TRY_AGAIN') {
+                        inventory = decrement(inventory, prizeId);
+                        if (SETTINGS.sounds.win) new Audio(SETTINGS.sounds.win).play().catch(()=>{});
+                        const code = generateCode('WIN');
+                        const pad = n => String(n).padStart(2, '0');
+                        const now = new Date();
+                        const dateStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+                        let extraInfo = '';
+                        if (prizeId === 'OFF10') {
+                            const exp = new Date(now);
+                            exp.setDate(now.getDate() + 3);
+                            const expStr = `${exp.getFullYear()}-${pad(exp.getMonth()+1)}-${pad(exp.getDate())}`;
+                            extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2\">ØªØ§Ø±ÙŠØ® Ø§Ù„ÙÙˆØ²: ${dateStr} â€” ØµØ§Ù„Ø­Ø© Ù„Ù…Ø¯Ø© 3 Ø£ÙŠØ§Ù… Ø­ØªÙ‰ ${expStr}</div>`;
+                        }
+                        wheelMsg.innerHTML = `<div class=\"text-cafe-black font-semibold mb-1\">Congratulations! ðŸŽ‰</div>
+                            <div class=\"mb-1\">${prize.label}</div>
+                            <div class=\"mt-1 flex items-center justify-center gap-2 flex-wrap\">
+                                <div class=\"win-code font-mono bg-cafe-black text-white px-2 py-1 rounded\">${code}</div>
+                                <span class=\"text-sm text-cafe-black bg-gray-100 px-2 py-1 rounded border border-cafe-red/20\">ØªØ§Ø±ÙŠØ® Ø§Ù„ÙÙˆØ²: ${dateStr}</span>
+                            </div>
+                            <div class=\"mt-2 flex items-center justify-center gap-2\">
+                                <button id=\"copyWinCode\" class=\"copy-code-btn px-2 py-1 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition\">Copy</button>
+                            </div>
+                            ${extraInfo}
+                            <div class=\"text-xs text-cafe-black/60 mt-2\">Please take a screenshot of this screen and show it to the cashier today.</div>`;
+                        // copy button
+                        setTimeout(() => {
+                            const copyBtn = document.getElementById('copyWinCode');
+                            copyBtn && copyBtn.addEventListener('click', async () => {
+                                try { await navigator.clipboard.writeText(code); copyBtn.textContent = 'Copied'; } catch { copyBtn.textContent = 'Copy failed'; }
+                            });
+                        }, 0);
+                        launchWinEffects();
+                    } else {
+                        const code = generateCode('TRY');
+                        wheelMsg.innerHTML = `<div class="font-semibold text-cafe-black mb-1">Better luck next time!</div>
+                            <div class="text-cafe-black/70">Try again tomorrow.</div>
+                            <div class="win-code font-mono bg-cafe-black text-white px-2 py-1 rounded mt-2">${code}</div>
+                            <div class="mt-2 flex items-center justify-center gap-2">
+                                <button id="copyLoseCode" class="copy-code-btn px-2 py-1 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition">Copy</button>
+                            </div>`;
+                        // copy button for lose code
+                        setTimeout(() => {
+                            const copyBtn = document.getElementById('copyLoseCode');
+                            copyBtn && copyBtn.addEventListener('click', async () => {
+                                try { await navigator.clipboard.writeText(code); copyBtn.textContent = 'Copied'; } catch { copyBtn.textContent = 'Copy failed'; }
+                            });
+                        }, 0);
+                    }
+
+                    spinning = false;
+                }
+
+                function launchWinEffects() {
+                    const fx = document.getElementById('wheelFx');
+                    if (!fx) return;
+                    // confetti
+                    for (let i = 0; i < 120; i++) {
+                        const el = document.createElement('div');
+                        el.className = 'confetti';
+                        el.style.left = Math.random() * 100 + 'vw';
+                        el.style.background = randomConfettiColor();
+                        el.style.animationDelay = (Math.random() * 0.8) + 's';
+                        el.style.transform = `rotate(${Math.floor(Math.random()*360)}deg)`;
+                        fx.appendChild(el);
+                        setTimeout(() => el.remove(), 3200);
+                    }
+                    // balloons
+                    for (let i = 0; i < 12; i++) {
+                        const b = document.createElement('div');
+                        b.className = 'balloon';
+                        b.style.left = Math.random() * 100 + 'vw';
+                        b.style.background = randomBalloonColor();
+                        b.style.animationDelay = (Math.random() * 0.6) + 's';
+                        fx.appendChild(b);
+                        setTimeout(() => b.remove(), 4200);
+                    }
+                }
+
+                function randomConfettiColor() {
+                    const colors = ['#EF4444','#F59E0B','#10B981','#3B82F6','#8B5CF6','#EC4899'];
+                    return colors[Math.floor(Math.random()*colors.length)];
+                }
+                function randomBalloonColor() {
+                    const colors = ['#FCA5A5','#FDE68A','#A7F3D0','#BFDBFE','#DDD6FE','#FBCFE8'];
+                    return colors[Math.floor(Math.random()*colors.length)];
+                }
+            });
+        })();
 
         // QR generator
         (function initQR() {
@@ -768,7 +1855,7 @@
             updateBtn.addEventListener('click', () => {
                 const v = (urlInput.value || '').trim();
                 if (!v) return;
-                try { new URL(v); } catch { alert('الرابط غير صالح'); return; }
+                try { new URL(v); } catch { alert('Ø§Ù„Ø±Ø§Ø¨Ø· ØºÙŠØ± ØµØ§Ù„Ø­'); return; }
                 regenerate(v);
             });
 
@@ -814,6 +1901,123 @@
                 }
             });
         })();
+
+        // Move any parenthetical text inside item titles under the title in a faint color
+        (function moveParenthesesUnderTitles() {
+            try {
+                const titleNodes = document.querySelectorAll('.menu-item h4');
+                titleNodes.forEach(h4 => {
+                    const originalText = (h4.textContent || '').trim();
+                    if (!originalText) return;
+                    const parenRegex = /\(([^)]+)\)/g;
+                    const matches = [...originalText.matchAll(parenRegex)].map(m => m[1]).filter(Boolean);
+                    if (matches.length === 0) return;
+                    const cleanedTitle = originalText.replace(parenRegex, '').replace(/\s+/g, ' ').trim();
+                    h4.textContent = cleanedTitle;
+                    const note = document.createElement('p');
+                    note.className = 'text-sm text-cafe-black/60 mt-1';
+                    note.textContent = `(${matches.join(') (')})`;
+                    h4.insertAdjacentElement('afterend', note);
+                });
+            } catch {}
+        })();
+
+        // Flavor picker (Hookah)
+        (function initFlavorPicker(){
+            const openBtn = document.getElementById('flavorBtn');
+            const modal = document.getElementById('flavorModal');
+            const closeBtn = document.getElementById('closeFlavor');
+            const overlay = modal ? modal.querySelector('[data-close-flavor]') : null;
+            const list = document.getElementById('flavorList');
+            const search = document.getElementById('flavorSearch');
+            const clearBtn = document.getElementById('clearFlavor');
+            const selectedLabel = document.getElementById('selectedFlavor');
+            const selectEl = document.getElementById('flavorSelect');
+
+            if (!openBtn || !modal || !list) return;
+
+            const flavors = [
+                'Two Apples','Grape','Blueberry','Lemon and Mint','Watermelon and Mint','Cinnamon and Gum','Love 66','Nakhla',
+                'Mint','Gum','Orange','Peach','Strawberry','Mango','Kiwi','Pineapple','Mixed Berries'
+            ];
+
+            function setSelected(name){
+                if (selectedLabel) selectedLabel.textContent = name ? `النكهة المختارة: ${name}` : '';
+                if (selectEl) selectEl.value = name || '';
+            }
+
+            function render(items){
+                list.innerHTML = '';
+                items.forEach(name => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'px-3 py-2 rounded-lg bg-cafe-gray hover:bg-cafe-red hover:text-white transition text-cafe-black text-sm';
+                    btn.textContent = name;
+                    btn.addEventListener('click', () => {
+                        setSelected(name);
+                        close();
+                    });
+                    list.appendChild(btn);
+                });
+            }
+
+            function populateSelect(){
+                if (!selectEl) return;
+                const hadSelection = !!selectEl.value;
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.disabled = true;
+                defaultOption.selected = !hadSelection;
+                defaultOption.textContent = 'اختر النكهة...';
+                selectEl.innerHTML = '';
+                selectEl.appendChild(defaultOption);
+                flavors.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    selectEl.appendChild(opt);
+                });
+            }
+
+            function open(){
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                requestAnimationFrame(()=> modal.classList.add('show'));
+                document.body.style.overflow = 'hidden';
+                if (search) search.value = '';
+                render(flavors);
+                populateSelect();
+                setTimeout(()=> search && search.focus(), 50);
+            }
+            function close(){
+                modal.classList.remove('show');
+                setTimeout(()=>{
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+
+            openBtn.addEventListener('click', open);
+            if (closeBtn) closeBtn.addEventListener('click', close);
+            if (overlay) overlay.addEventListener('click', close);
+            if (clearBtn) clearBtn.addEventListener('click', () => { setSelected(''); close(); });
+            if (search) search.addEventListener('input', () => {
+                const q = search.value.trim().toLowerCase();
+                if (!q) { render(flavors); return; }
+                render(flavors.filter(f => f.toLowerCase().includes(q)));
+            });
+
+            // Select change -> update label
+            if (selectEl) {
+                populateSelect();
+                selectEl.addEventListener('change', () => {
+                    const v = selectEl.value;
+                    setSelected(v || '');
+                });
+            }
+        })();
+
     </script>
 </body>
 </html> 
