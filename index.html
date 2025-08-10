@@ -8,12 +8,12 @@
     <meta name="theme-color" content="#D90429">
     <meta property="og:title" content="99 Cafe">
     <meta property="og:description" content="99 Cafe">
-    <meta property="og:image" content="99cafe_logo.png">
+    <meta property="og:image" content="99cafe-logo2.png">
     <meta property="og:type" content="website">
-    <link rel="icon" type="image/png" sizes="32x32" href="99cafe_logo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="99cafe_logo.png">
-    <link rel="shortcut icon" href="99cafe_logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="99cafe_logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="99cafe-logo2.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="99cafe-logo2.png">
+    <link rel="shortcut icon" href="99cafe-logo2.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="99cafe-logo2.png">
     <!-- Tailwind CSS CDN - For development only. Use PostCSS plugin or CLI for production -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -90,6 +90,41 @@
             transform-box: fill-box;
             animation: dieSpin 3.8s linear infinite;
         }
+
+        /* Elegant hero text badge */
+        .hero-badge {
+            padding: 6px 12px 6px 20px;
+            border-radius: 9999px;
+            background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(250,250,250,.92));
+            color: #111827;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: .02em;
+            border: 1px solid rgba(217, 4, 41, 0.12);
+            box-shadow: 0 12px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+            backdrop-filter: saturate(120%) blur(4px);
+        }
+        .hero-badge::before {
+            content: '';
+            position: absolute;
+            left: 8px; top: 50%; transform: translateY(-50%);
+            width: 6px; height: 6px; border-radius: 9999px;
+            background: radial-gradient(circle at 35% 35%, #fff, rgba(255,255,255,0) 60%), #EF233C;
+            filter: drop-shadow(0 2px 4px rgba(217,4,41,.28));
+        }
+        .hero-badge::after {
+            content: '';
+            position: absolute;
+            left: 50%; transform: translateX(-50%);
+            top: calc(100% + 6px);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(255,255,255,.96);
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,.06));
+        }
+
+        /* Hide Wheel of Fortune triggers */
+        #tryLuckBtn, #spinBtn { display: none !important; }
 
         /* Section container */
         #menu { position: relative; }
@@ -331,6 +366,10 @@
             border: 1px solid rgba(255,255,255,0.35);
             box-shadow: 0 24px 60px rgba(0,0,0,0.22);
             transition: transform .45s cubic-bezier(.22,1,.36,1), opacity .35s ease, box-shadow .35s ease;
+            max-height: min(92vh, 680px);
+            display: grid;
+            grid-template-rows: auto 1fr;
+            overflow: hidden;
         }
         #wheelModal.show .modal-card { transform: translateY(0) scale(1); opacity: 1; }
         .wheel-wrap { position: relative; width: min(86vw, 360px); height: min(86vw, 360px); }
@@ -343,7 +382,7 @@
         .wheel-axle {
             position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
         }
-        .wheel-axle > div { width: 64px; height: 64px; border-radius: 9999px; background: white; border: 2px solid rgba(217,4,41,.3); box-shadow: 0 8px 18px rgba(0,0,0,.12); }
+        .wheel-axle > div { width: 64px; height: 64px; border-radius: 9999px; background: white url('99cafe-logo2.png') center/70% no-repeat; border: 2px solid rgba(217,4,41,.3); box-shadow: 0 8px 18px rgba(0,0,0,.12); }
         .spin-disabled { opacity: .6; cursor: not-allowed; }
 
         /* Win effects */
@@ -380,6 +419,9 @@
     <section class="bg-transparent text-cafe-black py-20">
         <div class="flex flex-col items-center justify-center">
             <div id="heroHalo" class="relative inline-block p-6 md:p-8 mb-6 md:mb-8 logo-shine-effect">
+                <span id="heroTextBadge" class="hero-badge absolute left-1/2 -translate-x-1/2 translate-y-2 select-none opacity-0 transition-all duration-500 ease-out pointer-events-none">
+                    Tap to see your drink
+                </span>
                 <img src="99cafe-logo2.png" alt="99 Cafe Logo" id="heroLogo" class="w-40 h-40 object-contain mb-0 float-y cursor-pointer" />
             </div>
             <div class="reveal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-serif text-cafe-black tracking-widest mb-2 text-center px-2" style="letter-spacing: 2px;">
@@ -439,7 +481,7 @@
                         </div>
                         <button id="closeWheel" class="text-white/90 hover:text-white"><i class="fas fa-times"></i></button>
                     </div>
-                    <div class="p-6 grid place-items-center gap-5">
+                    <div class="p-6 grid place-items-center gap-5 overflow-auto">
                         <div id="wheelFx" class="pointer-events-none fixed inset-0 z-[60]"></div>
                         <div class="wheel-wrap">
                             <canvas id="wheelCanvas" width="500" height="500" class="wheel-canvas bg-white rounded-full"></canvas>
@@ -452,6 +494,27 @@
                         </button>
                         <div id="wheelMsg" class="text-center text-cafe-black/80 text-sm"></div>
                         <button id="wheelCodeBtn" class="text-xs text-cafe-red underline hover:no-underline">I have a code</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Code Entry Modal -->
+            <div id="codeModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+                <div class="absolute inset-0 bg-black/40" data-close-code></div>
+                <div class="relative rounded-2xl modal-card w-[92vw] max-w-sm overflow-hidden bg-white">
+                    <div class="bg-white text-cafe-black px-6 py-4 flex items-center justify-between select-none border-b border-gray-200">
+                        <div class="flex items-center gap-2">
+                            <img src="99cafe-logo2.png" alt="99cafe logo" class="h-5 w-5 object-contain" />
+                            <span class="font-semibold tracking-wide">99cafe says</span>
+                        </div>
+                        <button id="closeCode" class="text-cafe-black/70 hover:text-cafe-black"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="text-sm text-cafe-black/80">Enter secret to retry:</div>
+                        <input id="codeInput" type="password" class="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-cafe-red/40" placeholder="Enter secret" />
+                        <div id="codeMsg" class="text-xs text-cafe-black/70"></div>
+                        <div class="flex justify-end gap-2">
+                            <button id="submitCode" class="px-4 py-2 rounded-lg bg-cafe-red text-white hover:bg-cafe-red-light transition">Confirm</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -531,8 +594,8 @@
                             <i class="fas fa-leaf text-green-500 ml-2"></i>
                             Fresher
                         </h3>
-                        
-                        <div class="menu-item bg-cafe-gray rounded-lg p-4">
+                        <div class="space-y-3">
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4">
                             <div class="flex justify-between items-center">
                                 <div>
                                     <h4 class="font-semibold text-cafe-black">Tango Fresher</h4>
@@ -545,9 +608,7 @@
                                     <div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="space-y-3"></div>
+                            </div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4">
                                 <div class="flex justify-between items-center">
                                     <div>
@@ -661,7 +722,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </div>
 
                     <!-- Ice Latte -->
                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
@@ -851,7 +912,13 @@
                     <!-- Appetizers -->
                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
                         <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
-                            <i class="fas fa-cheese ml-2" style="background: linear-gradient(to right, #D90429, #EF233C, #222); color: white; padding: 0.5rem; border-radius: 9999px;"></i>
+                            <span class="ml-2 inline-flex items-center justify-center rounded-full" style="background: linear-gradient(to right, #D90429, #EF233C, #222); padding: 0.5rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M4 12a8 8 0 0 1 16 0" />
+                                    <line x1="3" y1="16" x2="21" y2="16" />
+                                    <circle cx="12" cy="6" r="1.5" fill="currentColor" stroke="none" />
+                                </svg>
+                            </span>
                             Appetizers
                         </h3>
                         <div class="space-y-3">
@@ -1142,7 +1209,7 @@
         </button>
         <div class="container mx-auto px-4 text-center">
             <div class="flex flex-col items-center justify-center mb-4">
-                <img src="99cafe_logo.png" alt="99 Cafe Logo" class="w-24 h-24 object-contain mb-3" />
+                <img src="99cafe-logo2.png" alt="99 Cafe Logo" class="w-24 h-24 object-contain mb-3" />
                 <div class="text-xl md:text-2xl font-semibold italic text-cafe-red-light tracking-wide mb-2" style="font-family: 'Montserrat', sans-serif; letter-spacing: 2px;">
                     It's more than a number
                 </div>
@@ -1318,6 +1385,17 @@
 
             if (!logo || !modal) return;
 
+            // Smoothly reveal the hero text badge after load (with safe spacing from logo)
+            const textBadge = document.getElementById('heroTextBadge');
+            if (textBadge) {
+                setTimeout(() => {
+                    // ensure it sits above logo with a small gap on small screens
+                    textBadge.style.top = '-12px';
+                    textBadge.classList.remove('opacity-0');
+                    textBadge.classList.remove('translate-y-2');
+                }, 700);
+            }
+
             const drinks = [
                 { name: 'Ice Spanish Latte', hint: 'Cold, creamy, and sweet', temp: 'cold' },
                 { name: 'Ice Caramel Latte', hint: 'Icy caramel delight', temp: 'cold' },
@@ -1400,7 +1478,12 @@
                 document.body.style.overflow = '';
             }
 
-            logo.addEventListener('click', openModal);
+            logo.addEventListener('click', () => {
+                if (textBadge && !textBadge.classList.contains('opacity-0')) {
+                    textBadge.classList.add('opacity-0');
+                }
+                openModal();
+            });
             closeBtn && closeBtn.addEventListener('click', closeModal);
             modal.addEventListener('click', (e) => {
                 if (e.target === modal || e.target.classList.contains('bg-black/50')) closeModal();
@@ -1441,12 +1524,13 @@
             const SETTINGS = {
                 // Prize definitions with daily limits and weight (probability mass)
                 prizes: [
-                    { id: 'FREE_DRINK', label: 'Free drink of your choice', color: '#F87171', dailyLimit: 3, weight: 3 },
-                    { id: 'FREE_UPGRADE', label: 'Free size upgrade', color: '#60A5FA', dailyLimit: 8, weight: 8 },
-                    { id: 'OFF10', label: '10% off next order', color: '#FBBF24', dailyLimit: 12, weight: 12 },
-                    // Duplicate TRY_AGAIN to increase probability substantially
-                    { id: 'TRY_AGAIN', label: 'Better luck next time', color: '#A78BFA', dailyLimit: Infinity, weight: 45 },
-                    { id: 'TRY_AGAIN', label: 'Better luck next time', color: '#C4B5FD', dailyLimit: Infinity, weight: 45 },
+                    // Reordered to keep TRY_AGAIN slices far apart visually on the wheel
+                    { id: 'TRY_AGAIN', label: 'Better luck next time', color: '#A78BFA', dailyLimit: Infinity, weight: 50 },
+                    { id: 'BARISTA_CHOICE', label: 'Barista\'s Mandatory Challenge', color: '#10B981', dailyLimit: 15, weight: 15 },
+                    { id: 'OFF10', label: '10% off next order', color: '#FBBF24', dailyLimit: 9, weight: 12 },
+                    { id: 'TRY_AGAIN', label: 'Better luck next time', color: '#C4B5FD', dailyLimit: Infinity, weight: 50 },
+                    { id: 'FREE_UPGRADE', label: 'Free size upgrade', color: '#60A5FA', dailyLimit: 5, weight: 8 },
+                    { id: 'FREE_DRINK', label: 'Free drink of your choice', color: '#F87171', dailyLimit: 1, weight: 3 },
                 ],
                 // Sound effect URLs (optional). You can replace with your own files
                 sounds: {
@@ -1463,7 +1547,49 @@
                 spinMinTurns: 4,
                 spinMaxTurns: 6,
                 tickPerSlice: 1,
+                // win control
+                maxWinsPerDevicePerDay: Infinity,
+                // local streak control (prefer/force win after N local losses)
+                enableLocalStreakControl: false,
             };
+
+            // ===== Device Fingerprinting =====
+            function generateDeviceFingerprint() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.textBaseline = 'top';
+                ctx.font = '14px Arial';
+                ctx.fillText('Device fingerprint', 2, 2);
+                
+                const fingerprint = [
+                    navigator.userAgent,
+                    navigator.language,
+                    screen.width + 'x' + screen.height,
+                    screen.colorDepth,
+                    new Date().getTimezoneOffset(),
+                    canvas.toDataURL(),
+                    navigator.hardwareConcurrency || 'unknown',
+                    navigator.deviceMemory || 'unknown'
+                ].join('|');
+                
+                // Simple hash function
+                let hash = 0;
+                for (let i = 0; i < fingerprint.length; i++) {
+                    const char = fingerprint.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // Convert to 32-bit integer
+                }
+                return Math.abs(hash).toString(36);
+            }
+
+            function getDeviceId() {
+                let deviceId = localStorage.getItem('device_id');
+                if (!deviceId) {
+                    deviceId = generateDeviceFingerprint();
+                    localStorage.setItem('device_id', deviceId);
+                }
+                return deviceId;
+            }
 
             // ===== Utilities =====
             function todayKey() {
@@ -1550,20 +1676,199 @@
                 markCodeUsed(code);
                 return code;
             }
-            function hasPlayedToday() { return isUnlimitedDevice() ? false : localStorage.getItem(SETTINGS.storage.attemptKey) === todayKey(); }
-            function lockToday() { if (isUnlimitedDevice()) return; localStorage.setItem(SETTINGS.storage.attemptKey, todayKey()); }
+            function hasPlayedToday() { 
+                if (isUnlimitedDevice()) return false;
+                const deviceId = getDeviceId();
+                const today = todayKey();
+                const attemptKey = `wheel_attempt_${deviceId}_${today}`;
+                return localStorage.getItem(attemptKey) === 'played';
+            }
+            
+            function lockToday() { 
+                if (isUnlimitedDevice()) return;
+                const deviceId = getDeviceId();
+                const today = todayKey();
+                const attemptKey = `wheel_attempt_${deviceId}_${today}`;
+                localStorage.setItem(attemptKey, 'played');
+                
+                // Also store in sessionStorage as backup
+                sessionStorage.setItem(attemptKey, 'played');
+                
+                // Clean old attempts (keep only last 7 days)
+                cleanOldAttempts(deviceId);
+            }
+            
+            function cleanOldAttempts(deviceId) {
+                try {
+                    const today = new Date();
+                    for (let i = 7; i < 30; i++) {
+                        const oldDate = new Date(today);
+                        oldDate.setDate(today.getDate() - i);
+                        const oldKey = `${oldDate.getFullYear()}-${oldDate.getMonth()+1}-${oldDate.getDate()}`;
+                        const attemptKey = `wheel_attempt_${deviceId}_${oldKey}`;
+                        localStorage.removeItem(attemptKey);
+                        sessionStorage.removeItem(attemptKey);
+                    }
+                } catch {}
+            }
 
-            // Weighted pick respecting inventory
-            function pickPrize(inv) {
+            // ===== Streak schedule helpers (10 loses then a win) =====
+            function getStreakKeys() {
+                const deviceId = getDeviceId();
+                const today = todayKey();
+                return {
+                    streakKey: `wheel_streak_${deviceId}_${today}`,
+                    lastPrizeKey: `wheel_last_prize_${deviceId}_${today}`
+                };
+            }
+            function getLoseStreak() {
+                try { const { streakKey } = getStreakKeys(); return parseInt(localStorage.getItem(streakKey) || '0', 10) || 0; } catch { return 0; }
+            }
+            function setLoseStreak(value) {
+                try { const { streakKey } = getStreakKeys(); localStorage.setItem(streakKey, String(Math.max(0, value|0))); } catch {}
+            }
+            function getLastPrizeId() { try { const { lastPrizeKey } = getStreakKeys(); return localStorage.getItem(lastPrizeKey) || ''; } catch { return ''; } }
+            function setLastPrizeId(id) { try { const { lastPrizeKey } = getStreakKeys(); localStorage.setItem(lastPrizeKey, id || ''); } catch {} }
+
+            // Wins per device/day
+            function getWinsToday() {
+                try {
+                    const deviceId = getDeviceId();
+                    const today = todayKey();
+                    return parseInt(localStorage.getItem(`wheel_wins_${deviceId}_${today}`) || '0', 10) || 0;
+                } catch { return 0; }
+            }
+            function incWinsToday() {
+                try {
+                    const deviceId = getDeviceId();
+                    const today = todayKey();
+                    const k = `wheel_wins_${deviceId}_${today}`;
+                    const n = parseInt(localStorage.getItem(k) || '0', 10) + 1;
+                    localStorage.setItem(k, String(n));
+                } catch {}
+            }
+
+            // ===== Time windows for Barista Choice (staggered across the day) =====
+            function getBaristaWindowsForToday() {
+                // Generate 15 time slots spread across the day deterministically per date
+                const seed = todayKey();
+                const rng = mulberry32(hashString(seed));
+                const slots = [];
+                // Create 15 windows of 45 minutes each between 10:00 and 22:00
+                const startHour = 10, endHour = 22, windowMinutes = 45;
+                for (let i = 0; i < 15; i++) {
+                    const hour = Math.floor(lerp(startHour, endHour - 1, rng()));
+                    const minute = Math.floor(rng() * 60);
+                    const start = new Date();
+                    start.setHours(hour, minute, 0, 0);
+                    const end = new Date(start);
+                    end.setMinutes(end.getMinutes() + windowMinutes);
+                    slots.push([start.getHours()*60 + start.getMinutes(), end.getHours()*60 + end.getMinutes()]);
+                }
+                return slots;
+            }
+            function isWithinMinutesRange(mins, range) { return mins >= range[0] && mins < range[1]; }
+            function nowMinutes() { const d = new Date(); return d.getHours()*60 + d.getMinutes(); }
+            function lerp(a,b,t){ return a + (b-a)*t; }
+            function hashString(s){ let h=2166136261>>>0; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=(h*16777619)>>>0;} return h>>>0; }
+            function mulberry32(a){ return function(){ let t=a+=0x6D2B79F5; t=Math.imul(t^t>>>15, t|1); t^=t+Math.imul(t^t>>>7, t|61); return ((t^t>>>14)>>>0)/4294967296; } }
+            function isBaristaTimeAllowed() {
+                const mins = nowMinutes();
+                return getBaristaWindowsForToday().some(w => isWithinMinutesRange(mins, w));
+            }
+
+            // Check if FREE_DRINK is available based on time restrictions
+            function isFreeDrinkTimeAllowed() {
+                const now = new Date();
+                const dayOfWeek = now.getDay(); // 0 = Sunday, 4 = Thursday
+                const hour = now.getHours();
+                
+                // Thursday (4) between 8 PM (20) and 10 PM (22)
+                return dayOfWeek === 4 && hour >= 20 && hour < 22;
+            }
+
+            // Weighted pick respecting inventory and time restrictions
+            function buildPool(inv) {
                 const pool = [];
                 SETTINGS.prizes.forEach((p, index) => {
+                    if (p.id === 'FREE_DRINK' && !isFreeDrinkTimeAllowed()) return;
+                    if (p.id === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) return;
                     const remaining = getRemaining(inv, p.id);
                     const effectiveWeight = remaining > 0 ? (p.weight ?? 0) : 0;
-                    for (let i = 0; i < effectiveWeight; i++) pool.push(index); // push slice index to differentiate duplicates
+                    for (let i = 0; i < effectiveWeight; i++) pool.push(index);
                 });
+                return pool;
+            }
+            function pickPrize(inv) {
+                const pool = buildPool(inv);
                 if (pool.length === 0) return 'TRY_AGAIN';
-                const pickedIndex = pool[Math.floor(Math.random() * pool.length)];
+                let pickedIndex = pool[Math.floor(Math.random() * pool.length)];
+                if (SETTINGS.enableLocalStreakControl) {
+                    const deviceId = getDeviceId();
+                    const today = todayKey();
+                    const lossesKey = `wheel_losses_${deviceId}_${today}`;
+                    const losses = parseInt(localStorage.getItem(lossesKey) || '0', 10);
+                    const loseStreak = getLoseStreak();
+                    if (loseStreak >= 10) {
+                        const winPool = pool.filter(i => {
+                            const id = SETTINGS.prizes[i].id;
+                            if (id === 'TRY_AGAIN') return false;
+                            if (id === 'FREE_DRINK' && !isFreeDrinkTimeAllowed()) return false;
+                            if (id === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) return false;
+                            if (id === getLastPrizeId()) return false;
+                            return true;
+                        });
+                        const fallbackPool = pool.filter(i => {
+                            const id = SETTINGS.prizes[i].id;
+                            if (id === 'TRY_AGAIN') return false;
+                            if (id === 'FREE_DRINK' && !isFreeDrinkTimeAllowed()) return false;
+                            if (id === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) return false;
+                            return true;
+                        });
+                        const usePool = (winPool.length > 0 ? winPool : fallbackPool);
+                        if (usePool.length > 0) pickedIndex = usePool[Math.floor(Math.random() * usePool.length)];
+                    } else if (losses >= 20) {
+                        const nonLosePool = pool.filter(i => {
+                            const id = SETTINGS.prizes[i].id;
+                            if (id === 'TRY_AGAIN') return false;
+                            if (id === 'FREE_DRINK' && !isFreeDrinkTimeAllowed()) return false;
+                            if (id === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) return false;
+                            return true;
+                        });
+                        if (nonLosePool.length > 0) pickedIndex = nonLosePool[Math.floor(Math.random() * nonLosePool.length)];
+                    }
+                }
                 return SETTINGS.prizes[pickedIndex].id;
+            }
+            function pickPrizeForceWin(inv) {
+                const pool = buildPool(inv).filter(i => {
+                    const id = SETTINGS.prizes[i].id;
+                    if (id === 'TRY_AGAIN') return false;
+                    if (id === 'FREE_DRINK' && !isFreeDrinkTimeAllowed()) return false;
+                    if (id === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) return false;
+                    return true;
+                });
+                if (pool.length === 0) return pickPrize(inv);
+                const idx = pool[Math.floor(Math.random() * pool.length)];
+                return SETTINGS.prizes[idx].id;
+            }
+
+            // Global counters via Vercel function
+            const GLOBAL_API = '/api/wheel-global';
+            async function getGlobalCounters() {
+                const resp = await fetch(`${GLOBAL_API}?date=${encodeURIComponent(todayKey())}`, { cache: 'no-store' });
+                if (!resp.ok) throw new Error('global get failed');
+                return resp.json();
+            }
+            async function incGlobalLoss() {
+                try {
+                    await fetch(GLOBAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'incLoss' }) });
+                } catch {}
+            }
+            async function markGlobalWin() {
+                try {
+                    await fetch(GLOBAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'win' }) });
+                } catch {}
             }
 
             // ===== Wheel rendering =====
@@ -1586,6 +1891,7 @@
                     ctx.moveTo(0, 0);
                     ctx.arc(0, 0, radius - 4, start, end);
                     ctx.closePath();
+                    
                     ctx.fillStyle = p.color;
                     ctx.fill();
 
@@ -1622,6 +1928,14 @@
 
             drawWheel(0);
 
+            function getSliceIndexUnderPointer(angle) {
+                const arc = (2 * Math.PI) / slices;
+                const normalized = ((angle % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+                const pointerAngle = Math.PI * 1.5; // top
+                const rel = (pointerAngle - normalized + 2*Math.PI) % (2*Math.PI);
+                return Math.floor(rel / arc);
+            }
+
             // Allow enabling unlimited-for-this-device via URL param once: ?unlimited=1
             (function initUnlimitedToggle(){
                 try {
@@ -1634,6 +1948,36 @@
                         history.replaceState(null, '', clean);
                     }
                 } catch {}
+            })();
+
+            // Enhanced security check on page load
+            (function initSecurityCheck(){
+                const deviceId = getDeviceId();
+                const today = todayKey();
+                const attemptKey = `wheel_attempt_${deviceId}_${today}`;
+                
+                // Check both localStorage and sessionStorage
+                const localPlayed = localStorage.getItem(attemptKey) === 'played';
+                const sessionPlayed = sessionStorage.getItem(attemptKey) === 'played';
+                
+                // If played in session but not in local, restore it
+                if (sessionPlayed && !localPlayed) {
+                    localStorage.setItem(attemptKey, 'played');
+                }
+                
+                // Mark session as started to detect new tabs/windows
+                const sessionKey = `wheel_session_${deviceId}_${today}_${Date.now()}`;
+                sessionStorage.setItem('current_session', sessionKey);
+                
+                // Prevent multiple tabs exploit
+                window.addEventListener('focus', function() {
+                    if (sessionStorage.getItem('current_session') !== sessionKey) {
+                        // Different session detected, sync the attempt status
+                        if (sessionStorage.getItem(attemptKey) === 'played') {
+                            localStorage.setItem(attemptKey, 'played');
+                        }
+                    }
+                });
             })();
 
             // ===== Modal and spin logic =====
@@ -1653,8 +1997,12 @@
                 wheelMsg.textContent = '';
                 spinBtn.disabled = hasPlayedToday();
                 spinBtn.classList.toggle('spin-disabled', spinBtn.disabled);
-                if (hasPlayedToday()) wheelMsg.textContent = 'You already played today. Come back tomorrow!';
+                
+                if (hasPlayedToday()) {
+                    wheelMsg.textContent = 'You already played today. Come back tomorrow!';
+                }
             }
+
             function closeWheel() {
                 wheelModal.classList.remove('show');
                 setTimeout(() => {
@@ -1667,18 +2015,69 @@
             openBtn && openBtn.addEventListener('click', openWheel);
             closeBtn && closeBtn.addEventListener('click', closeWheel);
             overlay && overlay.addEventListener('click', closeWheel);
-            wheelCodeBtn && wheelCodeBtn.addEventListener('click', () => {
-                const secret = prompt('Enter secret to retry:');
-                if (!secret) return;
+            // Custom code modal refs
+            const codeModal = document.getElementById('codeModal');
+            const closeCode = document.getElementById('closeCode');
+            const codeOverlay = codeModal ? codeModal.querySelector('[data-close-code]') : null;
+            const codeInput = document.getElementById('codeInput');
+            const submitCode = document.getElementById('submitCode');
+            const codeMsg = document.getElementById('codeMsg');
+
+            function openCodeModal(){
+                if (!codeModal) return;
+                codeMsg.textContent = '';
+                codeInput && (codeInput.value = '');
+                codeModal.classList.remove('hidden');
+                codeModal.classList.add('flex');
+                requestAnimationFrame(()=> codeModal.classList.add('show'));
+                document.body.style.overflow = 'hidden';
+                codeInput && codeInput.focus();
+            }
+            function closeCodeModal(){
+                if (!codeModal) return;
+                codeModal.classList.remove('show');
+                setTimeout(()=>{
+                    codeModal.classList.add('hidden');
+                    codeModal.classList.remove('flex');
+                    document.body.style.overflow = '';
+                }, 250);
+            }
+
+            wheelCodeBtn && wheelCodeBtn.addEventListener('click', openCodeModal);
+            closeCode && closeCode.addEventListener('click', closeCodeModal);
+            codeOverlay && codeOverlay.addEventListener('click', closeCodeModal);
+            submitCode && submitCode.addEventListener('click', () => {
+                const secret = codeInput ? codeInput.value.trim() : '';
+                if (!secret) { codeMsg.textContent = 'Please enter the secret.'; return; }
                 if (secret === 'Asia') {
                     try {
-                        localStorage.removeItem(SETTINGS.storage.attemptKey);
+                        const deviceId = getDeviceId();
+                        const today = todayKey();
+                        const attemptKey = `wheel_attempt_${deviceId}_${today}`;
+                        localStorage.removeItem(attemptKey);
+                        sessionStorage.removeItem(attemptKey);
                         wheelMsg.textContent = 'Secret accepted. You can spin again now!';
                         spinBtn.disabled = false;
                         spinBtn.classList.remove('spin-disabled');
+                        closeCodeModal();
+                    } catch {}
+                } else if (secret === 'VIPissa') {
+                    try {
+                        // Persist unlimited mode for this device
+                        localStorage.setItem('wheel_unlimited', '1');
+                        // Also clear today's lock if it exists so user can spin immediately
+                        const deviceId = getDeviceId();
+                        const today = todayKey();
+                        const attemptKey = `wheel_attempt_${deviceId}_${today}`;
+                        localStorage.removeItem(attemptKey);
+                        sessionStorage.removeItem(attemptKey);
+                        wheelMsg.textContent = 'Unlimited mode enabled for this device. You can spin anytime.';
+                        spinBtn.disabled = false;
+                        spinBtn.classList.remove('spin-disabled');
+                        closeCodeModal();
                     } catch {}
                 } else {
-                    wheelMsg.textContent = 'Invalid code.';
+                    codeMsg.textContent = 'Invalid code.';
                 }
             });
 
@@ -1694,15 +2093,31 @@
 
                 // Refresh/reset inventory if new day
                 let inventory = resetInventoryIfNewDay(loadInventory());
+                // Enforce daily win cap before picking
+                if (getWinsToday() >= (SETTINGS.maxWinsPerDevicePerDay || Infinity)) {
+                    // hard-force lose without animation mismatch
+                    prizeId = 'TRY_AGAIN';
+                }
                 // Pick prize with weights and availability
-                let prizeId = pickPrize(inventory);
+                let forceWinGlobal = false;
+                try {
+                    const gc = await getGlobalCounters();
+                    forceWinGlobal = (gc && typeof gc.losses === 'number' && gc.losses >= 10);
+                } catch {}
+                let prizeId = forceWinGlobal ? pickPrizeForceWin(inventory) : pickPrize(inventory);
+                // Pre-validate to avoid visual/result mismatch (apply same rules as finish)
+                if (getRemaining(inventory, prizeId) <= 0) prizeId = 'TRY_AGAIN';
+                if (prizeId === 'FREE_DRINK' && !isFreeDrinkTimeAllowed()) prizeId = 'TRY_AGAIN';
+                if (prizeId === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) prizeId = 'TRY_AGAIN';
                 const prizeIndex = SETTINGS.prizes.findIndex(p => p.id === prizeId);
 
                 // Target angle: pointer at 0 deg; slice center at -targetAngle after spin
                 const arc = (2 * Math.PI) / slices;
                 const sliceCenter = prizeIndex * arc + arc / 2;
                 const turns = randomInt(SETTINGS.spinMinTurns, SETTINGS.spinMaxTurns);
-                const targetAngle = (Math.PI * 2) * turns + (Math.PI * 2 - sliceCenter) + (Math.random() * (arc * 0.3) - arc * 0.15);
+                // Align selected slice center to the pointer at top (3π/2)
+                const pointerAngle = Math.PI * 1.5; // top
+                const targetAngle = (Math.PI * 2) * turns + (pointerAngle - sliceCenter) - currentAngle;
 
                 // Animate spin (ease-out)
                 const start = performance.now();
@@ -1730,8 +2145,17 @@
 
                 function finish() {
                     currentAngle = currentAngle + targetAngle;
+                    // Determine the actually visible slice under the pointer
+                    try {
+                        const visibleIndex = getSliceIndexUnderPointer(currentAngle);
+                        const visibleId = SETTINGS.prizes[visibleIndex]?.id;
+                        if (visibleId) prizeId = visibleId;
+                    } catch {}
                     // Post-spin validation: if selected prize out of stock, fallback to TRY_AGAIN
                     if (getRemaining(inventory, prizeId) <= 0) prizeId = 'TRY_AGAIN';
+                    // Ensure time windows
+                    if (prizeId === 'FREE_DRINK' && !isFreeDrinkTimeAllowed()) prizeId = 'TRY_AGAIN';
+                    if (prizeId === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) prizeId = 'TRY_AGAIN';
 
                     // Lock attempt for the day
                     lockToday();
@@ -1739,6 +2163,10 @@
                     // Handle result
                     const prize = findPrize(prizeId);
                     if (prizeId !== 'TRY_AGAIN') {
+                        // Enforce daily win cap at finish time as well
+                        if (getWinsToday() >= (SETTINGS.maxWinsPerDevicePerDay || Infinity)) {
+                            prizeId = 'TRY_AGAIN';
+                        }
                         inventory = decrement(inventory, prizeId);
                         if (SETTINGS.sounds.win) new Audio(SETTINGS.sounds.win).play().catch(()=>{});
                         const code = generateCode('WIN');
@@ -1750,19 +2178,31 @@
                             const exp = new Date(now);
                             exp.setDate(now.getDate() + 3);
                             const expStr = `${exp.getFullYear()}-${pad(exp.getMonth()+1)}-${pad(exp.getDate())}`;
-                            extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2\">ØªØ§Ø±ÙŠØ® Ø§Ù„ÙÙˆØ²: ${dateStr} â€” ØµØ§Ù„Ø­Ø© Ù„Ù…Ø¯Ø© 3 Ø£ÙŠØ§Ù… Ø­ØªÙ‰ ${expStr}</div>`;
+                            extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2\">Win date: ${dateStr} — Valid for 3 days until ${expStr}</div>`;
+                        } else if (prizeId === 'FREE_DRINK') {
+                            extraInfo = `<div class="text-xs text-cafe-black/70 mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <div class="font-semibold text-blue-800 mb-1">🎊 Congrats! Thursday Special Prize</div>
+                                <div class="text-blue-700">You won a free drink of your choice during the special time! 🥤</div>
+                                <div class="text-blue-600 text-xs mt-1">Win date: ${dateStr} — Valid today only</div>
+                            </div>`;
+                        } else if (prizeId === 'BARISTA_CHOICE') {
+                            extraInfo = `<div class="text-xs text-cafe-black/70 mt-2 p-3 bg-green-50 rounded-lg border border-green-200">
+                                <div class="font-semibold text-green-800 mb-1">🎯 Barista's Mandatory Challenge</div>
+                                <div class="text-green-700">Our barista will choose your drink for you. Get ready for a new surprise! 🎲</div>
+                                <div class="text-green-600 text-xs mt-1">Win date: ${dateStr} — Valid today only</div>
+                            </div>`;
                         }
-                        wheelMsg.innerHTML = `<div class=\"text-cafe-black font-semibold mb-1\">Congratulations! ðŸŽ‰</div>
+                        wheelMsg.innerHTML = `<div class=\"text-cafe-black font-semibold mb-1\">Congratulations! 🎉</div>
                             <div class=\"mb-1\">${prize.label}</div>
                             <div class=\"mt-1 flex items-center justify-center gap-2 flex-wrap\">
                                 <div class=\"win-code font-mono bg-cafe-black text-white px-2 py-1 rounded\">${code}</div>
-                                <span class=\"text-sm text-cafe-black bg-gray-100 px-2 py-1 rounded border border-cafe-red/20\">ØªØ§Ø±ÙŠØ® Ø§Ù„ÙÙˆØ²: ${dateStr}</span>
+                                <span class=\"text-sm text-cafe-black bg-gray-100 px-2 py-1 rounded border border-cafe-red/20\">Win date: ${dateStr}</span>
                             </div>
                             <div class=\"mt-2 flex items-center justify-center gap-2\">
                                 <button id=\"copyWinCode\" class=\"copy-code-btn px-2 py-1 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition\">Copy</button>
                             </div>
                             ${extraInfo}
-                            <div class=\"text-xs text-cafe-black/60 mt-2\">Please take a screenshot of this screen and show it to the cashier today.</div>`;
+                            <div class=\"text-xs text-cafe-black/60 mt-2\">Show this to the service staff.</div>`;
                         // copy button
                         setTimeout(() => {
                             const copyBtn = document.getElementById('copyWinCode');
@@ -1771,6 +2211,18 @@
                             });
                         }, 0);
                         launchWinEffects();
+                        incWinsToday();
+                        // Mark global win and reset global losses
+                        markGlobalWin();
+                        // record last prize and reset lose streak
+                        try { setLastPrizeId(prizeId); setLoseStreak(0); } catch {}
+                        // reset losses counter on any win
+                        try {
+                            const deviceId = getDeviceId();
+                            const today = todayKey();
+                            const lossesKey = `wheel_losses_${deviceId}_${today}`;
+                            localStorage.removeItem(lossesKey);
+                        } catch {}
                     } else {
                         const code = generateCode('TRY');
                         wheelMsg.innerHTML = `<div class="font-semibold text-cafe-black mb-1">Better luck next time!</div>
@@ -1786,6 +2238,10 @@
                                 try { await navigator.clipboard.writeText(code); copyBtn.textContent = 'Copied'; } catch { copyBtn.textContent = 'Copy failed'; }
                             });
                         }, 0);
+                        // increment losses counter (pattern control)
+                        try { setLoseStreak(getLoseStreak() + 1); } catch {}
+                        // increment global loss counter
+                        incGlobalLoss();
                     }
 
                     spinning = false;
@@ -1942,7 +2398,7 @@
             ];
 
             function setSelected(name){
-                if (selectedLabel) selectedLabel.textContent = name ? `النكهة المختارة: ${name}` : '';
+                if (selectedLabel) selectedLabel.textContent = name ? `Selected flavor: ${name}` : '';
                 if (selectEl) selectEl.value = name || '';
             }
 
@@ -1968,7 +2424,7 @@
                 defaultOption.value = '';
                 defaultOption.disabled = true;
                 defaultOption.selected = !hadSelection;
-                defaultOption.textContent = 'اختر النكهة...';
+                defaultOption.textContent = 'Choose a flavor...';
                 selectEl.innerHTML = '';
                 selectEl.appendChild(defaultOption);
                 flavors.forEach(name => {
