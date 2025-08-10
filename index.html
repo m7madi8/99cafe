@@ -401,6 +401,61 @@
         /* Win code visibility */
         .win-code { display: inline-block; direction: ltr; word-break: break-all; letter-spacing: .08em; font-weight: 700; }
         .copy-code-btn { font-size: 11px; }
+
+        /* Breakfast Popup */
+        #breakfastOverlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); opacity: 0; transition: opacity .3s ease; z-index: 9998; display: none; }
+        #breakfastOverlay.show { opacity: 1; }
+        #breakfastModal {
+            position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(.96);
+            width: 85vw; height: 85vh; max-width: 1200px; max-height: 92vh;
+            background: #ffffff; border-radius: 18px; box-shadow: 0 24px 72px rgba(0,0,0,.25);
+            display: none; flex-direction: column; overflow: hidden;
+            opacity: 0; transition: opacity .3s ease, transform .35s cubic-bezier(.22,1,.36,1);
+            z-index: 9999;
+        }
+        #breakfastModal.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        #breakfastModal.closing { transform: translate(-50%, -50%) scale(.98); }
+        .bf-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; background: linear-gradient(135deg, #D90429, #EF233C); border-bottom: 1px solid rgba(0,0,0,.06); }
+        .bf-header h2 { margin: 0; font-size: 19px; font-weight: 800; color: #ffffff; letter-spacing: .2px; text-shadow: 0 1px 1px rgba(0,0,0,.15); }
+        #breakfastClose { appearance: none; border: 0; background: transparent; cursor: pointer; font-size: 22px; line-height: 1; color: #ffffff; width: 36px; height: 36px; border-radius: 8px; }
+        #breakfastClose:hover { background: rgba(255,255,255,.12); }
+        .bf-content { padding: 18px; overflow: auto; flex: 1; background: linear-gradient(180deg, #ffffff, #f9fafb); position: relative; }
+        /* Centered translucent logo above backgrounds but below text */
+        .bf-content::before {
+            content: '';
+            position: absolute;
+            left: 50%; top: 50%; transform: translate(-50%, -50%);
+            width: min(64%, 520px); aspect-ratio: 1/1;
+            background: url('99cafe-logo2.png') center / contain no-repeat;
+            opacity: 0.12; pointer-events: none; z-index: 0;
+            filter: saturate(110%) drop-shadow(0 6px 12px rgba(0,0,0,.06));
+        }
+        /* Ensure all textual/content elements stay above the logo */
+        .bf-content > * { position: relative; z-index: 1; }
+        .bf-subtitle { margin: 0 0 14px 0; color: #6b7280; font-size: 13px; }
+        .bf-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+        .bf-item { padding: 14px; border: 1px solid rgba(217, 4, 41, 0.12); border-radius: 14px; background: transparent; box-shadow: 0 10px 22px rgba(217,4,41,0.06); }
+        .bf-item:hover { background: transparent; }
+        .bf-item h3 { margin: 0 0 6px 0; font-size: 15px; color: #111827; font-weight: 800; letter-spacing: .2px; }
+        .bf-item p { margin: 0; font-size: 13px; color: #6b7280; }
+        .bf-item .price { margin-left: auto; color: #D90429; font-weight: 800; letter-spacing: .4px; }
+        .bf-row { display: flex; align-items: center; gap: 12px; }
+        @media (max-width: 640px) { #breakfastModal { width: 85vw; height: 85vh; border-radius: 16px; } .bf-grid { grid-template-columns: 1fr; } .bf-header h2 { font-size: 17px; } }
+
+        /* Soft appear/close effects */
+        @keyframes bfFadeDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bfFadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bfFadeOutDown { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(6px); } }
+        #breakfastModal.show .bf-header { animation: bfFadeDown .35s cubic-bezier(.22,1,.36,1) both; }
+        #breakfastModal.show .bf-content { animation: bfFadeUp .4s cubic-bezier(.22,1,.36,1) .05s both; }
+        #breakfastModal.show .bf-item { opacity: 0; animation: bfFadeUp .45s ease forwards; }
+        #breakfastModal.show .bf-item:nth-child(1) { animation-delay: .06s; }
+        #breakfastModal.show .bf-item:nth-child(2) { animation-delay: .11s; }
+        #breakfastModal.show .bf-item:nth-child(3) { animation-delay: .16s; }
+        #breakfastModal.show .bf-item:nth-child(4) { animation-delay: .21s; }
+        #breakfastModal.show .bf-item:nth-child(5) { animation-delay: .26s; }
+        #breakfastModal.show .bf-item:nth-child(6) { animation-delay: .31s; }
+        #breakfastModal.closing .bf-content { animation: bfFadeOutDown .25s ease forwards; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -415,14 +470,70 @@
         <div class="mt-4 text-cafe-black/60 tracking-widest text-sm">Loading</div>
     </div>
 
+    <!-- Breakfast Popup HTML -->
+    <div id="breakfastOverlay" aria-hidden="true"></div>
+    <div id="breakfastModal" role="dialog" aria-modal="true" aria-labelledby="breakfastTitle">
+      <div class="bf-header">
+        <h2 id="breakfastTitle">Breakfast Menu</h2>
+        <button id="breakfastClose" aria-label="Close">×</button>
+      </div>
+      <div class="bf-content">
+        <p class="bf-subtitle">Served daily from 5:00 AM to 12:00 PM</p>
+        <div class="bf-grid">
+          <div class="bf-item">
+            <div class="bf-row">
+              <h3>Classic Omelette</h3>
+              <span class="price">20</span>
+            </div>
+            <p>Eggs, cheese, fresh herbs</p>
+          </div>
+          <div class="bf-item">
+            <div class="bf-row">
+              <h3>Buttermilk Pancakes</h3>
+              <span class="price">22</span>
+            </div>
+            <p>Maple syrup, seasonal fruit</p>
+          </div>
+          <div class="bf-item">
+            <div class="bf-row">
+              <h3>Fresh Croissant</h3>
+              <span class="price">10</span>
+            </div>
+            <p>Butter, flaky layers</p>
+          </div>
+          <div class="bf-item">
+            <div class="bf-row">
+              <h3>Avocado Toast</h3>
+              <span class="price">24</span>
+            </div>
+            <p>Sourdough, lemon, chili flakes</p>
+          </div>
+          <div class="bf-item">
+            <div class="bf-row">
+              <h3>Fresh Coffee</h3>
+              <span class="price">8</span>
+            </div>
+            <p>Espresso, Americano, Latte</p>
+          </div>
+          <div class="bf-item">
+            <div class="bf-row">
+              <h3>Hot Tea</h3>
+              <span class="price">6</span>
+            </div>
+            <p>English breakfast, green, mint</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Hero Section -->
     <section class="bg-transparent text-cafe-black py-20">
         <div class="flex flex-col items-center justify-center">
-            <div id="heroHalo" class="relative inline-block p-6 md:p-8 mb-6 md:mb-8 logo-shine-effect">
+            <div id="heroHalo" class="relative block mx-auto p-6 md:p-8 mb-6 md:mb-8 logo-shine-effect text-center">
                 <span id="heroTextBadge" class="hero-badge absolute left-1/2 -translate-x-1/2 translate-y-2 select-none opacity-0 transition-all duration-500 ease-out pointer-events-none">
                     Tap to see your drink
                 </span>
-                <img src="99cafe-logo2.png" alt="99 Cafe Logo" id="heroLogo" class="w-40 h-40 object-contain mb-0 float-y cursor-pointer" />
+                <img src="99cafe-logo2.png" alt="99 Cafe Logo" id="heroLogo" class="w-40 h-40 object-contain mb-0 float-y cursor-pointer mx-auto block" />
             </div>
             <div class="reveal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-serif text-cafe-black tracking-widest mb-2 text-center px-2" style="letter-spacing: 2px;">
                 It's more than a number
@@ -1516,6 +1627,52 @@
                 document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 closeModal();
             });
+        })();
+
+        // Breakfast Popup JS (no external libs)
+        (function breakfastPopup(){
+            const overlay = document.getElementById('breakfastOverlay');
+            const modal = document.getElementById('breakfastModal');
+            const closeBtn = document.getElementById('breakfastClose');
+
+            if (!overlay || !modal || !closeBtn) return;
+
+            function isBreakfastTime(){
+                const now = new Date();
+                const hour = now.getHours();
+                return hour >= 5 && hour < 12;
+            }
+
+            function openPopup(){
+                overlay.style.display = 'block';
+                modal.style.display = 'flex';
+                requestAnimationFrame(()=>{
+                    overlay.classList.add('show');
+                    modal.classList.add('show');
+                });
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closePopup(){
+                modal.classList.add('closing');
+                overlay.classList.remove('show');
+                modal.classList.remove('show');
+                setTimeout(()=>{
+                    overlay.style.display = 'none';
+                    modal.style.display = 'none';
+                    modal.classList.remove('closing');
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+
+            overlay.addEventListener('click', closePopup);
+            closeBtn.addEventListener('click', closePopup);
+
+            if (isBreakfastTime()){
+                openPopup();
+            }
+
+            // No persistence: allow showing on every visit/refresh within time window
         })();
 
         // Wheel of Fortune
