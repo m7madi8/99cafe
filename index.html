@@ -403,13 +403,13 @@
         .copy-code-btn { font-size: 11px; }
 
         /* Breakfast Popup */
-        #breakfastOverlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); opacity: 0; transition: opacity .3s ease; z-index: 9998; display: none; }
+        #breakfastOverlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); opacity: 0; transition: opacity .3s ease; z-index: 9998; display: none !important; }
         #breakfastOverlay.show { opacity: 1; }
         #breakfastModal {
             position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(.96);
-            width: 85vw; height: 85vh; max-width: 1200px; max-height: 92vh;
+            width: 85vw; height: 85vh; max-width: 1200px; max-height: 92vh; display: none !important;
             background: #ffffff; border-radius: 18px; box-shadow: 0 24px 72px rgba(0,0,0,.25);
-            display: none; flex-direction: column; overflow: hidden;
+            flex-direction: column; overflow: hidden;
             opacity: 0; transition: opacity .3s ease, transform .35s cubic-bezier(.22,1,.36,1);
             z-index: 9999;
         }
@@ -478,7 +478,7 @@
         <button id="breakfastClose" aria-label="Close">×</button>
       </div>
       <div class="bf-content">
-        <p class="bf-subtitle">Served daily from 5:00 AM to 12:00 PM</p>
+        <p class="bf-subtitle">Served daily from 9:00 AM to 12:00 PM</p>
         <div class="bf-grid">
           <div class="bf-item">
             <div class="bf-row">
@@ -1637,10 +1637,13 @@
 
             if (!overlay || !modal || !closeBtn) return;
 
+            // Disabled globally: hide the breakfast popup entirely
+            return;
+
             function isBreakfastTime(){
                 const now = new Date();
                 const hour = now.getHours();
-                return hour >= 5 && hour < 12;
+                return hour >= 9 && hour < 12;
             }
 
             function openPopup(){
