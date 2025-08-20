@@ -228,6 +228,7 @@
       // English -> Arabic mapping for menu sections/items/labels
       const EN_AR_MAP = {
          'Sold out': 'نفدت الكمية',
+         'New': 'جديد',
         // Breakfast
         'Breakfast Menu': 'قائمة الإفطار',
         'Served daily from 9:00 AM to 12:00 PM': 'يُقدَّم يومياً من 9:00 AM إلى 12:00 PM',
@@ -255,6 +256,7 @@
         'Frappe': 'فرابيه',
         'Milk Shakes': 'ميلك شيك',
         'Beveraegs': 'مشروبات معبأة',
+        'New items': 'أصناف جديدة',
         'Appetizers': 'مقبلات',
         'Salads': 'سلطات',
         'Chicken Sandwich': 'سندويش دجاج',
@@ -451,6 +453,10 @@
         'Mix (Za3tar + White cheese)': 'ميكس (زعتر + جبنة بيضاء)',
 
         // Main dishes
+        'Classic Burger': 'برغر كلاسيكي',
+        'Mushroom White Sauce': 'فطر بصلصة بيضاء',
+        'Extra cheese +3': 'جبنة إضافية +3',
+        'Extra patty +15': 'شريحة لحم إضافية +15',
         'Classic Grilled Chicken': 'دجاج مشوي كلاسيكي',
         'White Sauce Mushroom': 'فطر بصلصة بيضاء',
 
@@ -494,7 +500,7 @@
           const scope = document.getElementById(id);
           if (!scope) return;
           // Exclude the main decorated title; it is handled via AR_KEYS to avoid overwriting/capturing wrong data-en
-          scope.querySelectorAll('h2:not(.decorated-title), h3, h4, p, .price-chip .label, .soldout-badge').forEach(n => nodes.push(n));
+          scope.querySelectorAll('h2:not(.decorated-title), h3, h4, p, .price-chip .label, .soldout-badge, .new-badge').forEach(n => nodes.push(n));
         });
         nodes.forEach(el => {
           // Prefer preserving original HTML for elements that may contain <br>
@@ -587,6 +593,29 @@
             border: 1px solid #EF233C;
             box-shadow: 0 6px 14px rgba(217,4,41,.12);
             white-space: nowrap;
+        }
+        /* New badge styling */
+        .new-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 8px;
+            padding: 2px 10px 2px 6px;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: clamp(10px, 1.5vw, 12px);
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: #0F172A;
+            background: linear-gradient(135deg, #FFF7ED, #FEF3C7);
+            border: 1px solid rgba(212,175,55,.6);
+            box-shadow: 0 8px 18px rgba(212,175,55,.18);
+            white-space: nowrap;
+        }
+        .new-badge svg {
+            width: 16px; height: 16px;
+            color: #D4AF37;
+            filter: drop-shadow(0 2px 4px rgba(212,175,55,.35));
         }
         .category-tab {
             transition: all 0.3s ease;
@@ -1602,6 +1631,45 @@
             <!-- Food Category -->
             <div id="food" class="category-content hidden fade-section">
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- New items -->
+                    <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
+                        <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
+                            <span class="ml-2 inline-flex items-center justify-center rounded-full" style="background: linear-gradient(to right, #D4AF37, #F59E0B, #222); padding: 0.5rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-white" fill="currentColor" aria-hidden="true">
+                                    <path d="M12 2l2.6 5.3 5.9.5-4.5 3.8 1.5 5.9L12 14.9 6.5 17.5l1.5-5.9-4.5-3.8 5.9-.5L12 2z" />
+                                </svg>
+                            </span>
+                            <span data-en="New items">New items</span>
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-semibold text-cafe-black" data-en="Classic Burger">Classic Burger</h4>
+                                            <span class="new-badge" data-en="New"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.6 5.3 5.9.5-4.5 3.8 1.5 5.9L12 14.9 6.5 17.5l1.5-5.9-4.5-3.8 5.9-.5L12 2z"/></svg>New</span>
+                                        </div>
+                                        <p class="text-sm text-cafe-black/60" data-en="Extra cheese +3">Extra cheese +3</p>
+                                        <p class="text-sm text-cafe-black/60" data-en="Extra patty +15">Extra patty +15</p>
+                                    </div>
+                                    <div class="text-right"><div class="font-bold text-cafe-red">39.99</div></div>
+                                </div>
+                            </div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-semibold text-cafe-black" data-en="Mushroom White Sauce">Mushroom White Sauce</h4>
+                                            <span class="new-badge" data-en="New"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.6 5.3 5.9.5-4.5 3.8 1.5 5.9L12 14.9 6.5 17.5l1.5-5.9-4.5-3.8 5.9-.5L12 2z"/></svg>New</span>
+                                        </div>
+                                        <p class="text-sm text-cafe-black/60" data-en="Extra patty +15">Extra patty +15</p>
+                                    </div>
+                                    <div class="text-right"><div class="font-bold text-cafe-red">44.99</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     
                     <!-- Appetizers -->
