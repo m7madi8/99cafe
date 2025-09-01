@@ -1,3 +1,27 @@
+Local development
+-----------------
+
+1) Install dependencies:
+
+```bash
+npm i express
+```
+
+2) Run the local server:
+
+```bash
+node server.js
+```
+
+3) Test API endpoints (in browser console):
+
+```js
+fetch('/api/wheel-global?action=prizeCounts&prizes=OFF10,FREE_UPGRADE,FREE_DRINK,BARISTA_CHOICE').then(r=>r.json()).then(console.log)
+fetch('/api/wheel-global').then(r=>r.json()).then(console.log)
+```
+
+If `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are not set, the API uses an in-memory store locally.
+
 # 99 Cafe - منيو الكافي
 
 موقع ويب احترافي لمنيو كافي 99 باستخدام HTML و Tailwind CSS.

@@ -19,6 +19,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Optional Arabic fonts (activated when Arabic is selected) -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -43,10 +46,507 @@
             }
         }
     </script>
-        <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
+    <script>
+      // Minimal i18n map for visible labels. Extend as needed.
+      const i18n = {
+        en: {
+          hero: "It's more than a number",
+          tryLuck: "Try your luck!",
+          spin: "Spin the wheel",
+          haveCode: "I have a code",
+          menu: "menu",
+          serviceChip: "10% service charge applies",
+          serviceTooltip: "A 10% service charge will be added to your bill",
+          drinks: "Drinks",
+          food: "Food",
+          desserts: "Desserts",
+          hookah: "Hookah",
+          loading: "Loading",
+          surpriseTitle: "Your Surprise Drink",
+          tryAnother: "Try another",
+          gotoDrinks: "Go to Drinks",
+          prizes: {
+            TRY_AGAIN: "Better luck next time",
+            BARISTA_CHOICE: "Barista's Mandatory Challenge",
+            OFF10: "10% off next order",
+            FREE_UPGRADE: "Free size upgrade",
+            FREE_DRINK: "Free drink of your choice"
+          },
+          // Wheel modal & code modal
+          codeHeader: "99cafe says",
+          codePrompt: "Enter secret to retry:",
+          codePlaceholder: "Enter secret",
+          codeConfirm: "Confirm",
+          wheelPlayed: "You already played today. Come back tomorrow!",
+          wheelCongrats: "Congratulations! 🎉",
+          wheelWinDate: "Win date:",
+          wheelCopy: "Copy",
+          wheelCopied: "Copied",
+          wheelCopyFailed: "Copy failed",
+          wheelShowStaff: "Show this to the service staff.",
+          wheelLoseTitle: "Better luck next time!",
+          wheelLoseBody: "Try again tomorrow.",
+          freeDrinkCongratsTitle: "🎊 Congrats! Thursday Special Prize",
+          freeDrinkCongratsBody: "You won a free drink of your choice during the special time! 🥤",
+          validTodayOnly: "Valid today only",
+          valid3DaysUntil: (date) => `Valid for 3 days until ${date}`,
+          secretAccepted: "Secret accepted. You can spin again now!",
+          unlimitedEnabled: "Unlimited mode enabled for this device. You can spin anytime.",
+          invalidCode: "Invalid code.",
+          pleaseEnterSecret: "Please enter the secret.",
+        },
+        ar: {
+          hero: "هي أكثر من مجرد رقم",
+          tryLuck: "جرّب حظك!",
+          spin: "دوّر العجلة",
+          haveCode: "لديّ رمز",
+          menu: "القائمة",
+          serviceChip: "تُضاف خدمة 10%",
+          serviceTooltip: "سيتم إضافة خدمة بنسبة 10% إلى الفاتورة",
+          drinks: "مشروبات",
+          food: "أطعمة",
+          desserts: "حلويات",
+          hookah: "أراجيل",
+          loading: "جارٍ التحميل",
+          surpriseTitle: "مشروبك المفاجئ",
+          tryAnother: "جرّب واحداً آخر",
+          gotoDrinks: "اذهب إلى المشروبات",
+          prizes: {
+            TRY_AGAIN: "حظاً أوفر في المرة القادمة",
+            BARISTA_CHOICE: "تحدّي الباريستا الإلزامي",
+            OFF10: "خصم 10% على الطلب القادم",
+            FREE_UPGRADE: "ترقية الحجم مجاناً",
+            FREE_DRINK: "مشروب مجاني من اختيارك"
+          },
+          // Wheel modal & code modal
+          codeHeader: "99كافيه يقول",
+          codePrompt: "أدخل الرمز للمحاولة مجدداً:",
+          codePlaceholder: "أدخل الرمز",
+          codeConfirm: "تأكيد",
+          wheelPlayed: "لقد لعبت اليوم بالفعل. عد غداً!",
+          wheelCongrats: "مبروك! 🎉",
+          wheelWinDate: "تاريخ الفوز:",
+          wheelCopy: "نسخ",
+          wheelCopied: "تم النسخ",
+          wheelCopyFailed: "فشل النسخ",
+          wheelShowStaff: "أظهر هذا لطاقم الخدمة.",
+          wheelLoseTitle: "حظاً أوفر في المرة القادمة!",
+          wheelLoseBody: "حاول مرة أخرى غداً.",
+          freeDrinkCongratsTitle: "🎊 مبروك! جائزة الخميس الخاصة",
+          freeDrinkCongratsBody: "لقد ربحت مشروباً مجانياً من اختيارك خلال الوقت المحدد! 🥤",
+          validTodayOnly: "صالح لليوم فقط",
+          valid3DaysUntil: (date) => `صالح لمدة 3 أيام حتى ${date}`,
+          secretAccepted: "تم قبول الرمز. يمكنك الدوران مرة أخرى الآن!",
+          unlimitedEnabled: "تم تفعيل الوضع غير المحدود لهذا الجهاز. يمكنك الدوران في أي وقت.",
+          invalidCode: "رمز غير صالح.",
+          pleaseEnterSecret: "يرجى إدخال الرمز.",
         }
+      };
+      const AR_KEYS = {
+        tryLuck: ["#tryLuckBtn .try-label", ".wheel-title"],
+        spin: [".spin-label"],
+        haveCode: ["#wheelCodeBtn"],
+        menu: [".decorated-title"],
+        serviceChip: [".service-chip"],
+        serviceTooltip: [".service-tooltip"],
+        drinks: ["[data-category='drinks'] .tab-label"],
+        food: ["[data-category='food'] .tab-label"],
+        desserts: ["[data-category='desserts'] .tab-label"],
+        hookah: ["[data-category='hookah'] .tab-label"],
+        loading: ["#preloader .loading-label"],
+        surpriseTitle: ["#surpriseTitleLabel"],
+        tryAnother: ["#anotherSurprise"],
+        gotoDrinks: ["#gotoDrinks"],
+        codeHeader: ["#codeHeader"],
+        codePrompt: ["#codePrompt"],
+        codeConfirm: ["#submitCode"],
+      };
+      function setLanguage(lang) {
+        const root = document.documentElement;
+        const rtl = lang === 'ar';
+        root.classList.toggle('ar', rtl);
+        root.setAttribute('dir', rtl ? 'rtl' : 'ltr');
+        root.setAttribute('lang', rtl ? 'ar' : 'en');
+        // Update toggle label to reflect current language
+        const labelEl = document.querySelector('#langToggle .lang-label');
+        const toggleBtn = document.getElementById('langToggle');
+        if (toggleBtn) toggleBtn.classList.toggle('is-ar', rtl);
+        // Ensure segments reflect active/inactive state colors
+        if (toggleBtn) {
+          const segEn = toggleBtn.querySelector('.seg.en');
+          const segAr = toggleBtn.querySelector('.seg.ar');
+          if (segEn && segAr) {
+            // Lock size to avoid subpixel reflow differences on color change
+            segEn.style.fontSize = '13px';
+            segAr.style.fontSize = '13px';
+            segEn.style.lineHeight = '1';
+            segAr.style.lineHeight = '1';
+            if (rtl) {
+              segEn.style.color = 'rgba(17,24,39,.75)';
+              segAr.style.color = '#ffffff';
+            } else {
+              segEn.style.color = '#ffffff';
+              segAr.style.color = 'rgba(17,24,39,.75)';
+            }
+          }
+        }
+        const dict = i18n[lang];
+        Object.entries(AR_KEYS).forEach(([key, selectors]) => {
+          const value = dict[key];
+          selectors.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => { el.textContent = value; });
+          });
+        });
+        // Translate full menu content (titles, items, notes, labels), excluding hero and footer
+        applyMenuTranslations(lang);
+        // Re-localize Surprise modal current content if open
+        try { window.localizeSurpriseCurrent && window.localizeSurpriseCurrent(lang); } catch {}
+        // Re-localize Wheel of Fortune labels on the canvas
+        try { window.localizeWheel && window.localizeWheel(lang); } catch {}
+        // Localize code input placeholder
+        try {
+          const codeInput = document.getElementById('codeInput');
+          if (codeInput && dict.codePlaceholder) codeInput.placeholder = dict.codePlaceholder;
+        } catch {}
+        try { localStorage.setItem('lang', lang); } catch {}
+      }
+      function initLanguage() {
+        let lang = 'en';
+        try { lang = localStorage.getItem('lang') || 'en'; } catch {}
+        setLanguage(lang);
+        const toggle = document.getElementById('langToggle');
+        if (toggle) {
+          toggle.addEventListener('click', () => {
+            lang = (document.documentElement.classList.contains('ar')) ? 'en' : 'ar';
+            setLanguage(lang);
+          });
+        }
+      }
+      document.addEventListener('DOMContentLoaded', initLanguage);
+    </script>
+    <script>
+      // English -> Arabic mapping for menu sections/items/labels
+      const EN_AR_MAP = {
+         'Sold out': 'نفدت الكمية',
+        // Breakfast
+        'Breakfast Menu': 'قائمة الإفطار',
+        'Served daily from 9:00 AM to 12:00 PM': 'يُقدَّم يومياً من 9:00 AM إلى 12:00 PM',
+        'Classic Omelette': 'عجة كلاسيكية',
+        'Eggs, cheese, fresh herbs': 'بيض، جبنة، أعشاب طازجة',
+        'Buttermilk Pancakes': 'بانكيك باللبن الرائب',
+        'Maple syrup, seasonal fruit': 'شراب القيقب، فواكه موسمية',
+        'Fresh Croissant': 'كرواسون طازج',
+        'Butter, flaky layers': 'زبدة، طبقات هشة',
+        'Avocado Toast': 'توست بالأفوكادو',
+        'Sourdough, lemon, chili flakes': 'سوردو، ليمون، رقائق فلفل حار',
+        'Fresh Coffee': 'قهوة طازجة',
+        'Espresso, Americano, Latte': 'إسبريسو، أمريكانو، لاتيه',
+        'Hot Tea': 'شاي ساخن',
+        'English breakfast, green, mint': 'إفطار إنجليزي، أخضر، نعناع',
+        // Group titles
+        'Fresher': 'منعشات',
+        'Iced Latte': 'لاتيه بارد',
+        'Hot Latte': 'لاتيه ساخن',
+        'Hot Coffee': 'قهوة ساخنة',
+        'Smoothies': 'سموثيز',
+        'Iced Tea': 'شاي مثلّج',
+        'Fresh Juice': 'عصائر طازجة',
+        'Refresher': 'منعش',
+        'Frappe': 'فرابيه',
+        'Milk Shakes': 'ميلك شيك',
+        'Beveraegs': 'مشروبات معبأة',
+        'Appetizers': 'مقبلات',
+        'Salads': 'سلطات',
+        'Chicken Sandwich': 'سندويش دجاج',
+        'Pastas': 'باستا',
+        'Pizzas': 'بيتزا',
+        'Pizzas ': 'بيتزا ',
+        'Manqousha': 'منقوشة',
+        'Main Dishes': 'الأطباق الرئيسية',
+        'Cakes & Sweets': 'كعكات وحلويات',
+        'Cheesecake': 'تشيزكيك',
+        'Hookah': 'أراجيل',
+
+        // Common labels
+        'Mini': 'صغير',
+        'Normal': 'عادي',
+        'seasonal': 'موسمي',
+        'Soda': 'صودا',
+        'Red Bull': 'ريد بول',
+        'Red Bull + 3.99 NIS': 'ريد بول + 3.99 NIS',
+        'Disposable hose  + 5 NIS': 'بربيج للاستخدام مره واحده  + 5 NIS',
+        'add chicken + 5 NIS': 'أضف دجاج + 5 NIS',
+
+        // Fresher items
+        'Tango Fresher': 'تانغو فريشر',
+        '(Green Apple & Kiwi)': '(تفاح أخضر وكيوي)',
+        'Streki Fresher': 'ستريكي فريشر',
+        '(Strawberry & Kiwi)': '(فراولة وكيوي)',
+        'Pinerazz Fresher': 'باينراز فريشر',
+        '(Pineapple & Raspberry)': '(أناناس وتوت علّيق)',
+        'Hawaiian Fresher': 'هاواي فريشر',
+        '(Tropical & Pineapple)': '(استوائي وأناناس)',
+        'Zest Fresher': 'زيست فريشر',
+        '(Watermelon & Green Apple)': '(بطيخ وتفاح أخضر)',
+        'Pango Fresher': 'بانغو فريشر',
+        '(Pashion Fruit & Mango)': '(باشن فروت ومانجو)',
+        'Pina Colada': 'بينيا كولادا',
+        '(Pineapple & Coconut)': '(أناناس وجوز هند)',
+        'choose Your own Fresher': 'اختر الفريشر الخاص بك',
+        '(Pineapple)': '(أناناس)',
+        '(Blueberry)': '(توت أزرق)',
+        '(Mixberry )': '(توت مشكّل )',
+        '(Mango)': '(مانجو)',
+        '(Kiwi)': '(كيوي)',
+        '(Apple)': '(تفاح)',
+        '(Strawberry)': '(فراولة)',
+        '(Passion Fruit)': '(باشن فروت)',
+        '(Raspberry)': '(توت علّيق)',
+        '(Blu Curacao)': '(بلو كوراكاو)',
+        '(Coconut)': '(جوز هند)',
+        '(Watermelon)': '(بطيخ)',
+
+        // Iced Latte items
+        'Iced Spanish Latte': 'سبانيش لاتيه بارد',
+        'Iced Caramel Latte': 'كاراميل لاتيه بارد',
+        'Iced French Vanilla': 'فانيلا فرنسية مثلّجة',
+        'Iced White Mocha': 'وايت موكا بارد',
+        'Iced Dark Mocha': 'دارك موكا بارد',
+        'Iced Vanilla Latte': 'فانيلا لاتيه بارد',
+        'Iced Hazelnut Latte': 'بندق لاتيه بارد',
+        'Iced Salted Caramel Latte': 'سالتد كاراميل لاتيه بارد',
+        'Iced Pistachio Latte': 'فستق لاتيه بارد',
+        'Iced Chai Latte': 'شاي لاتيه بارد',
+        'Iced Cuppuccino': 'كابتشينو بارد',
+        'Iced French Hazelnut': 'بندق فرنسي بارد',
+
+        // Hot Latte items
+        'Caramel Latte': 'كاراميل لاتيه',
+        'French Vanilla': 'فانيلا فرنسية',
+        'Spanish Latte': 'سبانيش لاتيه',
+        'Vanilla Latte': 'فانيلا لاتيه',
+        'Hazelnut Latte': 'بندق لاتيه',
+        'Chai Latte': 'شاي لاتيه',
+        'Salted Caramel Latte': 'سالتد كاراميل لاتيه',
+        'Hot Chocolate': 'شوكولاتة ساخنة',
+        'Italian Hot Chocolate ': 'شوكولاتة ساخنة إيطالية ',
+
+        // Hot Coffee items
+        'Espresso': 'إسبريسو',
+        'Americano': 'أمريكانو',
+        'Hot Latte': 'لاتيه ساخن',
+        'White Mocha': 'وايت موكا',
+        'Dark Mocha': 'دارك موكا',
+        'Cortado': 'كورتادو',
+        'Affogado': 'أفوجاتو',
+        'Turkish': 'تركي',
+
+        // Smoothies items
+        'Pango Mango': 'بانغو مانغو',
+        'Strawberry': 'فراولة',
+        'Mixed Berries': 'توت مشكّل',
+        'Banana Dates': 'موز وتمور',
+        'Mango': 'مانجو',
+        'Pineapple': 'أناناس',
+        'Watermelon': 'بطيخ',
+        'Strawberry Lemonade': 'ليمونادة بالفراولة',
+
+        // Iced Tea items
+        'Iced Tea Peach': 'شاي مثلّج خوخ',
+        'Iced Tea Watermelon': 'شاي مثلّج بطيخ',
+        'Iced Tea Passionfruit': 'شاي مثلّج باشن فروت',
+        'Iced Tea Pineapple': 'شاي مثلّج أناناس',
+        'Iced Tea Raspberry': 'شاي مثلّج توت علّيق',
+
+        // Fresh Juice items
+        'Orange Juice': 'عصير برتقال',
+        'Carrots': 'جزر',
+        'Lemon Mint': 'ليمون ونعناع',
+        'Apple Juice': 'عصير تفاح',
+        'Pomegranate Juice': 'عصير رمان',
+        'Lemonade ': 'ليمونادة ',
+
+        // Refresher item
+        'Pinky Lemonade': 'ليمونادة وردية',
+
+        // Frappe items
+        'Ice Coffee Classic': 'آيس كوفي كلاسيك',
+        'Hazelnut Frappe': 'فرابيه بندق',
+        'Chocolate Frappe': 'فرابيه شوكولاتة',
+        'French Vanilla Frappe': 'فرابيه فانيلا فرنسية',
+        'Salted Caramel Frappe': 'فرابيه سالتد كاراميل',
+        'Caramel Frappe': 'فرابيه كاراميل',
+
+        // Milkshakes
+        'Pistachio': 'فستق',
+        'Lotus': 'لوتس',
+        'Vanilla': 'فانيلا',
+        'Chocolate': 'شوكولاتة',
+        'Blueberry': 'توت أزرق',
+        'Mixberries': 'توت مشكّل',
+        'Red velvet': 'ريد فلفت',
+
+        // Packaged beverages
+        'Water': 'ماء',
+        'Cola Chat': 'كولا شات',
+        'Lemon Chat': 'ليمون شات',
+        'Zero Chat': 'زيرو شات',
+
+        // Appetizers
+        'Popcorn Chicken': 'دجاج بوب كورن',
+        'Chicken Fingers': 'فيليه دجاج',
+        'Nachos': 'ناتشوز',
+        'Wings': 'أجنحة دجاج',
+        '(buffalo, barbecue, sweet chili)': '(بافلو، باربيكيو، تشيلي حلو)',
+        'Fish and chips': 'فيش أند تشيبس',
+        'Mix Platter': 'صحن مشكّل',
+        'Classic Fries': 'بطاطا مقلية كلاسيكية',
+        ' Wedge Fries': ' شرائح بطاطا',
+        'Curly Fries': 'بطاطا ملوية',
+        'Garlic bread': 'خبز بالثوم',
+
+        // Salads
+        'Greek Salad': 'سلطة يونانية',
+        'Haloomi Salad': 'سلطة حلوم',
+        'Quinoa Salad': 'سلطة كينوا',
+        'Ceasar Salad': 'سلطة سيزر',
+        'Tabbouleh Quinoa Salad': 'تبولة كينوا',
+        'Tuna Salad': 'سلطة تونة',
+        'Falahy Salad': 'سلطة فلاحية',
+
+        // Chicken Sandwich
+        'Classic Chicken': 'دجاج كلاسيكي',
+        'White Sauce Sandwich': 'سندويش صلصة بيضاء',
+        'Pesto Chicken': 'دجاج بيستو',
+        'Mexican sandwich': 'سندويش مكسيكي',
+        'Italian sandwich': 'سندويش إيطالي',
+        'Grilled chicken steak': 'ستيك دجاج مشوي',
+        'Quesadilla Wrap': 'راب كاساديا',
+        'Zingar wrap': 'راب زنجر',
+        'Ceasar wrap': 'راب سيزر',
+        'Halloumi Wrap': 'راب حلوم',
+        'Tuna Sandwich': 'سندويش تونة',
+        'Omelette Wrap': 'راب عجة',
+        'Labaneh Wrap': 'راب لبنة',
+
+        // Pastas
+        'Fettuccine Alfredo': 'فيتوتشيني ألفريدو',
+        'Spaghetti Rose': 'سباغيتي روزيه',
+        'Penne Pesto': 'بيني بيستو',
+
+        // Pizzas
+        'Pizzas': 'بيتزا',
+        'Alfredo Pizza': 'بيتزا ألفريدو',
+        'BBQ Pizza': 'بيتزا باربكيو',
+        'Veggies pizza': 'بيتزا خضار',
+        'Margherita Pizza': 'بيتزا مارجريتا',
+        'Pepperoni pizza': 'بيتزا بيبروني',
+
+        // Manqousha
+        'White cheese': 'جبنة بيضاء',
+        'Za3tar': 'زعتر',
+        'Egg': 'بيض',
+        'Mix (Za3tar + White cheese )': 'ميكس (زعتر + جبنة بيضاء )',
+        'Mix  (Za3tar + White cheese )': 'ميكس  (زعتر + جبنة بيضاء )',
+        'Mix (Za3tar + White cheese)': 'ميكس (زعتر + جبنة بيضاء)',
+
+        // Main dishes
+        'Classic Grilled Chicken': 'دجاج مشوي كلاسيكي',
+        'White Sauce Mushroom': 'فطر بصلصة بيضاء',
+
+        // Cakes & Sweets
+        'Crimsonight': 'كريمسن نايت',
+        'Soufflé cake': 'كيكة سوفليه',
+        'Fudge cake': 'كيكة فادج',
+        'Red velvet': 'ريد فلفت',
+        'American apple pie': 'فطيرة تفاح أمريكية',
+        'Pecan pie': 'فطيرة بيكان',
+        'Alfajours cake': 'كيكة ألفاخور',
+        'Honey cake': 'كيكة عسل',
+        'Chocolate Mousse cake': 'كيكة موس الشوكولاتة',
+        'Tiramisu': 'تيراميسو',
+
+        // Cheesecakes
+        'Blueberry Cheesecake': 'تشيزكيك توت أزرق',
+        'San Sebastian Cheesecake': 'تشيزكيك سان سباستيان',
+
+        // Hookah items
+        '99 Hookah': '99 أرجيلة',
+        'Two Apples': 'تفاحتين',
+        'Lemon and Mint': 'ليمون ونعناع',
+        'Love 66': 'لوف 66',
+        'Grape': 'عنب',
+        'Watermelon and Mint': 'بطيخ ونعناع',
+        'Cinnamon and Gum': 'قرفة ولبان',
+        'Nakhla': 'نخلة',
+        'Fresh Hookah': 'أرجيلة فريش',
+        'Mint': 'نعناع',
+        'Gum': 'لبان',
+        'Orange': 'برتقال',
+        'Peach': 'خوخ'
+      };
+
+      function applyMenuTranslations(lang) {
+        const isArabic = lang === 'ar';
+        const scopeIds = ['menu', 'breakfastModal'];
+        const nodes = [];
+        scopeIds.forEach(id => {
+          const scope = document.getElementById(id);
+          if (!scope) return;
+          // Exclude the main decorated title; it is handled via AR_KEYS to avoid overwriting/capturing wrong data-en
+          scope.querySelectorAll('h2:not(.decorated-title), h3, h4, p, .price-chip .label, .soldout-badge').forEach(n => nodes.push(n));
+        });
+        nodes.forEach(el => {
+          // Prefer preserving original HTML for elements that may contain <br>
+          const hasHtml = /<\s*br\s*\/?\s*>/i.test(el.innerHTML);
+          const keyHtml = el.getAttribute('data-en-html');
+          const keyText = el.getAttribute('data-en');
+          if (!keyHtml && hasHtml) el.setAttribute('data-en-html', el.innerHTML.trim());
+          if (!keyText) el.setAttribute('data-en', (el.textContent || '').trim());
+          if (isArabic) {
+            // Try HTML key first
+            const originalHtml = el.getAttribute('data-en-html');
+            if (originalHtml && EN_AR_MAP[originalHtml]) {
+              el.innerHTML = EN_AR_MAP[originalHtml];
+              return;
+            }
+            const original = el.getAttribute('data-en') || '';
+            const translated = EN_AR_MAP[original];
+            if (translated) el.textContent = translated;
+          } else {
+            // Restore original English
+            const originalHtml = el.getAttribute('data-en-html');
+            if (originalHtml) {
+              el.innerHTML = originalHtml;
+              return;
+            }
+            const original = el.getAttribute('data-en');
+            if (original) el.textContent = original;
+          }
+        });
+      }
+    </script>
+        <style>
+        body { font-family: 'Montserrat', sans-serif; }
+        /* Arabic toggle helpers (applied when html has .ar class) */
+        html.ar { direction: rtl; }
+        html.ar body { text-align: right; font-family: 'Tajawal', 'Montserrat', sans-serif !important; }
+        /* Ensure all text elements use Tajawal in Arabic, overriding global Montserrat */
+        html.ar body,
+        html.ar h1, html.ar h2, html.ar h3, html.ar h4, html.ar h5, html.ar h6,
+        html.ar p, html.ar a, html.ar button, html.ar input, html.ar textarea, html.ar select, html.ar label,
+        html.ar small, html.ar strong, html.ar em, html.ar span, html.ar div,
+        html.ar li, html.ar ul, html.ar ol, html.ar blockquote, html.ar table, html.ar th, html.ar td {
+            font-family: 'Tajawal', 'Montserrat', sans-serif !important;
+        }
+        /* Headings in Arabic: use Lalezar for a bold, modern display */
+        html.ar h1, html.ar h2, html.ar h3, html.ar h4, html.ar .decorated-title, html.ar .font-headings {
+            font-family: 'Lalezar', 'Tajawal', sans-serif !important;
+            letter-spacing: 0 !important;
+        }
+        /* Keep hero tagline visually consistent across languages */
+        .hero-text { font-family: 'Montserrat', sans-serif !important; }
+        html.ar .hero-text { font-family: 'Montserrat', sans-serif !important; }
         .menu-item {
             transition: all 0.3s ease;
         }
@@ -56,6 +556,37 @@
             border: 1px solid transparent;
             background: linear-gradient(#fff, #fff) padding-box,
                         linear-gradient(135deg, rgba(239,35,60,0.18), rgba(0,0,0,0.06)) border-box;
+        }
+        /* Sold-out luxury styling */
+        .menu-item.is-soldout {
+            position: relative;
+            border: 2px solid transparent;
+            background: linear-gradient(#fff, #fff) padding-box,
+                        linear-gradient(135deg, #D4AF37, #EF233C) border-box;
+            box-shadow: 0 16px 34px rgba(0,0,0,.16);
+        }
+        .menu-item.is-soldout:after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 0.75rem; /* match rounded-lg of item */
+            pointer-events: none;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+        }
+        .soldout-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: clamp(10px, 1.5vw, 12px);
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: #D90429;
+            background: #ffffff;
+            border: 1px solid #EF233C;
+            box-shadow: 0 6px 14px rgba(217,4,41,.12);
+            white-space: nowrap;
         }
         .category-tab {
             transition: all 0.3s ease;
@@ -123,8 +654,7 @@
             filter: drop-shadow(0 2px 2px rgba(0,0,0,.06));
         }
 
-        /* Hide Wheel of Fortune triggers */
-        #tryLuckBtn, #spinBtn { display: none !important; }
+        /* Wheel of Fortune triggers are visible */
 
         /* Section container */
         #menu { position: relative; }
@@ -156,10 +686,22 @@
             pointer-events: none;
             z-index: 15;
         }
+        /* Flip the decorative corner logo to the left in Arabic */
+        html.ar .category-content .bg-cafe-white::before {
+            left: -10px;
+            right: auto;
+        }
         
         /* Typography adjustments */
         html, body, h1, h2, h3, h4, h5, h6, p, a, button, input, textarea, select, label, small, strong, em, span, div, li, ul, ol, blockquote, table, th, td {
             font-family: 'Montserrat', sans-serif !important;
+        }
+        /* In Arabic mode, override any global font to ensure modern Arabic fonts */
+        html.ar html, html.ar body, html.ar h1, html.ar h2, html.ar h3, html.ar h4, html.ar h5, html.ar h6,
+        html.ar p, html.ar a, html.ar button, html.ar input, html.ar textarea, html.ar select, html.ar label,
+        html.ar small, html.ar strong, html.ar em, html.ar span, html.ar div, html.ar li, html.ar ul, html.ar ol,
+        html.ar blockquote, html.ar table, html.ar th, html.ar td {
+            font-family: 'Tajawal', 'Montserrat', sans-serif !important;
         }
         h1, h2, h3, h4, h5, h6, p {
             font-weight: 800 !important;
@@ -173,6 +715,16 @@
 
         /* Signature font override */
         .font-greatvibes { font-family: 'Great Vibes', cursive !important; }
+        /* Special font just for the main menu title */
+        .menu-title-special {
+            font-family: 'Montserrat', sans-serif !important;
+            font-weight: 800 !important;
+            letter-spacing: .02em;
+        }
+        html.ar .menu-title-special {
+            font-family: 'Lalezar', 'Tajawal', sans-serif !important;
+            letter-spacing: 0 !important;
+        }
 
         /* Category tabs micro-interactions */
         .category-tab {
@@ -202,6 +754,49 @@
             from { opacity: .6; transform: translate(-50%, -50%) scale(1); }
             to   { opacity: 0;  transform: translate(-50%, -50%) scale(12); }
         }
+
+        /* Luxury language toggle */
+        #langToggle.lang-toggle-luxe {
+            position: fixed; bottom: 20px; left: 20px; z-index: 50;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 104px; height: 40px; border-radius: 9999px;
+            background: radial-gradient(120% 120% at 0% 0%, rgba(255,255,255,.18), rgba(255,255,255,.06) 60%, rgba(255,255,255,.02));
+            border: 1px solid rgba(217,4,41,.22);
+            box-shadow: 0 10px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.25);
+            backdrop-filter: saturate(130%) blur(8px);
+            color: #111827;
+            overflow: hidden;
+        }
+        #langToggle.lang-toggle-luxe .toggle-thumb {
+            position: absolute; top: 4px; left: 4px; width: calc(50% - 6px); height: calc(100% - 8px);
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #EF233C, #D90429);
+            box-shadow: 0 6px 20px rgba(217,4,41,.35), inset 0 1px 0 rgba(255,255,255,.35);
+            z-index: 0;
+            transition: transform .35s cubic-bezier(.22,1,.36,1);
+        }
+        #langToggle.lang-toggle-luxe.is-ar .toggle-thumb { transform: translateX(100%); }
+        /* Keep EN/AR positions fixed; only colors change via state */
+        html.ar #langToggle.lang-toggle-luxe .seg.en { direction: ltr; }
+        html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
+        #langToggle.lang-toggle-luxe .seg {
+            position: relative; z-index: 1; width: 50%; text-align: center;
+            font-family: 'Montserrat', sans-serif !important;
+            font-weight: 800; letter-spacing: .04em;
+            font-size: 13px; line-height: 1; /* lock consistent sizing across languages */
+            color: rgba(17,24,39,.7) !important;
+            user-select: none;
+        }
+        #langToggle.lang-toggle-luxe .seg.en { padding-left: 10px; order: 1; text-transform: uppercase; }
+        #langToggle.lang-toggle-luxe .seg.ar { padding-right: 10px; order: 2; text-transform: uppercase; }
+        /* Active side text turns white over the red thumb */
+        #langToggle.lang-toggle-luxe:not(.is-ar) .seg.en { color: #ffffff !important; }
+        #langToggle.lang-toggle-luxe.is-ar .seg.ar { color: #ffffff !important; }
+        /* Inactive side returns to dark */
+        #langToggle.lang-toggle-luxe:not(.is-ar) .seg.ar { color: rgba(17,24,39,.75) !important; }
+        #langToggle.lang-toggle-luxe.is-ar .seg.en { color: rgba(17,24,39,.75) !important; }
+        #langToggle.lang-toggle-luxe .lux-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: .55; color: #D90429; }
+        #langToggle.lang-toggle-luxe:hover { box-shadow: 0 14px 38px rgba(217,4,41,.28), inset 0 1px 0 rgba(255,255,255,.35); }
 
         
 
@@ -460,6 +1055,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body class="bg-cafe-white min-h-screen">
+    <!-- Language Toggle -->
+    <button id="langToggle" class="lang-toggle-luxe" aria-label="Translate language" title="Translate / ترجمة" dir="ltr">
+        <span class="toggle-thumb"></span>
+        <span class="seg en">EN</span>
+        <span class="seg ar">AR</span>
+    </button>
     
     <!-- Preloader -->
     <div id="preloader" class="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center transition-opacity duration-500">
@@ -467,7 +1068,7 @@
             <div class="w-44 h-44 rounded-full border-4 border-cafe-red/20 border-t-cafe-red animate-spin"></div>
             <img src="99cafe-logo2.png" alt="99 Cafe" class="w-28 h-28 absolute inset-0 m-auto object-contain select-none" />
         </div>
-        <div class="mt-4 text-cafe-black/60 tracking-widest text-sm">Loading</div>
+        <div class="mt-4 text-cafe-black/60 tracking-widest text-sm loading-label">Loading</div>
     </div>
 
     <!-- Breakfast Popup HTML -->
@@ -533,10 +1134,10 @@
                 
                 <img src="99cafe-logo2.png" alt="99 Cafe Logo" id="heroLogo" class="w-40 h-40 object-contain mb-0 float-y cursor-pointer mx-auto block" />
             </div>
-            <div class="reveal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-serif text-cafe-black tracking-widest mb-2 text-center px-2" style="letter-spacing: 2px;">
+            <div class="reveal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-serif text-cafe-black tracking-widest mb-2 text-center px-2 hero-text" style="letter-spacing: 2px;">
                 It's more than a number
             </div>
-            <button id="tryLuckBtn" aria-label="Try your luck" class="reveal mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-cafe-red to-cafe-red-light text-white font-semibold shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cafe-red/50 inline-flex items-center gap-2">
+            <button id="tryLuckBtn" aria-label="Try your luck" class="hidden reveal mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-cafe-red to-cafe-red-light text-white font-semibold shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cafe-red/50 inline-flex items-center gap-2">
                 <svg class="die-svg h-5 w-5" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                     <defs>
                         <linearGradient id="dieGrad1" x1="0" y1="0" x2="1" y2="1">
@@ -553,7 +1154,7 @@
                         <circle cx="32" cy="32" r="3.2"/>
                     </g>
                 </svg>
-                Try your luck!
+                <span class="try-label">Try your luck!</span>
             </button>
         </div>
     </section>
@@ -586,7 +1187,7 @@
                                     <circle cx="32" cy="32" r="3.2"/>
                                 </g>
                             </svg>
-                            <span class="font-semibold tracking-wide">Try your luck!</span>
+                            <span class="font-semibold tracking-wide wheel-title">Try your luck!</span>
                         </div>
                         <button id="closeWheel" class="text-white/90 hover:text-white"><i class="fas fa-times"></i></button>
                     </div>
@@ -599,7 +1200,7 @@
                         </div>
                         <button id="spinBtn" class="px-5 py-3 rounded-full bg-cafe-red text-white font-semibold shadow-md hover:shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-2">
                             <i class="fas fa-rotate"></i>
-                            Spin the wheel
+                            <span class="spin-label">Spin the wheel</span>
                         </button>
                         <div id="wheelMsg" class="text-center text-cafe-black/80 text-sm"></div>
                         <button id="wheelCodeBtn" class="text-xs text-cafe-red underline hover:no-underline">I have a code</button>
@@ -613,12 +1214,12 @@
                     <div class="bg-white text-cafe-black px-6 py-4 flex items-center justify-between select-none border-b border-gray-200">
                         <div class="flex items-center gap-2">
                             <img src="99cafe-logo2.png" alt="99cafe logo" class="h-5 w-5 object-contain" />
-                            <span class="font-semibold tracking-wide">99cafe says</span>
+                            <span id="codeHeader" class="font-semibold tracking-wide">99cafe says</span>
                         </div>
                         <button id="closeCode" class="text-cafe-black/70 hover:text-cafe-black"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="p-6 space-y-4">
-                        <div class="text-sm text-cafe-black/80">Enter secret to retry:</div>
+                        <div id="codePrompt" class="text-sm text-cafe-black/80">Enter secret to retry:</div>
                         <input id="codeInput" type="password" class="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-cafe-red/40" placeholder="Enter secret" />
                         <div id="codeMsg" class="text-xs text-cafe-black/70"></div>
                         <div class="flex justify-end gap-2">
@@ -634,7 +1235,7 @@
                     <div class="bg-gradient-to-r from-cafe-red to-cafe-red-light text-white px-6 py-4 flex items-center justify-between select-none">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-martini-glass-citrus"></i>
-                            <span class="font-semibold tracking-wide">Your Surprise Drink</span>
+                            <span id="surpriseTitleLabel" class="font-semibold tracking-wide">Your Surprise Drink</span>
                         </div>
                         <button id="closeSurprise" class="text-white/90 hover:text-white">
                             <i class="fas fa-times"></i>
@@ -649,24 +1250,20 @@
                         <h4 class="text-xl font-bold text-center text-cafe-black" id="surpriseName">...</h4>
                         <p class="text-center text-cafe-black/60 mt-1" id="surpriseHint"></p>
                         <div class="mt-6 flex justify-center gap-3">
-                            <button id="anotherSurprise" class="px-4 py-2 rounded-lg bg-cafe-red text-white hover:bg-cafe-red-light transition">
-                                Try another
-                            </button>
-                            <button id="gotoDrinks" class="px-4 py-2 rounded-lg border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition">
-                                Go to Drinks
-                            </button>
+                            <button id="anotherSurprise" class="px-4 py-2 rounded-lg bg-cafe-red text-white hover:bg-cafe-red-light transition">Try another</button>
+                            <button id="gotoDrinks" class="px-4 py-2 rounded-lg border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition">Go to Drinks</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <h2 class="reveal text-4xl font-bold text-center text-cafe-black mb-4 flex items-center justify-center decorated-title">
-                menu
+            <h2 class="reveal text-4xl font-bold text-center text-cafe-black mb-4 flex items-center justify-center decorated-title menu-title-special">
+                <span class="tab-label">menu</span>
             </h2>
             <div class="reveal flex justify-center mb-12">
                 <div class="relative group inline-flex items-center gap-2 rounded-full border border-cafe-red/30 bg-white/80 backdrop-blur px-4 py-2 shadow-sm hover:shadow-md transition">
                     <i class="fas fa-receipt text-cafe-red"></i>
-                    <span class="text-sm font-medium text-cafe-black">10% service charge applies</span>
-                    <span class="pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-2 hidden group-hover:block whitespace-nowrap rounded-md bg-cafe-black/90 px-3 py-2 text-xs text-white shadow-lg z-40">
+                    <span class="text-sm font-medium text-cafe-black service-chip">10% service charge applies</span>
+                    <span class="pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-2 hidden group-hover:block whitespace-nowrap rounded-md bg-cafe-black/90 px-3 py-2 text-xs text-white shadow-lg z-40 service-tooltip">
                         A 10% service charge will be added to your bill
                     </span>
                 </div>
@@ -678,19 +1275,19 @@
                     <span class="inline-block align-middle" style="width: 1.5em; height: 1.5em;">
                         <i class="fas fa-coffee"></i>
                     </span>
-                    Drinks
+                    <span class="tab-label">Drinks</span>
                 </button>
                 <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="food">
                     <i class="fas fa-utensils"></i>
-                    Food
+                    <span class="tab-label">Food</span>
                 </button>
                 <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="desserts">
                     <i class="fas fa-birthday-cake"></i>
-                    Desserts
+                    <span class="tab-label">Desserts</span>
                 </button>
                 <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="hookah">
                     <img src="hookah.png" alt="Hookah" class="w-6 h-6" data-default-icon="hookah.png" data-active-icon="arabic.png" data-white-when-active="true" />
-                    Hookah
+                    <span class="tab-label">Hookah</span>
                 </button>
             </div>
 
@@ -895,6 +1492,20 @@
                         </div>
                     </div>
 
+                    <!-- Hot Tea -->
+                    <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
+                        <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
+                            <i class="fas fa-leaf text-green-600 ml-2"></i>
+                            Hot Tea
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Black Tea</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Large</span><span class="font-bold text-cafe-red">9.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Green Tea</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Large</span><span class="font-bold text-cafe-red">9.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Flavor Tea</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Large</span><span class="font-bold text-cafe-red">12.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Herbs Tea</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Large</span><span class="font-bold text-cafe-red">15.99</span></div></div></div></div>
+                        </div>
+                    </div>
+
                     <!-- Smoothies -->
                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
                         <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
@@ -1038,7 +1649,7 @@
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Fish and chips</h4></div><div class="text-right"><div class="font-bold text-cafe-red">39.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Mix Platter</h4></div><div class="text-right"><div class="font-bold text-cafe-red">49.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Classic Fries</h4></div><div class="text-right"><div class="font-bold text-cafe-red">14.99</div></div></div></div>
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black"> Wedges Fries</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black"> Wedge Fries</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Curly Fries</h4></div><div class="text-right"><div class="font-bold text-cafe-red">18.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Garlic bread</h4></div><div class="text-right"><div class="font-bold text-cafe-red">19.99</div></div></div></div>
 
@@ -1156,7 +1767,7 @@
                             Cakes & Sweets
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><div class="flex items-center gap-2"><h4 class="font-semibold text-cafe-black">Crimsonight</h4><svg class="inline-block ml-2 h-6 w-20 text-cafe-red" aria-label="Sold out" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 67.84" fill="currentColor"><defs><style>.cls-1{fill:currentColor;}</style></defs><title>sold-out</title><path d="M.78,33.58,30.62,1.3A3,3,0,0,1,32.79.35c26.48,0,54.44-.71,80.82-.09a9.41,9.41,0,0,1,9.27,9.53c-.12,15.49-.36,32.25-.54,47.78a16.32,16.32,0,0,1-.09,2.2,9.17,9.17,0,0,1-2.78,5.43,9.58,9.58,0,0,1-5.76,2.59,20,20,0,0,1-2,0L32.9,67.15a3,3,0,0,1-2.16-.82L1,37.76a3,3,0,0,1-.18-4.18Z"/><path class="cls-1" d="M32.79,4,3.61,35.58l29.18,28,79.31.69a6.45,6.45,0,0,0,6.63-6.42l.54-47.31a6.43,6.43,0,0,0-6.42-6.63L32.79,4ZM22.52,29a7.08,7.08,0,0,1,5.1-2.24,7.26,7.26,0,0,1,5.29,2,7.34,7.34,0,0,1,.17,10.33,7.27,7.27,0,0,1-10.32.28A7.33,7.33,0,0,1,22.52,29Z"/><path d="M56.77,19.12q-3.6-.39-5.22-.39a10.24,10.24,0,0,0-1.9.09c-.4.13-.33,1.14,0,1.33,1.08.54,5.85,1.25,6.43,1.69a2.93,2.93,0,0,1,1.09,1.55,9,9,0,0,1,.27,2.46q0,3.21-1.68,4.57a7.93,7.93,0,0,1-5.07,1.37,27.53,27.53,0,0,1-3.42-.23,27.72,27.72,0,0,1-2.76-.47l-1-.23.25-4.57a46,46,0,0,0,6.39.57c1.91,0,2.06-1.38-.64-1.81-2.37-.37-4-.45-4.85-1.25a5.2,5.2,0,0,1-1.28-3.93q0-3.5,1.65-4.78a8.25,8.25,0,0,1,5.09-1.29,34.65,34.65,0,0,1,5.68.49l1.07.18-.15,4.65Zm-.68,29.36a2,2,0,0,0,3.5,0,12.69,12.69,0,0,0,0-6.36c-.54-1.29-3-1.28-3.52,0a12,12,0,0,0,0,6.32ZM66,45.32c0,3.15-.65,5.44-1.94,6.85s-3.35,2.13-6.17,2.13-4.89-.72-6.19-2.14-1.94-3.72-1.94-6.86.65-5.42,1.93-6.83,3.35-2.13,6.19-2.13,4.9.71,6.18,2.13S66,42.17,66,45.32Zm8.09-8.65V48c0,1.9,3.18,1.93,3.18,0V36.67h5.9v11c0,2.43-.61,4.16-1.8,5.15s-3.11,1.48-5.69,1.48-4.49-.48-5.69-1.45-1.81-2.65-1.81-5.08V36.67Zm11.09,4.88V36.67H98.87v4.88H95.06V54H89.15V41.55ZM65.38,22.78a8.53,8.53,0,0,0,.42,3.16,1.71,1.71,0,0,0,1.76,1A1.69,1.69,0,0,0,69.3,26a8.92,8.92,0,0,0,.41-3.19,9,9,0,0,0-.4-3.17,1.67,1.67,0,0,0-1.74-1,1.73,1.73,0,0,0-1.77,1,8.61,8.61,0,0,0-.42,3.16Zm10.28,0q0,4.72-1.93,6.86t-6.17,2.12q-4.24,0-6.19-2.14c-1.29-1.42-1.95-3.71-1.95-6.85s.65-5.42,1.94-6.84,3.35-2.13,6.18-2.13,4.9.71,6.19,2.13,1.93,3.7,1.93,6.85Zm13.91,8.65H78.12V14.14H84V26.55h5.54v4.88Zm9.74,0H91.85V14.14h7.2q4.41,0,6.34,2t1.94,6.44q0,4.43-1.86,6.63c-1.24,1.47-3.3,2.21-6.16,2.21Zm2.06-8.54a6.79,6.79,0,0,0-.47-3.1c-.55-.92-2.18-.78-3.14-.78v7.54c1,0,2.26.12,3-.67.41-.44.61-1.45.61-3Z"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-size="20" font-family="sans-serif" font-weight="700">Sold out</text></svg></div></div><div class="text-right"><div class="font-bold text-cafe-red">27.99</div></div></div></div>
+                             <div class="menu-item is-soldout bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><div class="flex items-center gap-2"><h4 class="font-semibold text-cafe-black">Crimsonight</h4><span class="soldout-badge" data-en="Sold out">Sold out</span></div></div><div class="text-right"><div class="font-bold text-cafe-red">27.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Soufflé cake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Fudge cake</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Red velvet</h4></div><div class="text-right"><div class="font-bold text-cafe-red">24.99</div></div></div></div>
@@ -1497,45 +2108,45 @@
             }
 
             const drinks = [
-                { name: 'Ice Spanish Latte', hint: 'Cold, creamy, and sweet', temp: 'cold' },
-                { name: 'Ice Caramel Latte', hint: 'Icy caramel delight', temp: 'cold' },
-                { name: 'Ice French Vanilla', hint: 'Vanilla chilled goodness', temp: 'cold' },
-                { name: 'Ice White Mocha', hint: 'Smooth and milky', temp: 'cold' },
-                { name: 'Ice Dark Mocha', hint: 'Rich chocolate kick', temp: 'cold' },
-                { name: 'Ice Vanilla Latte', hint: 'Classic vanilla on ice', temp: 'cold' },
-                { name: 'Ice Hazelnut Latte', hint: 'Nutty and refreshing', temp: 'cold' },
-                { name: 'Caramel Latte', hint: 'Warm and comforting', temp: 'hot' },
-                { name: 'French Vanilla', hint: 'A cozy classic', temp: 'hot' },
-                { name: 'Spanish Latte', hint: 'Balanced and smooth', temp: 'hot' },
-                { name: 'Vanilla Latte', hint: 'Gentle sweetness', temp: 'hot' },
-                { name: 'Hazelnut Latte', hint: 'Nutty aroma', temp: 'hot' },
-                { name: 'Espresso', hint: 'Strong and bold', temp: 'hot' },
-                { name: 'Americano', hint: 'Light and smooth', temp: 'hot' },
-                { name: 'Cappuccino', hint: 'Foamy delight', temp: 'hot' },
-                { name: 'Strawberry Smoothie', hint: 'Fruity and fresh', temp: 'cold' },
-                { name: 'Mixed Berries Smoothie', hint: 'Berry mix boost', temp: 'cold' },
-                { name: 'Banana Dates Smoothie', hint: 'Sweet and rich', temp: 'cold' },
-                { name: 'Mango Smoothie', hint: 'Tropical vibes', temp: 'cold' },
-                { name: 'Pineapple Smoothie', hint: 'Sunny sweetness', temp: 'cold' },
-                { name: 'Watermelon Smoothie', hint: 'Ultra refreshing', temp: 'cold' },
-                { name: 'Lemonade', hint: 'Zesty and bright', temp: 'cold' },
-                { name: 'Iced Tea Peach', hint: 'Light and fruity', temp: 'cold' },
-                { name: 'Iced Tea Watermelon', hint: 'Cool and crisp', temp: 'cold' },
-                { name: 'Iced Tea Passionfruit', hint: 'Tropical tea', temp: 'cold' },
-                { name: 'Flavored Ice Tea', hint: 'Pick your flavor', temp: 'cold' },
-                { name: 'Orange Juice', hint: 'Freshly squeezed', temp: 'cold' },
-                { name: 'Carrots Juice', hint: 'Sweet and earthy', temp: 'cold' },
-                { name: 'Lemon Mint Juice', hint: 'Minty zing', temp: 'cold' },
-                { name: 'Pinky Lemonade', hint: 'Pretty and tasty', temp: 'cold' },
-                { name: 'Classic Vanilla Frappe', hint: 'Icy vanilla cloud', temp: 'cold' },
-                { name: 'Hazelnut Frappe', hint: 'Frosty nutty treat', temp: 'cold' },
-                { name: 'Chocolate Frappe', hint: 'Cocoa chill', temp: 'cold' },
-                { name: 'French Vanilla Frappe', hint: 'Silky and sweet', temp: 'cold' },
-                { name: 'Salted Caramel Frappe', hint: 'Sweet-salty crush', temp: 'cold' },
-                { name: 'Pistachio Milkshake', hint: 'Creamy pistachio', temp: 'cold' },
-                { name: 'Lotus Milkshake', hint: 'Biscoff dream', temp: 'cold' },
-                { name: 'Kinder Milkshake', hint: 'Chocolatey classic', temp: 'cold' },
-                { name: 'Chocolate Milkshake', hint: 'Thick and rich', temp: 'cold' },
+                { en: { name: 'Ice Spanish Latte', hint: 'Cold, creamy, and sweet' }, ar: { name: 'سبانيش لاتيه بارد', hint: 'بارد، كريمي، وحلو' }, temp: 'cold' },
+                { en: { name: 'Ice Caramel Latte', hint: 'Icy caramel delight' }, ar: { name: 'كاراميل لاتيه بارد', hint: 'متعة الكراميل المثلّجة' }, temp: 'cold' },
+                { en: { name: 'Ice French Vanilla', hint: 'Vanilla chilled goodness' }, ar: { name: 'فانيلا فرنسية مثلّجة', hint: 'فانيلا لذيذة مثلّجة' }, temp: 'cold' },
+                { en: { name: 'Ice White Mocha', hint: 'Smooth and milky' }, ar: { name: 'وايت موكا بارد', hint: 'ناعمة وحليبية' }, temp: 'cold' },
+                { en: { name: 'Ice Dark Mocha', hint: 'Rich chocolate kick' }, ar: { name: 'دارك موكا بارد', hint: 'نكهة شوكولاتة قوية' }, temp: 'cold' },
+                { en: { name: 'Ice Vanilla Latte', hint: 'Classic vanilla on ice' }, ar: { name: 'فانيلا لاتيه بارد', hint: 'فانيلا كلاسيكية على الثلج' }, temp: 'cold' },
+                { en: { name: 'Ice Hazelnut Latte', hint: 'Nutty and refreshing' }, ar: { name: 'بندق لاتيه بارد', hint: 'بنكهة مكسرات ومنعشة' }, temp: 'cold' },
+                { en: { name: 'Caramel Latte', hint: 'Warm and comforting' }, ar: { name: 'كاراميل لاتيه', hint: 'دافئ ومريح' }, temp: 'hot' },
+                { en: { name: 'French Vanilla', hint: 'A cozy classic' }, ar: { name: 'فانيلا فرنسية', hint: 'كلاسيكي دافئ' }, temp: 'hot' },
+                { en: { name: 'Spanish Latte', hint: 'Balanced and smooth' }, ar: { name: 'سبانيش لاتيه', hint: 'متوازن وناعم' }, temp: 'hot' },
+                { en: { name: 'Vanilla Latte', hint: 'Gentle sweetness' }, ar: { name: 'فانيلا لاتيه', hint: 'حلاوة لطيفة' }, temp: 'hot' },
+                { en: { name: 'Hazelnut Latte', hint: 'Nutty aroma' }, ar: { name: 'بندق لاتيه', hint: 'عبير المكسرات' }, temp: 'hot' },
+                { en: { name: 'Espresso', hint: 'Strong and bold' }, ar: { name: 'إسبريسو', hint: 'قوي وجريء' }, temp: 'hot' },
+                { en: { name: 'Americano', hint: 'Light and smooth' }, ar: { name: 'أمريكانو', hint: 'خفيف وناعم' }, temp: 'hot' },
+                { en: { name: 'Cappuccino', hint: 'Foamy delight' }, ar: { name: 'كابتشينو', hint: 'متعة رغوية' }, temp: 'hot' },
+                { en: { name: 'Strawberry Smoothie', hint: 'Fruity and fresh' }, ar: { name: 'سموثي فراولة', hint: 'فاكهي وطازج' }, temp: 'cold' },
+                { en: { name: 'Mixed Berries Smoothie', hint: 'Berry mix boost' }, ar: { name: 'سموثي توت مشكّل', hint: 'مزيج توت منعش' }, temp: 'cold' },
+                { en: { name: 'Banana Dates Smoothie', hint: 'Sweet and rich' }, ar: { name: 'سموثي موز وتمور', hint: 'حلو وغني' }, temp: 'cold' },
+                { en: { name: 'Mango Smoothie', hint: 'Tropical vibes' }, ar: { name: 'سموثي مانجو', hint: 'أجواء استوائية' }, temp: 'cold' },
+                { en: { name: 'Pineapple Smoothie', hint: 'Sunny sweetness' }, ar: { name: 'سموثي أناناس', hint: 'حلاوة مشمسة' }, temp: 'cold' },
+                { en: { name: 'Watermelon Smoothie', hint: 'Ultra refreshing' }, ar: { name: 'سموثي بطيخ', hint: 'منعش جداً' }, temp: 'cold' },
+                { en: { name: 'Lemonade', hint: 'Zesty and bright' }, ar: { name: 'ليمونادة', hint: 'منعش وحمضي' }, temp: 'cold' },
+                { en: { name: 'Iced Tea Peach', hint: 'Light and fruity' }, ar: { name: 'شاي مثلّج خوخ', hint: 'خفيف وفاكهي' }, temp: 'cold' },
+                { en: { name: 'Iced Tea Watermelon', hint: 'Cool and crisp' }, ar: { name: 'شاي مثلّج بطيخ', hint: 'منعش ونقي' }, temp: 'cold' },
+                { en: { name: 'Iced Tea Passionfruit', hint: 'Tropical tea' }, ar: { name: 'شاي مثلّج باشن فروت', hint: 'شاي استوائي' }, temp: 'cold' },
+                { en: { name: 'Flavored Ice Tea', hint: 'Pick your flavor' }, ar: { name: 'شاي مثلّج بنكهة', hint: 'اختر نكهتك' }, temp: 'cold' },
+                { en: { name: 'Orange Juice', hint: 'Freshly squeezed' }, ar: { name: 'عصير برتقال', hint: 'عُصر طازجاً' }, temp: 'cold' },
+                { en: { name: 'Carrots Juice', hint: 'Sweet and earthy' }, ar: { name: 'عصير جزر', hint: 'حلو وبنَكهة ترابية' }, temp: 'cold' },
+                { en: { name: 'Lemon Mint Juice', hint: 'Minty zing' }, ar: { name: 'عصير ليمون ونعناع', hint: 'نكهة نعناع منعشة' }, temp: 'cold' },
+                { en: { name: 'Pinky Lemonade', hint: 'Pretty and tasty' }, ar: { name: 'ليمونادة وردية', hint: 'جميل ولذيذ' }, temp: 'cold' },
+                { en: { name: 'Classic Vanilla Frappe', hint: 'Icy vanilla cloud' }, ar: { name: 'فرابيه فانيلا كلاسيكي', hint: 'سحابة فانيلا مثلّجة' }, temp: 'cold' },
+                { en: { name: 'Hazelnut Frappe', hint: 'Frosty nutty treat' }, ar: { name: 'فرابيه بندق', hint: 'حلاوة بندق مثلّجة' }, temp: 'cold' },
+                { en: { name: 'Chocolate Frappe', hint: 'Cocoa chill' }, ar: { name: 'فرابيه شوكولاتة', hint: 'شوكولاتة مثلّجة' }, temp: 'cold' },
+                { en: { name: 'French Vanilla Frappe', hint: 'Silky and sweet' }, ar: { name: 'فرابيه فانيلا فرنسية', hint: 'حريري وحلو' }, temp: 'cold' },
+                { en: { name: 'Salted Caramel Frappe', hint: 'Sweet-salty crush' }, ar: { name: 'فرابيه سالتد كاراميل', hint: 'مزيج حلو ومالح' }, temp: 'cold' },
+                { en: { name: 'Pistachio Milkshake', hint: 'Creamy pistachio' }, ar: { name: 'ميلك شيك فستق', hint: 'فستق كريمي' }, temp: 'cold' },
+                { en: { name: 'Lotus Milkshake', hint: 'Biscoff dream' }, ar: { name: 'ميلك شيك لوتس', hint: 'حلم البيسكوف' }, temp: 'cold' },
+                { en: { name: 'Kinder Milkshake', hint: 'Chocolatey classic' }, ar: { name: 'ميلك شيك كيندر', hint: 'كلاسيك شوكولاتة' }, temp: 'cold' },
+                { en: { name: 'Chocolate Milkshake', hint: 'Thick and rich' }, ar: { name: 'ميلك شيك شوكولاتة', hint: 'كثيف وغني' }, temp: 'cold' },
             ];
 
             function pickRandomDrink() {
@@ -1555,10 +2166,12 @@
             function openModal() {
                 // pre-show rolling effect
                 rollNames(900);
-                const { name, hint, temp } = pickRandomDrink();
-                nameEl.textContent = name;
-                hintEl.textContent = hint || '';
-                setIconForTemp(temp);
+                const d = pickRandomDrink();
+                const isAr = document.documentElement.classList.contains('ar');
+                const t = isAr ? d.ar : d.en;
+                nameEl.textContent = t.name;
+                hintEl.textContent = t.hint || '';
+                setIconForTemp(d.temp);
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 // trigger show state for CSS transitions
@@ -1592,22 +2205,40 @@
                 const start = performance.now();
                 function frame(now) {
                     const elapsed = now - start;
-                    const { name, hint, temp } = pickRandomDrink();
-                    nameEl.textContent = name;
-                    hintEl.textContent = hint || '';
-                    setIconForTemp(temp);
+                    const d = pickRandomDrink();
+                    const isAr = document.documentElement.classList.contains('ar');
+                    const t = isAr ? d.ar : d.en;
+                    nameEl.textContent = t.name;
+                    hintEl.textContent = t.hint || '';
+                    setIconForTemp(d.temp);
                     if (elapsed < durationMs) requestAnimationFrame(frame);
                 }
                 requestAnimationFrame(frame);
             }
 
+            // Re-localize current content when language changes
+            window.localizeSurpriseCurrent = function(lang){
+                const isAr = (lang === 'ar');
+                const currentName = nameEl.textContent && nameEl.textContent.trim();
+                if (!currentName) return;
+                const match = drinks.find(d => d.en.name === currentName || d.ar.name === currentName);
+                if (match) {
+                    const t = isAr ? match.ar : match.en;
+                    nameEl.textContent = t.name;
+                    hintEl.textContent = t.hint || '';
+                    setIconForTemp(match.temp);
+                }
+            }
+
             anotherBtn && anotherBtn.addEventListener('click', () => {
                 rollNames(700);
                 setTimeout(() => {
-                    const { name, hint, temp } = pickRandomDrink();
-                    nameEl.textContent = name;
-                    hintEl.textContent = hint || '';
-                    setIconForTemp(temp);
+                    const d = pickRandomDrink();
+                    const isAr = document.documentElement.classList.contains('ar');
+                    const t = isAr ? d.ar : d.en;
+                    nameEl.textContent = t.name;
+                    hintEl.textContent = t.hint || '';
+                    setIconForTemp(d.temp);
                 }, 720);
             });
             gotoBtn && gotoBtn.addEventListener('click', () => {
@@ -1700,6 +2331,8 @@
                 maxWinsPerDevicePerDay: Infinity,
                 // local streak control (prefer/force win after N local losses)
                 enableLocalStreakControl: false,
+                // Thursday free drink window (configurable)
+                freeDrinkWindow: { dayOfWeek: 4, startHour: 20, endHour: 22 },
             };
 
             // ===== Device Fingerprinting =====
@@ -1929,11 +2562,10 @@
             // Check if FREE_DRINK is available based on time restrictions
             function isFreeDrinkTimeAllowed() {
                 const now = new Date();
-                const dayOfWeek = now.getDay(); // 0 = Sunday, 4 = Thursday
+                const dayOfWeek = now.getDay();
                 const hour = now.getHours();
-                
-                // Thursday (4) between 8 PM (20) and 10 PM (22)
-                return dayOfWeek === 4 && hour >= 20 && hour < 22;
+                const w = SETTINGS.freeDrinkWindow || { dayOfWeek: 4, startHour: 20, endHour: 22 };
+                return dayOfWeek === w.dayOfWeek && hour >= w.startHour && hour < w.endHour;
             }
 
             // Weighted pick respecting inventory and time restrictions
@@ -2009,15 +2641,21 @@
                 if (!resp.ok) throw new Error('global get failed');
                 return resp.json();
             }
-            async function incGlobalLoss() {
+            async function preSpinGlobal() {
                 try {
-                    await fetch(GLOBAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'incLoss' }) });
-                } catch {}
+                    const r = await fetch(GLOBAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'preSpin' }) });
+                    if (!r.ok) return { mustWin: false };
+                    return r.json();
+                } catch { return { mustWin: false }; }
+            }
+            async function incGlobalLoss() {
+                try { await fetch(GLOBAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'incLoss' }) }); } catch {}
             }
             async function markGlobalWin() {
-                try {
-                    await fetch(GLOBAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'win' }) });
-                } catch {}
+                try { await fetch(GLOBAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'win' }) }); } catch {}
+            }
+            async function markPrizeWin(id) {
+                try { await fetch(GLOBAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'prizeWin', id }) }); } catch {}
             }
 
             // ===== Wheel rendering =====
@@ -2076,6 +2714,20 @@
             }
 
             drawWheel(0);
+
+            // Localize wheel canvas labels by re-drawing with translated prize labels
+            window.localizeWheel = function(lang){
+                try {
+                    const dict = i18n[lang] || i18n.en;
+                    if (!dict || !dict.prizes) return;
+                    // Temporarily map labels
+                    const original = SETTINGS.prizes.map(p => p.label);
+                    SETTINGS.prizes.forEach(p => { if (dict.prizes[p.id]) p.label = dict.prizes[p.id]; });
+                    drawWheel(currentAngle || 0);
+                    // Restore originals to keep logic intact
+                    SETTINGS.prizes.forEach((p, i) => p.label = original[i]);
+                } catch {}
+            }
 
             function getSliceIndexUnderPointer(angle) {
                 const arc = (2 * Math.PI) / slices;
@@ -2148,7 +2800,10 @@
                 spinBtn.classList.toggle('spin-disabled', spinBtn.disabled);
                 
                 if (hasPlayedToday()) {
-                    wheelMsg.textContent = 'You already played today. Come back tomorrow!';
+                    try {
+                        const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en'];
+                        wheelMsg.textContent = dict.wheelPlayed;
+                    } catch { wheelMsg.textContent = 'You already played today. Come back tomorrow!'; }
                 }
             }
 
@@ -2197,7 +2852,11 @@
             codeOverlay && codeOverlay.addEventListener('click', closeCodeModal);
             submitCode && submitCode.addEventListener('click', () => {
                 const secret = codeInput ? codeInput.value.trim() : '';
-                if (!secret) { codeMsg.textContent = 'Please enter the secret.'; return; }
+                if (!secret) { 
+                    try { const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en']; codeMsg.textContent = dict.pleaseEnterSecret; }
+                    catch { codeMsg.textContent = 'Please enter the secret.'; }
+                    return; 
+                }
                 if (secret === 'Asia') {
                     try {
                         const deviceId = getDeviceId();
@@ -2205,7 +2864,8 @@
                         const attemptKey = `wheel_attempt_${deviceId}_${today}`;
                         localStorage.removeItem(attemptKey);
                         sessionStorage.removeItem(attemptKey);
-                        wheelMsg.textContent = 'Secret accepted. You can spin again now!';
+                        try { const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en']; wheelMsg.textContent = dict.secretAccepted; } 
+                        catch { wheelMsg.textContent = 'Secret accepted. You can spin again now!'; }
                         spinBtn.disabled = false;
                         spinBtn.classList.remove('spin-disabled');
                         closeCodeModal();
@@ -2220,13 +2880,15 @@
                         const attemptKey = `wheel_attempt_${deviceId}_${today}`;
                         localStorage.removeItem(attemptKey);
                         sessionStorage.removeItem(attemptKey);
-                        wheelMsg.textContent = 'Unlimited mode enabled for this device. You can spin anytime.';
+                        try { const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en']; wheelMsg.textContent = dict.unlimitedEnabled; }
+                        catch { wheelMsg.textContent = 'Unlimited mode enabled for this device. You can spin anytime.'; }
                         spinBtn.disabled = false;
                         spinBtn.classList.remove('spin-disabled');
                         closeCodeModal();
                     } catch {}
                 } else {
-                    codeMsg.textContent = 'Invalid code.';
+                    try { const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en']; codeMsg.textContent = dict.invalidCode; }
+                    catch { codeMsg.textContent = 'Invalid code.'; }
                 }
             });
 
@@ -2242,21 +2904,17 @@
 
                 // Refresh/reset inventory if new day
                 let inventory = resetInventoryIfNewDay(loadInventory());
-                // Enforce daily win cap before picking
-                if (getWinsToday() >= (SETTINGS.maxWinsPerDevicePerDay || Infinity)) {
-                    // hard-force lose without animation mismatch
-                    prizeId = 'TRY_AGAIN';
-                }
+                // Pre-spin reservation: server may require a forced win if previous 10 were losses
+                const pre = await preSpinGlobal();
+                const mustWin = !!(pre && pre.mustWin);
+                const allowOff10 = pre && pre.hasOwnProperty('allowOff10') ? !!pre.allowOff10 : true;
                 // Pick prize with weights and availability
-                let forceWinGlobal = false;
-                try {
-                    const gc = await getGlobalCounters();
-                    forceWinGlobal = (gc && typeof gc.losses === 'number' && gc.losses >= 10);
-                } catch {}
-                let prizeId = forceWinGlobal ? pickPrizeForceWin(inventory) : pickPrize(inventory);
+                // Enforce global rule: only grant prizes on mustWin spins (after 10 losses)
+                let prizeId = mustWin ? pickPrizeForceWin(inventory) : 'TRY_AGAIN';
                 // Pre-validate to avoid visual/result mismatch (apply same rules as finish)
                 if (getRemaining(inventory, prizeId) <= 0) prizeId = 'TRY_AGAIN';
                 if (prizeId === 'FREE_DRINK' && !isFreeDrinkTimeAllowed()) prizeId = 'TRY_AGAIN';
+                if (prizeId === 'OFF10' && !allowOff10) prizeId = 'TRY_AGAIN';
                 if (prizeId === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) prizeId = 'TRY_AGAIN';
                 const prizeIndex = SETTINGS.prizes.findIndex(p => p.id === prizeId);
 
@@ -2304,13 +2962,35 @@
                     if (getRemaining(inventory, prizeId) <= 0) prizeId = 'TRY_AGAIN';
                     // Ensure time windows
                     if (prizeId === 'FREE_DRINK' && !isFreeDrinkTimeAllowed()) prizeId = 'TRY_AGAIN';
+                    if (prizeId === 'OFF10' && !allowOff10) prizeId = 'TRY_AGAIN';
                     if (prizeId === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) prizeId = 'TRY_AGAIN';
+                    // If server didn't require a win, force lose regardless
+                    if (!mustWin) prizeId = 'TRY_AGAIN';
+
+                    // Server reserved a win token: guarantee a non-TRY_AGAIN prize even if pool/time/inventory blocked
+                    if (mustWin && prizeId === 'TRY_AGAIN') {
+                        const prefer = ['OFF10', 'FREE_UPGRADE', 'BARISTA_CHOICE'];
+                        for (const pid of prefer) {
+                            const exists = SETTINGS.prizes.some(p => p.id === pid);
+                            if (!exists) continue;
+                            if (pid === 'OFF10' && !allowOff10) continue;
+                            if (pid === 'BARISTA_CHOICE' && !isBaristaTimeAllowed()) continue;
+                            if (getRemaining(inventory, pid) > 0) { prizeId = pid; break; }
+                        }
+                    }
 
                     // Lock attempt for the day
                     lockToday();
 
                     // Handle result
                     const prize = findPrize(prizeId);
+                    // Localize prize label if available
+                    try {
+                        const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en'];
+                        if (dict.prizes && dict.prizes[prizeId]) {
+                            prize.label = dict.prizes[prizeId];
+                        }
+                    } catch {}
                     if (prizeId !== 'TRY_AGAIN') {
                         // Enforce daily win cap at finish time as well
                         if (getWinsToday() >= (SETTINGS.maxWinsPerDevicePerDay || Infinity)) {
@@ -2327,42 +3007,97 @@
                             const exp = new Date(now);
                             exp.setDate(now.getDate() + 3);
                             const expStr = `${exp.getFullYear()}-${pad(exp.getMonth()+1)}-${pad(exp.getDate())}`;
-                            extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2\">Win date: ${dateStr} — Valid for 3 days until ${expStr}</div>`;
+                            try {
+                                const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en'];
+                                const winDateLabel = dict.wheelWinDate || 'Win date:';
+                                const validLabel = (dict.valid3DaysUntil && typeof dict.valid3DaysUntil === 'function') ? dict.valid3DaysUntil(expStr) : `Valid for 3 days until ${expStr}`;
+                                extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2\">${winDateLabel} ${dateStr} — ${validLabel}</div>`;
+                            } catch {
+                                extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2\">Win date: ${dateStr} — Valid for 3 days until ${expStr}</div>`;
+                            }
                         } else if (prizeId === 'FREE_DRINK') {
-                            extraInfo = `<div class="text-xs text-cafe-black/70 mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                                <div class="font-semibold text-blue-800 mb-1">🎊 Congrats! Thursday Special Prize</div>
-                                <div class="text-blue-700">You won a free drink of your choice during the special time! 🥤</div>
-                                <div class="text-blue-600 text-xs mt-1">Win date: ${dateStr} — Valid today only</div>
-                            </div>`;
+                            try {
+                                const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en'];
+                                const winDateLabel = dict.wheelWinDate || 'Win date:';
+                                extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200\">
+                                    <div class=\"font-semibold text-blue-800 mb-1\">${dict.freeDrinkCongratsTitle}</div>
+                                    <div class=\"text-blue-700\">${dict.freeDrinkCongratsBody}</div>
+                                    <div class=\"text-blue-600 text-xs mt-1\">${winDateLabel} ${dateStr} — ${dict.validTodayOnly}</div>
+                                </div>`;
+                            } catch {
+                                extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200\">
+                                    <div class=\"font-semibold text-blue-800 mb-1\">🎊 Congrats! Thursday Special Prize</div>
+                                    <div class=\"text-blue-700\">You won a free drink of your choice during the special time! 🥤</div>
+                                    <div class=\"text-blue-600 text-xs mt-1\">Win date: ${dateStr} — Valid today only</div>
+                                </div>`;
+                            }
                         } else if (prizeId === 'BARISTA_CHOICE') {
-                            extraInfo = `<div class="text-xs text-cafe-black/70 mt-2 p-3 bg-green-50 rounded-lg border border-green-200">
-                                <div class="font-semibold text-green-800 mb-1">🎯 Barista's Mandatory Challenge</div>
-                                <div class="text-green-700">Our barista will choose your drink for you. Get ready for a new surprise! 🎲</div>
-                                <div class="text-green-600 text-xs mt-1">Win date: ${dateStr} — Valid today only</div>
-                            </div>`;
+                            try {
+                                const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en'];
+                                const winDateLabel = dict.wheelWinDate || 'Win date:';
+                                extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2 p-3 bg-green-50 rounded-lg border border-green-200\">
+                                    <div class=\"font-semibold text-green-800 mb-1\">🎯 Barista's Mandatory Challenge</div>
+                                    <div class=\"text-green-700\">Our barista will choose your drink for you. Get ready for a new surprise! 🎲</div>
+                                    <div class=\"text-green-600 text-xs mt-1\">${winDateLabel} ${dateStr} — ${dict.validTodayOnly}</div>
+                                </div>`;
+                            } catch {
+                                extraInfo = `<div class=\"text-xs text-cafe-black/70 mt-2 p-3 bg-green-50 rounded-lg border border-green-200\">
+                                    <div class=\"font-semibold text-green-800 mb-1\">🎯 Barista's Mandatory Challenge</div>
+                                    <div class=\"text-green-700\">Our barista will choose your drink for you. Get ready for a new surprise! 🎲</div>
+                                    <div class=\"text-green-600 text-xs mt-1\">Win date: ${dateStr} — Valid today only</div>
+                                </div>`;
+                            }
                         }
-                        wheelMsg.innerHTML = `<div class=\"text-cafe-black font-semibold mb-1\">Congratulations! 🎉</div>
-                            <div class=\"mb-1\">${prize.label}</div>
-                            <div class=\"mt-1 flex items-center justify-center gap-2 flex-wrap\">
-                                <div class=\"win-code font-mono bg-cafe-black text-white px-2 py-1 rounded\">${code}</div>
-                                <span class=\"text-sm text-cafe-black bg-gray-100 px-2 py-1 rounded border border-cafe-red/20\">Win date: ${dateStr}</span>
-                            </div>
-                            <div class=\"mt-2 flex items-center justify-center gap-2\">
-                                <button id=\"copyWinCode\" class=\"copy-code-btn px-2 py-1 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition\">Copy</button>
-                            </div>
-                            ${extraInfo}
-                            <div class=\"text-xs text-cafe-black/60 mt-2\">Show this to the service staff.</div>`;
+                        try {
+                            const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en'];
+                            const winDateLabel = dict.wheelWinDate || 'Win date:';
+                            const congrats = dict.wheelCongrats || 'Congratulations! 🎉';
+                            const copyLabel = dict.wheelCopy || 'Copy';
+                            const showStaff = dict.wheelShowStaff || 'Show this to the service staff.';
+                            wheelMsg.innerHTML = `<div class=\"text-cafe-black font-semibold mb-1\">${congrats}</div>
+                                <div class=\"mb-1\">${prize.label}</div>
+                                <div class=\"mt-1 flex items-center justify-center gap-2 flex-wrap\">
+                                    <div class=\"win-code font-mono bg-cafe-black text-white px-2 py-1 rounded\">${code}</div>
+                                    <span class=\"text-sm text-cafe-black bg-gray-100 px-2 py-1 rounded border border-cafe-red/20\">${winDateLabel} ${dateStr}</span>
+                                </div>
+                                <div class=\"mt-2 flex items-center justify-center gap-2\">
+                                    <button id=\"copyWinCode\" class=\"copy-code-btn px-2 py-1 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition\">${copyLabel}</button>
+                                </div>
+                                ${extraInfo}
+                                <div class=\"text-xs text-cafe-black/60 mt-2\">${showStaff}</div>`;
+                        } catch {
+                            wheelMsg.innerHTML = `<div class=\"text-cafe-black font-semibold mb-1\">Congratulations! 🎉</div>
+                                <div class=\"mb-1\">${prize.label}</div>
+                                <div class=\"mt-1 flex items-center justify-center gap-2 flex-wrap\">
+                                    <div class=\"win-code font-mono bg-cafe-black text-white px-2 py-1 rounded\">${code}</div>
+                                    <span class=\"text-sm text-cafe-black bg-gray-100 px-2 py-1 rounded border border-cafe-red/20\">Win date: ${dateStr}</span>
+                                </div>
+                                <div class=\"mt-2 flex items-center justify-center gap-2\">
+                                    <button id=\"copyWinCode\" class=\"copy-code-btn px-2 py-1 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition\">Copy</button>
+                                </div>
+                                ${extraInfo}
+                                <div class=\"text-xs text-cafe-black/60 mt-2\">Show this to the service staff.</div>`;
+                        }
                         // copy button
                         setTimeout(() => {
                             const copyBtn = document.getElementById('copyWinCode');
                             copyBtn && copyBtn.addEventListener('click', async () => {
-                                try { await navigator.clipboard.writeText(code); copyBtn.textContent = 'Copied'; } catch { copyBtn.textContent = 'Copy failed'; }
+                                try { 
+                                    await navigator.clipboard.writeText(code); 
+                                    try { const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en']; copyBtn.textContent = dict.wheelCopied; }
+                                    catch { copyBtn.textContent = 'Copied'; }
+                                } catch { 
+                                    try { const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en']; copyBtn.textContent = dict.wheelCopyFailed; }
+                                    catch { copyBtn.textContent = 'Copy failed'; }
+                                }
                             });
                         }, 0);
                         launchWinEffects();
                         incWinsToday();
                         // Mark global win and reset global losses
                         markGlobalWin();
+                        // Increment global counter for this specific prize id
+                        markPrizeWin(prizeId);
                         // record last prize and reset lose streak
                         try { setLastPrizeId(prizeId); setLoseStreak(0); } catch {}
                         // reset losses counter on any win
@@ -2374,17 +3109,34 @@
                         } catch {}
                     } else {
                         const code = generateCode('TRY');
-                        wheelMsg.innerHTML = `<div class="font-semibold text-cafe-black mb-1">Better luck next time!</div>
-                            <div class="text-cafe-black/70">Try again tomorrow.</div>
-                            <div class="win-code font-mono bg-cafe-black text-white px-2 py-1 rounded mt-2">${code}</div>
-                            <div class="mt-2 flex items-center justify-center gap-2">
-                                <button id="copyLoseCode" class="copy-code-btn px-2 py-1 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition">Copy</button>
-                            </div>`;
+                        try {
+                            const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en'];
+                            wheelMsg.innerHTML = `<div class=\"font-semibold text-cafe-black mb-1\">${dict.wheelLoseTitle}</div>
+                                <div class=\"text-cafe-black/70\">${dict.wheelLoseBody}</div>
+                                <div class=\"win-code font-mono bg-cafe-black text-white px-2 py-1 rounded mt-2\">${code}</div>
+                                <div class=\"mt-2 flex items-center justify-center gap-2\">
+                                    <button id=\"copyLoseCode\" class=\"copy-code-btn px-2 py-1 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition\">${dict.wheelCopy}</button>
+                                </div>`;
+                        } catch {
+                            wheelMsg.innerHTML = `<div class=\"font-semibold text-cafe-black mb-1\">Better luck next time!</div>
+                                <div class=\"text-cafe-black/70\">Try again tomorrow.</div>
+                                <div class=\"win-code font-mono bg-cafe-black text-white px-2 py-1 rounded mt-2\">${code}</div>
+                                <div class=\"mt-2 flex items-center justify-center gap-2\">
+                                    <button id=\"copyLoseCode\" class=\"copy-code-btn px-2 py-1 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition\">Copy</button>
+                                </div>`;
+                        }
                         // copy button for lose code
                         setTimeout(() => {
                             const copyBtn = document.getElementById('copyLoseCode');
                             copyBtn && copyBtn.addEventListener('click', async () => {
-                                try { await navigator.clipboard.writeText(code); copyBtn.textContent = 'Copied'; } catch { copyBtn.textContent = 'Copy failed'; }
+                                try { 
+                                    await navigator.clipboard.writeText(code); 
+                                    try { const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en']; copyBtn.textContent = dict.wheelCopied; }
+                                    catch { copyBtn.textContent = 'Copied'; }
+                                } catch { 
+                                    try { const dict = i18n[document.documentElement.classList.contains('ar') ? 'ar' : 'en']; copyBtn.textContent = dict.wheelCopyFailed; }
+                                    catch { copyBtn.textContent = 'Copy failed'; }
+                                }
                             });
                         }, 0);
                         // increment losses counter (pattern control)
@@ -2623,6 +3375,17 @@
             }
         })();
 
+    </script>
+    <script>
+        (function() {
+            try {
+                var params = new URLSearchParams(window.location.search);
+                if (params.get('wheel') === '1') {
+                    var btn = document.getElementById('tryLuckBtn');
+                    if (btn) btn.classList.remove('hidden');
+                }
+            } catch (e) {}
+        })();
     </script>
 </body>
 </html> 
