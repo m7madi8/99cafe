@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المالك - 99 Cafe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Tajawal', sans-serif; }
+        body { direction: rtl; text-align: right; }
+        .category-badge { 
+            background: linear-gradient(135deg, #D90429, #EF233C);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .item-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .item-card:hover {
+            border-color: #D90429;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(217, 4, 41, 0.15);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #D90429, #EF233C);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(217, 4, 41, 0.3);
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .btn-edit {
+            background: #3b82f6;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            max-width: 600px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .modal-content {
+                padding: 24px;
+                width: 90%;
+            }
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #D90429;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .modal-content {
+                padding: 16px;
+                max-width: 95%;
+            }
+            .item-card {
+                padding: 1rem !important;
+            }
+            .btn-primary, .btn-edit, .btn-danger {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            header h1 {
+                font-size: 1rem;
+            }
+            .login-card {
+                padding: 24px;
+            }
+            .item-card h3 {
+                font-size: 1.125rem;
+            }
+            .item-card p {
+                font-size: 0.875rem;
+            }
+            .category-badge {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+        }
+        
+        /* Prevent horizontal scroll on mobile */
+        body {
+            overflow-x: hidden;
+        }
+        
+        /* Better touch targets on mobile */
+        @media (max-width: 768px) {
+            button, .btn-primary, .btn-edit, .btn-danger {
+                min-height: 44px;
+                touch-action: manipulation;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="text-center mb-8">
+                <img src="99cafe-logo2.png" alt="99 Cafe" class="w-24 h-24 mx-auto mb-4">
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">لوحة تحكم المالك</h1>
+                <p class="text-gray-600">أدخل كلمة السر للوصول</p>
+            </div>
+            <div id="loginError" class="hidden mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm"></div>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">كلمة السر</label>
+                    <input type="password" id="passwordInput" required 
+                           class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-red-500 focus:outline-none"
+                           placeholder="أدخل كلمة السر">
+                </div>
+                <button type="submit" class="btn-primary w-full">
+                    <i class="fas fa-sign-in-alt ml-2"></i>
+                    تسجيل الدخول
+                </button>
+            </form>
+            <div class="mt-6 text-center text-sm text-gray-500">
+                <p>كلمة السر الافتراضية: <code class="bg-gray-100 px-2 py-1 rounded">admin99</code></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="dashboard" class="hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-md sticky top-0 z-50">
+            <div class="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+                <!-- Top Row: Logo and Menu Toggle -->
+                <div class="flex justify-between items-center mb-3 sm:mb-0">
+                    <div class="flex items-center gap-2 sm:gap-4">
+                        <img src="99cafe-logo2.png" alt="99 Cafe" class="w-10 h-10 sm:w-12 sm:h-12">
+                        <h1 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">لوحة تحكم المالك</h1>
+                    </div>
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobileMenuToggle" class="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Desktop Buttons -->
+                <div id="desktopButtons" class="hidden md:flex items-center gap-2 lg:gap-4 flex-wrap">
+                    <button id="syncBtn" class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm lg:text-base">
+                        <i class="fas fa-sync ml-1 sm:ml-2"></i>
+                        <span class="hidden lg:inline">استيراد من الموقع</span>
+                        <span class="lg:hidden">استيراد</span>
+                    </button>
+                    <button id="exportBtn" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm lg:text-base">
+                        <i class="fas fa-download ml-1 sm:ml-2"></i>
+                        <span class="hidden lg:inline">تصدير البيانات</span>
+                        <span class="lg:hidden">تصدير</span>
+                    </button>
+                    <button id="addItemBtn" class="btn-primary text-sm lg:text-base px-3 lg:px-6">
+                        <i class="fas fa-plus ml-1 sm:ml-2"></i>
+                        <span class="hidden lg:inline">إضافة صنف جديد</span>
+                        <span class="lg:hidden">إضافة</span>
+                    </button>
+                    <button id="logoutBtn" class="px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-sm lg:text-base">
+                        <i class="fas fa-sign-out-alt ml-1 sm:ml-2"></i>
+                        <span class="hidden lg:inline">تسجيل الخروج</span>
+                        <span class="lg:hidden">خروج</span>
+                    </button>
+                </div>
+                
+                <!-- Mobile Menu (Hidden by default) -->
+                <div id="mobileMenu" class="hidden md:hidden mt-3 pt-3 border-t border-gray-200">
+                    <div class="flex flex-col gap-2">
+                        <button id="syncBtnMobile" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-right flex items-center justify-end gap-2">
+                            <i class="fas fa-sync"></i>
+                            <span>استيراد من الموقع</span>
+                        </button>
+                        <button id="exportBtnMobile" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-right flex items-center justify-end gap-2">
+                            <i class="fas fa-download"></i>
+                            <span>تصدير البيانات</span>
+                        </button>
+                        <button id="addItemBtnMobile" class="w-full btn-primary text-right flex items-center justify-end gap-2">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة صنف جديد</span>
+                        </button>
+                        <button id="logoutBtnMobile" class="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-right flex items-center justify-end gap-2">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>تسجيل الخروج</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- Search and Filter -->
+            <div class="mb-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <div class="flex-1 w-full sm:min-w-[250px]">
+                    <input type="text" id="searchInput" placeholder="🔍 البحث عن صنف..." 
+                           class="w-full p-3 border-2 border-gray-300 rounded-lg text-base">
+                </div>
+                <select id="categoryFilter" class="w-full sm:w-auto sm:min-w-[150px] p-3 border-2 border-gray-300 rounded-lg text-base">
+                    <option value="">جميع الفئات</option>
+                    <option value="drinks">مشروبات</option>
+                    <option value="food">أطعمة</option>
+                    <option value="desserts">حلويات</option>
+                    <option value="hookah">أراجيل</option>
+                </select>
+            </div>
+            
+            <!-- Info Banner -->
+            <div id="infoBanner" class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg hidden">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-info-circle text-blue-600"></i>
+                    <div class="flex-1">
+                        <p class="text-sm text-blue-800">
+                            <strong>ملاحظة:</strong> التعديلات تُحفظ في localStorage. 
+                            الموقع الرئيسي يقرأ التعديلات تلقائياً عند التحديث.
+                        </p>
+                    </div>
+                    <button onclick="document.getElementById('infoBanner').classList.add('hidden')" 
+                            class="text-blue-600 hover:text-blue-800">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Items List -->
+            <div id="itemsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <!-- Items will be loaded here -->
+            </div>
+
+            <div id="noItems" class="hidden text-center py-12 text-gray-500">
+                <i class="fas fa-inbox text-6xl mb-4"></i>
+                <p class="text-xl">لا توجد أصناف لعرضها</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Item Modal -->
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="modalTitle" class="text-2xl font-bold text-gray-800">إضافة صنف جديد</h2>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="itemForm">
+                <input type="hidden" id="itemId">
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">اسم الصنف (عربي)</label>
+                    <input type="text" id="itemNameAr" required placeholder="مثال: لاتيه بارد">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">اسم الصنف (إنجليزي)</label>
+                    <input type="text" id="itemNameEn" required placeholder="Example: Iced Latte">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">الفئة</label>
+                    <select id="itemCategory" required>
+                        <option value="">اختر الفئة</option>
+                        <option value="drinks">مشروبات</option>
+                        <option value="food">أطعمة</option>
+                        <option value="desserts">حلويات</option>
+                        <option value="hookah">أراجيل</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">المجموعة / الفئة الفرعية</label>
+                    <input type="text" id="itemGroup" placeholder="مثال: لاتيه بارد، قهوة ساخنة، إلخ">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">الوصف (عربي)</label>
+                    <textarea id="itemDescriptionAr" rows="2" placeholder="وصف مختصر للصنف"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">الوصف (إنجليزي)</label>
+                    <textarea id="itemDescriptionEn" rows="2" placeholder="Brief description"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">السعر</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">صغير</label>
+                            <input type="number" id="priceMini" step="0.01" placeholder="0.00" class="text-base">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">عادي</label>
+                            <input type="number" id="priceNormal" step="0.01" placeholder="0.00" class="text-base">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">كبير</label>
+                            <input type="number" id="priceLarge" step="0.01" placeholder="0.00" class="text-base">
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <label class="block text-sm text-gray-600 mb-1">أو سعر واحد</label>
+                        <input type="number" id="priceSingle" step="0.01" placeholder="0.00" class="text-base">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">ملاحظات إضافية (عربي)</label>
+                    <textarea id="itemNotesAr" rows="2" placeholder="مثال: + صودا، + ريد بول"></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">ملاحظات إضافية (إنجليزي)</label>
+                    <textarea id="itemNotesEn" rows="2" placeholder="Example: + Soda, + Red Bull"></textarea>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-end">
+                    <button type="button" id="cancelBtn" class="w-full sm:w-auto px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-base">
+                        إلغاء
+                    </button>
+                    <button type="submit" class="w-full sm:w-auto btn-primary text-base">
+                        <i class="fas fa-save ml-2"></i>
+                        حفظ
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const ADMIN_PASSWORD = 'admin99'; // Change this to your desired password
+        const STORAGE_KEY = 'cafe_menu_items';
+        const AUTH_KEY = 'cafe_admin_auth';
+
+        // Initialize
+        let menuItems = [];
+        let editingItemId = null;
+        let extractedItems = [];
+
+        // Check if already logged in
+        if (localStorage.getItem(AUTH_KEY) === 'authenticated') {
+            showDashboard();
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = document.getElementById('passwordInput').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            if (password === ADMIN_PASSWORD) {
+                localStorage.setItem(AUTH_KEY, 'authenticated');
+                errorDiv.classList.add('hidden');
+                showDashboard();
+            } else {
+                errorDiv.textContent = 'كلمة السر غير صحيحة!';
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem(AUTH_KEY);
+            location.reload();
+        });
+
+        // Show Dashboard
+        function showDashboard() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            loadMenuItems();
+        }
+
+        // Extract items from index.html
+        async function extractItemsFromIndex() {
+            try {
+                let html;
+                // Try to fetch from server first
+                try {
+                    const response = await fetch('index.html');
+                    if (response.ok) {
+                        html = await response.text();
+                    } else {
+                        throw new Error('Fetch failed');
+                    }
+                } catch (fetchError) {
+                    // If fetch fails (local file), try to get from iframe or prompt user
+                    console.warn('Cannot fetch index.html directly. Please ensure you are running on a web server.');
+                    // Try alternative: open index.html in iframe and extract
+                    return await extractFromIframe();
+                }
+                
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                const items = [];
+                const categories = {
+                    'drinks': doc.getElementById('drinks'),
+                    'food': doc.getElementById('food'),
+                    'desserts': doc.getElementById('desserts'),
+                    'hookah': doc.getElementById('hookah')
+                };
+
+                Object.keys(categories).forEach(category => {
+                    const categoryEl = categories[category];
+                    if (!categoryEl) return;
+
+                    // Find all menu items in this category
+                    const menuItems = categoryEl.querySelectorAll('.menu-item');
+                    
+                    menuItems.forEach((itemEl, index) => {
+                        const h4 = itemEl.querySelector('h4');
+                        if (!h4) return;
+
+                        const nameEn = h4.textContent.trim();
+                        const nameAr = h4.getAttribute('data-en') || nameEn;
+                        
+                        // Get description
+                        const descP = itemEl.querySelector('p.text-sm.text-cafe-black\\/60');
+                        const description = descP ? descP.textContent.trim() : '';
+                        
+                        // Get prices
+                        const priceChips = itemEl.querySelectorAll('.price-chip');
+                        let priceMini = null, priceNormal = null, priceLarge = null, priceSingle = null;
+                        
+                        priceChips.forEach(chip => {
+                            const label = chip.querySelector('.label')?.textContent.trim();
+                            const price = chip.querySelector('.font-bold')?.textContent.trim();
+                            if (label && price) {
+                                if (label.includes('Mini') || label.includes('صغير')) priceMini = parseFloat(price);
+                                else if (label.includes('Normal') || label.includes('عادي')) priceNormal = parseFloat(price);
+                                else if (label.includes('Large') || label.includes('كبير')) priceLarge = parseFloat(price);
+                            }
+                        });
+                        
+                        // If no price chips, check for single price
+                        if (!priceMini && !priceNormal && !priceLarge) {
+                            const singlePrice = itemEl.querySelector('.font-bold.text-cafe-red');
+                            if (singlePrice && singlePrice.textContent.trim()) {
+                                priceSingle = parseFloat(singlePrice.textContent.trim());
+                            }
+                        }
+                        
+                        // Get notes (red text)
+                        const notes = [];
+                        itemEl.querySelectorAll('p.text-sm.font-semibold.text-cafe-red').forEach(p => {
+                            notes.push(p.textContent.trim());
+                        });
+                        
+                        // Get group name (h3 text)
+                        const groupEl = itemEl.closest('.bg-cafe-white')?.querySelector('h3');
+                        const group = groupEl ? groupEl.textContent.replace(/[^\w\s]/g, '').trim() : '';
+                        
+                        items.push({
+                            id: `extracted_${category}_${index}_${Date.now()}`,
+                            nameEn: nameEn,
+                            nameAr: nameAr,
+                            category: category,
+                            group: group,
+                            descriptionEn: description,
+                            descriptionAr: description,
+                            priceMini: priceMini,
+                            priceNormal: priceNormal,
+                            priceLarge: priceLarge,
+                            priceSingle: priceSingle,
+                            notesEn: notes.join(', '),
+                            notesAr: notes.join(', '),
+                            extracted: true,
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        });
+                    });
+                });
+
+                return items;
+            } catch (error) {
+                console.error('Error extracting items:', error);
+                return [];
+            }
+        }
+
+        // Alternative extraction method using iframe
+        async function extractFromIframe() {
+            return new Promise((resolve) => {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = 'index.html';
+                document.body.appendChild(iframe);
+                
+                iframe.onload = () => {
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        const items = [];
+                        const categories = {
+                            'drinks': iframeDoc.getElementById('drinks'),
+                            'food': iframeDoc.getElementById('food'),
+                            'desserts': iframeDoc.getElementById('desserts'),
+                            'hookah': iframeDoc.getElementById('hookah')
+                        };
+
+                        Object.keys(categories).forEach(category => {
+                            const categoryEl = categories[category];
+                            if (!categoryEl) return;
+
+                            const menuItems = categoryEl.querySelectorAll('.menu-item');
+                            
+                            menuItems.forEach((itemEl, index) => {
+                                const h4 = itemEl.querySelector('h4');
+                                if (!h4) return;
+
+                                const nameEn = h4.textContent.trim();
+                                const nameAr = h4.getAttribute('data-en') || nameEn;
+                                
+                                const descP = itemEl.querySelector('p.text-sm.text-cafe-black\\/60');
+                                const description = descP ? descP.textContent.trim() : '';
+                                
+                                const priceChips = itemEl.querySelectorAll('.price-chip');
+                                let priceMini = null, priceNormal = null, priceLarge = null, priceSingle = null;
+                                
+                                priceChips.forEach(chip => {
+                                    const label = chip.querySelector('.label')?.textContent.trim();
+                                    const price = chip.querySelector('.font-bold')?.textContent.trim();
+                                    if (label && price) {
+                                        if (label.includes('Mini') || label.includes('صغير')) priceMini = parseFloat(price);
+                                        else if (label.includes('Normal') || label.includes('عادي')) priceNormal = parseFloat(price);
+                                        else if (label.includes('Large') || label.includes('كبير')) priceLarge = parseFloat(price);
+                                    }
+                                });
+                                
+                                if (!priceMini && !priceNormal && !priceLarge) {
+                                    const singlePrice = itemEl.querySelector('.font-bold.text-cafe-red');
+                                    if (singlePrice && singlePrice.textContent.trim()) {
+                                        priceSingle = parseFloat(singlePrice.textContent.trim());
+                                    }
+                                }
+                                
+                                const notes = [];
+                                itemEl.querySelectorAll('p.text-sm.font-semibold.text-cafe-red').forEach(p => {
+                                    notes.push(p.textContent.trim());
+                                });
+                                
+                                const groupEl = itemEl.closest('.bg-cafe-white')?.querySelector('h3');
+                                const group = groupEl ? groupEl.textContent.replace(/[^\w\s]/g, '').trim() : '';
+                                
+                                items.push({
+                                    id: `extracted_${category}_${index}_${Date.now()}`,
+                                    nameEn: nameEn,
+                                    nameAr: nameAr,
+                                    category: category,
+                                    group: group,
+                                    descriptionEn: description,
+                                    descriptionAr: description,
+                                    priceMini: priceMini,
+                                    priceNormal: priceNormal,
+                                    priceLarge: priceLarge,
+                                    priceSingle: priceSingle,
+                                    notesEn: notes.join(', '),
+                                    notesAr: notes.join(', '),
+                                    extracted: true,
+                                    createdAt: new Date().toISOString(),
+                                    updatedAt: new Date().toISOString()
+                                });
+                            });
+                        });
+
+                        document.body.removeChild(iframe);
+                        resolve(items);
+                    } catch (error) {
+                        console.error('Error extracting from iframe:', error);
+                        document.body.removeChild(iframe);
+                        resolve([]);
+                    }
+                };
+                
+                // Timeout after 5 seconds
+                setTimeout(() => {
+                    if (iframe.parentNode) {
+                        document.body.removeChild(iframe);
+                    }
+                    resolve([]);
+                }, 5000);
+            });
+        }
+
+        // Load menu items from localStorage or extract from index.html
+        async function loadMenuItems() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                menuItems = JSON.parse(stored);
+                // If we have stored items, show them
+                if (menuItems.length > 0) {
+                    renderItems();
+                    return;
+                }
+            }
+            
+            // Try to extract from index.html
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            loadingDiv.innerHTML = '<div class="bg-white p-6 rounded-lg"><p class="text-lg">جاري استخراج الأصناف من الموقع...</p></div>';
+            document.body.appendChild(loadingDiv);
+            
+            try {
+                extractedItems = await extractItemsFromIndex();
+                if (extractedItems.length > 0) {
+                    menuItems = extractedItems;
+                    saveMenuItems();
+                    alert(`تم استخراج ${extractedItems.length} صنف من الموقع بنجاح!`);
+                } else {
+                    menuItems = [];
+                }
+            } catch (error) {
+                console.error('Error loading items:', error);
+                menuItems = [];
+            } finally {
+                loadingDiv.remove();
+                renderItems();
+            }
+        }
+
+        // Save menu items
+        function saveMenuItems() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(menuItems));
+            // Also save to a global key that index.html can read
+            localStorage.setItem('cafe_menu_items_sync', JSON.stringify(menuItems));
+            
+            // Show info banner
+            document.getElementById('infoBanner').classList.remove('hidden');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                document.getElementById('infoBanner').classList.add('hidden');
+            }, 5000);
+        }
+
+
+        // Render items
+        function renderItems(filter = '') {
+            const container = document.getElementById('itemsContainer');
+            const noItems = document.getElementById('noItems');
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const searchTerm = filter.toLowerCase();
+
+            let filtered = menuItems.filter(item => {
+                const matchesCategory = !categoryFilter || item.category === categoryFilter;
+                const matchesSearch = !searchTerm || 
+                    item.nameAr.toLowerCase().includes(searchTerm) ||
+                    item.nameEn.toLowerCase().includes(searchTerm) ||
+                    (item.descriptionAr && item.descriptionAr.toLowerCase().includes(searchTerm));
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                noItems.classList.remove('hidden');
+                return;
+            }
+
+            noItems.classList.add('hidden');
+            container.innerHTML = filtered.map(item => `
+                <div class="item-card bg-white rounded-lg p-6 shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="category-badge">${getCategoryName(item.category)}</span>
+                                ${item.group ? `<span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">${item.group}</span>` : ''}
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-1">${item.nameAr}</h3>
+                            <p class="text-sm text-gray-500 mb-2">${item.nameEn}</p>
+                            ${item.descriptionAr ? `<p class="text-sm text-gray-600 mb-2">${item.descriptionAr}</p>` : ''}
+                            ${item.notesAr ? `<p class="text-xs text-red-600 mb-2">${item.notesAr}</p>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="border-t pt-4 mt-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-sm font-semibold text-gray-700">الأسعار:</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${item.priceMini ? `<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">صغير: ${item.priceMini}</span>` : ''}
+                            ${item.priceNormal ? `<span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">عادي: ${item.priceNormal}</span>` : ''}
+                            ${item.priceLarge ? `<span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">كبير: ${item.priceLarge}</span>` : ''}
+                            ${item.priceSingle ? `<span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">${item.priceSingle}</span>` : ''}
+                        </div>
+                        
+                        <div class="flex gap-2 flex-col sm:flex-row">
+                            <button onclick="editItem('${item.id}')" class="btn-edit flex-1 text-sm sm:text-base">
+                                <i class="fas fa-edit ml-1 sm:ml-2"></i>
+                                <span class="hidden sm:inline">تعديل</span>
+                                <span class="sm:hidden">تعديل</span>
+                            </button>
+                            <button onclick="deleteItem('${item.id}')" class="btn-danger text-sm sm:text-base px-3 sm:px-4">
+                                <i class="fas fa-trash ml-1 sm:ml-2"></i>
+                                <span class="hidden sm:inline">حذف</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'drinks': 'مشروبات',
+                'food': 'أطعمة',
+                'desserts': 'حلويات',
+                'hookah': 'أراجيل'
+            };
+            return names[category] || category;
+        }
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderItems(e.target.value);
+        });
+
+        // Category filter
+        document.getElementById('categoryFilter').addEventListener('change', () => {
+            renderItems(document.getElementById('searchInput').value);
+        });
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuToggle.querySelector('i');
+            if (icon) {
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.className = 'fas fa-bars text-xl';
+                } else {
+                    icon.className = 'fas fa-times text-xl';
+                }
+            }
+        }
+        
+        function closeMobileMenu() {
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                const icon = mobileMenuToggle.querySelector('i');
+                if (icon) icon.className = 'fas fa-bars text-xl';
+            }
+        }
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMobileMenu();
+            });
+        }
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (mobileMenu && !mobileMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Close mobile menu on window resize to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Mobile button handlers
+        function setupButtonHandlers(desktopId, mobileId, handler) {
+            const desktopBtn = document.getElementById(desktopId);
+            const mobileBtn = document.getElementById(mobileId);
+            if (desktopBtn) desktopBtn.addEventListener('click', handler);
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', () => {
+                    handler();
+                    closeMobileMenu();
+                });
+            }
+        }
+        
+        // Add item button
+        const addItemHandler = () => {
+            editingItemId = null;
+            document.getElementById('modalTitle').textContent = 'إضافة صنف جديد';
+            document.getElementById('itemForm').reset();
+            document.getElementById('itemId').value = '';
+            document.getElementById('itemModal').classList.add('show');
+        };
+        setupButtonHandlers('addItemBtn', 'addItemBtnMobile', addItemHandler);
+        
+        // Sync button
+        setupButtonHandlers('syncBtn', 'syncBtnMobile', async () => {
+            if (!confirm('هل تريد استيراد الأصناف من الموقع؟ سيتم استبدال البيانات الحالية.')) return;
+            await loadMenuItems();
+        });
+        
+        // Export button
+        setupButtonHandlers('exportBtn', 'exportBtnMobile', () => {
+            const data = JSON.stringify(menuItems, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cafe-menu-items.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        
+        // Logout button
+        setupButtonHandlers('logoutBtn', 'logoutBtnMobile', () => {
+            localStorage.removeItem(AUTH_KEY);
+            location.reload();
+        });
+
+        // Close modal
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+        document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+        function closeModal() {
+            document.getElementById('itemModal').classList.remove('show');
+            editingItemId = null;
+        }
+
+        // Edit item
+        window.editItem = function(id) {
+            const item = menuItems.find(i => i.id === id);
+            if (!item) return;
+
+            editingItemId = id;
+            document.getElementById('modalTitle').textContent = 'تعديل صنف';
+            document.getElementById('itemId').value = item.id;
+            document.getElementById('itemNameAr').value = item.nameAr || '';
+            document.getElementById('itemNameEn').value = item.nameEn || '';
+            document.getElementById('itemCategory').value = item.category || '';
+            document.getElementById('itemGroup').value = item.group || '';
+            document.getElementById('itemDescriptionAr').value = item.descriptionAr || '';
+            document.getElementById('itemDescriptionEn').value = item.descriptionEn || '';
+            document.getElementById('priceMini').value = item.priceMini || '';
+            document.getElementById('priceNormal').value = item.priceNormal || '';
+            document.getElementById('priceLarge').value = item.priceLarge || '';
+            document.getElementById('priceSingle').value = item.priceSingle || '';
+            document.getElementById('itemNotesAr').value = item.notesAr || '';
+            document.getElementById('itemNotesEn').value = item.notesEn || '';
+            
+            document.getElementById('itemModal').classList.add('show');
+        };
+
+        // Delete item
+        window.deleteItem = function(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا الصنف؟')) return;
+            
+            menuItems = menuItems.filter(i => i.id !== id);
+            saveMenuItems();
+            renderItems(document.getElementById('searchInput').value);
+        };
+
+        // Save item form
+        document.getElementById('itemForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const itemData = {
+                id: editingItemId || Date.now().toString(),
+                nameAr: document.getElementById('itemNameAr').value.trim(),
+                nameEn: document.getElementById('itemNameEn').value.trim(),
+                category: document.getElementById('itemCategory').value,
+                group: document.getElementById('itemGroup').value.trim(),
+                descriptionAr: document.getElementById('itemDescriptionAr').value.trim(),
+                descriptionEn: document.getElementById('itemDescriptionEn').value.trim(),
+                priceMini: document.getElementById('priceMini').value || null,
+                priceNormal: document.getElementById('priceNormal').value || null,
+                priceLarge: document.getElementById('priceLarge').value || null,
+                priceSingle: document.getElementById('priceSingle').value || null,
+                notesAr: document.getElementById('itemNotesAr').value.trim(),
+                notesEn: document.getElementById('itemNotesEn').value.trim(),
+                createdAt: editingItemId ? menuItems.find(i => i.id === editingItemId)?.createdAt : new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            if (editingItemId) {
+                const index = menuItems.findIndex(i => i.id === editingItemId);
+                if (index !== -1) {
+                    menuItems[index] = itemData;
+                }
+            } else {
+                menuItems.push(itemData);
+            }
+
+            saveMenuItems();
+            renderItems(document.getElementById('searchInput').value);
+            closeModal();
+            
+            // Show success message
+            alert(editingItemId ? 'تم تحديث الصنف بنجاح!' : 'تم إضافة الصنف بنجاح!');
+        });
+
+        // Close modal on background click
+        document.getElementById('itemModal').addEventListener('click', (e) => {
+            if (e.target.id === 'itemModal') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
+
+

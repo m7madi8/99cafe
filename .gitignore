@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build outputs (uncomment if you don't want to track built CSS)
+# us/tailwind.css
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+

@@ -1,0 +1,2562 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../img/99cafe-logo2.png">
+    <link rel="shortcut icon" type="image/png" href="../img/99cafe-logo2.png">
+    <meta name="author" content="Mohammad Hroub">
+    <meta name="designer" content="Mohammad Hroub">
+    <meta name="developer" content="Mohammad Hroub">
+
+    <!-- Website developed by Mohammad Hroub - 2025 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Person",
+                "@id": "https://m7madi8.github.io/Mohammad/#person",
+                "name": "Mohammad Hroub",
+                "url": "https://m7madi8.github.io/Mohammad/",
+                "sameAs": [
+                    "https://m7madi8.github.io/Mohammad/"
+                ],
+                "jobTitle": "Frontend Developer"
+            },
+            {
+                "@type": "WebPage",
+                "name": "99 Cafe - Menu",
+                "inLanguage": ["en", "ar"],
+                "author": { "@id": "https://m7madi8.github.io/Mohammad/#person" },
+                "creator": { "@id": "https://m7madi8.github.io/Mohammad/#person" },
+                "designer": { "@id": "https://m7madi8.github.io/Mohammad/#person" },
+                "publisher": { "@id": "https://m7madi8.github.io/Mohammad/#person" }
+            }
+        ]
+    }
+    </script>
+    <title>99 Cafe - Menu</title>
+    <meta name="description" content="99 Cafe ">
+    <meta name="theme-color" content="#D90429">
+    <meta property="og:title" content="99 Cafe">
+    <meta property="og:description" content="99 Cafe">
+    <meta property="og:image" content="99cafe-logo2.png">
+    <meta property="og:type" content="website">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../img/99cafe-logo2.png">
+    <link rel="shortcut icon" type="image/png" href="../img/99cafe-logo2.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/99cafe-logo2.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/99cafe-logo2.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../img/99cafe-logo2.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../img/99cafe-logo2.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/99cafe-logo2.png">
+    <!-- Tailwind CSS - Built for production -->
+    <link rel="stylesheet" href="tailwind.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Optional Arabic fonts (activated when Arabic is selected) -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="us.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="bg-cafe-white min-h-screen">
+    <!-- Preloader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <img src="../img/99logo.png" alt="99 Cafe">
+            </div>
+            <div class="loader-line"></div>
+            <div class="loader-text">Loading</div>
+        </div>
+        <div class="loader-progress"></div>
+    </div>
+
+
+    <!-- Hero Section -->
+    <section class="bg-transparent text-cafe-black py-20">
+        <div class="flex flex-col items-center justify-center">
+            <div id="heroHalo" class="relative block mx-auto p-6 md:p-8 mb-6 md:mb-8 logo-shine-effect text-center">
+                
+                <img src="../img/99logo.png" alt="99 Cafe Logo" id="heroLogo" class="w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 object-contain mb-0 float-y cursor-pointer mx-auto block" />
+            </div>
+            <div class="reveal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-serif text-cafe-black tracking-widest mb-2 text-center px-2 hero-text" style="letter-spacing: 2px;">
+                It's more than a number
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="bg-cafe-gray">
+        <div class="container mx-auto">
+            <!-- Surprise Drink Modal -->
+            <div id="surpriseModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+                <div class="absolute inset-0 bg-black/40 modal-backdrop"></div>
+                <div class="relative rounded-2xl modal-card w-[92vw] max-w-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-cafe-red to-cafe-red-light text-white px-6 py-4 flex items-center justify-between select-none">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-martini-glass-citrus"></i>
+                            <span id="surpriseTitleLabel" class="font-semibold tracking-wide">Your Surprise Drink</span>
+                        </div>
+                        <button id="closeSurprise" class="text-white/90 hover:text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-6 select-none">
+                        <div class="text-center mb-4">
+                            <div class="mx-auto w-24 h-24 rounded-full bg-white/70 border border-white/60 grid place-items-center text-3xl drink-icon">
+                                <i id="surpriseIcon" class="fas fa-mug-hot text-amber-600"></i>
+                            </div>
+                        </div>
+                        <h4 class="text-xl font-bold text-center text-cafe-black" id="surpriseName">...</h4>
+                        <p class="text-center text-cafe-black/60 mt-1" id="surpriseHint"></p>
+                        <div class="mt-6 flex justify-center gap-3">
+                            <button id="anotherSurprise" class="px-4 py-2 rounded-lg bg-cafe-red text-white hover:bg-cafe-red-light transition">Try another</button>
+                            <button id="gotoDrinks" class="px-4 py-2 rounded-lg border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition">Go to Drinks</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="reveal text-4xl font-bold text-cafe-black mb-4 decorated-title menu-title-special" style="display: flex; align-items: center; justify-content: center; width: 100%; margin-left: auto; margin-right: auto;">
+                <span class="tab-label">menu</span>
+            </h2>
+            
+            <!-- Category Tabs -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="category-tab active bg-cafe-red text-cafe-white px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2" data-category="drinks">
+                    <span class="inline-block align-middle" style="width: 1.5em; height: 1.5em;">
+                        <i class="fas fa-coffee"></i>
+                    </span>
+                    <span class="tab-label">Drinks</span>
+                </button>
+                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="food">
+                    <i class="fas fa-utensils"></i>
+                    <span class="tab-label">Food</span>
+                </button>
+                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="desserts">
+                    <i class="fas fa-birthday-cake"></i>
+                    <span class="tab-label">Desserts</span>
+                </button>
+            </div>
+
+            <!-- Drinks Category -->
+            <div id="drinks" class="category-content fade-section show">
+                <!-- Filter Buttons -->
+                <div class="menu-filters mb-8 flex flex-wrap justify-center gap-3">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-th"></i>
+                        <span>All</span>
+                    </button>
+                    <button class="filter-btn" data-filter="classic-hot-coffee">
+                        <i class="fas fa-mug-hot"></i>
+                        <span>99 Classic Hot Coffee</span>
+                    </button>
+                    <button class="filter-btn" data-filter="classic-cold-coffee">
+                        <i class="fas fa-ice-cream"></i>
+                        <span>99 Classic Cold Coffee</span>
+                    </button>
+                    <button class="filter-btn" data-filter="signature">
+                        <i class="fas fa-star"></i>
+                        <span>99 Signature</span>
+                    </button>
+                    <button class="filter-btn" data-filter="matcha">
+                        <i class="fas fa-leaf"></i>
+                        <span>99 Matcha Creations</span>
+                    </button>
+                    <button class="filter-btn" data-filter="chocolate">
+                        <i class="fas fa-candy-cane"></i>
+                        <span>99 Chocolate Lovers</span>
+                    </button>
+                    <button class="filter-btn" data-filter="freeze">
+                        <i class="fas fa-snowflake"></i>
+                        <span>99 Freeze Favorites</span>
+                    </button>
+                    <button class="filter-btn" data-filter="coolers">
+                        <i class="fas fa-glass-water"></i>
+                        <span>99 Coolers</span>
+                    </button>
+                    <button class="filter-btn" data-filter="freshers">
+                        <i class="fas fa-apple-alt"></i>
+                        <span>99 In-House Freshers</span>
+                    </button>
+                    <button class="filter-btn" data-filter="lemonade">
+                        <i class="fas fa-lemon"></i>
+                        <span>99 Organic Lemonade</span>
+                    </button>
+                    <button class="filter-btn" data-filter="iced-tea">
+                        <i class="fas fa-glass-water"></i>
+                        <span>99 Tea Selection</span>
+                    </button>
+                    <button class="filter-btn" data-filter="hot-tea">
+                        <i class="fas fa-mug-hot"></i>
+                        <span>Hot Tea</span>
+                    </button>
+                </div>
+                
+                <!-- All Menu Items Grid -->
+                <div class="menu-items-grid grid">
+                    <!-- 99 Classic Hot Coffee -->
+                    <div class="menu-item-card" data-filter="classic-hot-coffee">
+                        <div class="menu-item-image">
+                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <!-- <img src="../img/menu/americano.jpg" alt="Americano" /> 
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Espresso</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$3.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="classic-hot-coffee">
+                        <div class="menu-item-image">
+                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <!-- <img src="../img/menu/americano.jpg" alt="Americano" /> 
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Americano</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$3.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="classic-hot-coffee">
+                        <div class="menu-item-image">
+                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <!-- <img src="../img/menu/cappuccino.jpg" alt="Cappuccino" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Cappuccino</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="classic-hot-coffee">
+                        <div class="menu-item-image">
+                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <!-- <img src="../img/menu/latte.jpg" alt="Latte" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Latte</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="classic-hot-coffee">
+                        <div class="menu-item-image">
+                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <!-- <img src="../img/menu/cortado.jpg" alt="Cortado" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Cortado</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$3.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="classic-hot-coffee">
+                        <div class="menu-item-image">
+                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <!-- <img src="../img/menu/mocha.jpg" alt="Mocha" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Mocha</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 99 Classic Cold Coffee -->
+                    <div class="menu-item-card" data-filter="classic-cold-coffee">
+                        <div class="menu-item-image">
+                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <!-- <img src="../img/menu/iced-americano.jpg" alt="Iced Americano" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Iced Americano</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="classic-cold-coffee">
+                        <div class="menu-item-image">
+                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <!-- <img src="../img/menu/iced-latte.jpg" alt="Iced Latte" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Iced Latte</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="classic-cold-coffee">
+                        <div class="menu-item-image">
+                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <!-- <img src="../img/menu/iced-mocha.jpg" alt="Iced Mocha" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Iced Mocha</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 99 Tea Selection (Iced Tea) -->
+                    <div class="menu-item-card" data-filter="iced-tea">
+                        <div class="menu-item-image">
+                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <!-- <img src="../img/menu/iced-tea.jpg" alt="Iced Tea" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Iced Tea</h4>
+                            </div>
+                            <p class="menu-item-description">Peach, Passion, Classic</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$3.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="iced-tea">
+                        <div class="menu-item-image">
+                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <!-- <img src="../img/menu/unsweetened-iced-tea.jpg" alt="Unsweetened Iced Tea" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Unsweetened Iced Tea</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$3.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hot Tea -->
+                    <div class="menu-item-card" data-filter="hot-tea">
+                        <div class="menu-item-image">
+                            <i class="fas fa-mug-hot icon-placeholder"></i>
+                            <!-- <img src="../img/menu/hot-tea.jpg" alt="Hot Tea" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Hot Tea</h4>
+                            </div>
+                            <p class="menu-item-description">Green Tea, Classic, Spiced Apple Chai</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$3.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 99 Signature -->
+                    <div class="menu-item-card" data-filter="signature">
+                        <div class="menu-item-image">
+                            <i class="fas fa-star icon-placeholder"></i>
+                            <!-- <img src="../img/menu/99-signature-latte.jpg" alt="99 Signature Latte" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">99 Signature Latte</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="signature">
+                        <div class="menu-item-image">
+                            <i class="fas fa-star icon-placeholder"></i>
+                            <!-- <img src="../img/menu/creme-de-banana-latte.jpg" alt="Crème de Banana Latte" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Crème de Banana Latte</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="signature">
+                        <div class="menu-item-image">
+                            <i class="fas fa-star icon-placeholder"></i>
+                            <!-- <img src="../img/menu/french-latte.jpg" alt="French Latte" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">French Latte</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="signature">
+                        <div class="menu-item-image">
+                            <i class="fas fa-star icon-placeholder"></i>
+                            <!-- <img src="../img/menu/cloudy-brown.jpg" alt="Cloudy Brown" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Cloudy Brown</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="signature">
+                        <div class="menu-item-image">
+                            <i class="fas fa-star icon-placeholder"></i>
+                            <!-- <img src="../img/menu/sugar-cinnamon.jpg" alt="Sugar Cinnamon" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Sugar Cinnamon</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 99 Matcha Creations -->
+                    <div class="menu-item-card" data-filter="matcha">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/classic-matcha.jpg" alt="Classic Matcha" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Classic Matcha</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="matcha">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/honey-bees-matcha.jpg" alt="Honey Bees Matcha" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Honey Bees Matcha</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="matcha">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/99-signature-matcha.jpg" alt="99 Signature Matcha" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">99 Signature Matcha</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="matcha">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/strawberry-matcha.jpg" alt="Strawberry Matcha" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Strawberry Matcha</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="matcha">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/banana-velvet-matcha.jpg" alt="Banana Velvet Matcha" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Banana Velvet Matcha</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="matcha">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/tropical-velvet-matcha.jpg" alt="Tropical Velvet Matcha" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Tropical Velvet Matcha</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 99 Chocolate Lovers -->
+                    <div class="menu-item-card" data-filter="chocolate">
+                        <div class="menu-item-image">
+                            <i class="fas fa-candy-cane icon-placeholder"></i>
+                            <!-- <img src="../img/menu/premium-hot-chocolate.jpg" alt="Premium Hot Chocolate" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Premium Hot Chocolate</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="chocolate">
+                        <div class="menu-item-image">
+                            <i class="fas fa-candy-cane icon-placeholder"></i>
+                            <!-- <img src="../img/menu/white-hot-chocolate.jpg" alt="White Hot Chocolate" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">White Hot Chocolate</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="chocolate">
+                        <div class="menu-item-image">
+                            <i class="fas fa-candy-cane icon-placeholder"></i>
+                            <!-- <img src="../img/menu/dark-hot-chocolate.jpg" alt="Dark Hot Chocolate" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Dark Hot Chocolate</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="chocolate">
+                        <div class="menu-item-image">
+                            <i class="fas fa-candy-cane icon-placeholder"></i>
+                            <!-- <img src="../img/menu/nutella-chocolate.jpg" alt="Nutella Chocolate" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Nutella Chocolate</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="chocolate">
+                        <div class="menu-item-image">
+                            <i class="fas fa-candy-cane icon-placeholder"></i>
+                            <!-- <img src="../img/menu/salted-caramel-chocolate.jpg" alt="Salted Caramel Chocolate" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Salted Caramel Chocolate</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 99 Freeze Favorites -->
+                    <div class="menu-item-card" data-filter="freeze">
+                        <div class="menu-item-image">
+                            <i class="fas fa-snowflake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/classic-coffee-freeze.jpg" alt="Classic Coffee Freeze" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Classic Coffee Freeze</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="freeze">
+                        <div class="menu-item-image">
+                            <i class="fas fa-snowflake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/chocolate-freeze.jpg" alt="Chocolate Freeze" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Chocolate Freeze</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="freeze">
+                        <div class="menu-item-image">
+                            <i class="fas fa-snowflake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/caramel-crunch-freeze.jpg" alt="Caramel Crunch Freeze" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Caramel Crunch Freeze</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="freeze">
+                        <div class="menu-item-image">
+                            <i class="fas fa-snowflake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/pumpkin-pie-freeze.jpg" alt="Pumpkin Pie Freeze" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Pumpkin Pie Freeze</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="freeze">
+                        <div class="menu-item-image">
+                            <i class="fas fa-snowflake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/strawberry-freeze.jpg" alt="Strawberry Freeze" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Strawberry Freeze</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="freeze">
+                        <div class="menu-item-image">
+                            <i class="fas fa-snowflake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/mango-freeze.jpg" alt="Mango Freeze" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Mango Freeze</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="freeze">
+                        <div class="menu-item-image">
+                            <i class="fas fa-snowflake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/crunch-biscoff-freeze.jpg" alt="Crunch Biscoff Freeze" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Crunch Biscoff Freeze</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 99 Coolers -->
+                    <div class="menu-item-card" data-filter="coolers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <!-- <img src="../img/menu/strawberry-dragon-fruit.jpg" alt="Strawberry Dragon Fruit" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Strawberry Dragon Fruit</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="coolers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <!-- <img src="../img/menu/tango.jpg" alt="Tango (Apple Kiwi)" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Tango</h4>
+                            </div>
+                            <p class="menu-item-description">Apple Kiwi</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="coolers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <!-- <img src="../img/menu/hawaiian.jpg" alt="Hawaiian (Pineapple - Blue Curacao)" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Hawaiian</h4>
+                            </div>
+                            <p class="menu-item-description">Pineapple - Blue Curacao</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="coolers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <!-- <img src="../img/menu/pina-colada.jpg" alt="Pina Colada (Pineapple - Coconut)" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Pina Colada</h4>
+                            </div>
+                            <p class="menu-item-description">Pineapple - Coconut</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 99 In-House Freshers -->
+                    <div class="menu-item-card" data-filter="freshers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-apple-alt icon-placeholder"></i>
+                            <!-- <img src="../img/menu/fresh-orange.jpg" alt="Fresh Orange" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Fresh Orange</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="freshers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-apple-alt icon-placeholder"></i>
+                            <!-- <img src="../img/menu/fresh-apple.jpg" alt="Fresh Apple" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Fresh Apple</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="freshers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-apple-alt icon-placeholder"></i>
+                            <!-- <img src="../img/menu/fresh-carrot.jpg" alt="Fresh Carrot" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Fresh Carrot</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="freshers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-apple-alt icon-placeholder"></i>
+                            <!-- <img src="../img/menu/greenie.jpg" alt="Greenie (Apple, Cucumber, Lemon & Honey)" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Greenie</h4>
+                            </div>
+                            <p class="menu-item-description">Apple, Cucumber, Lemon & Honey</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 99 Organic Lemonade -->
+                    <div class="menu-item-card" data-filter="lemonade">
+                        <div class="menu-item-image">
+                            <i class="fas fa-lemon icon-placeholder"></i>
+                            <!-- <img src="../img/menu/lemonade.jpg" alt="Lemonade" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Lemonade</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="lemonade">
+                        <div class="menu-item-image">
+                            <i class="fas fa-lemon icon-placeholder"></i>
+                            <!-- <img src="../img/menu/strawberry-lemonade.jpg" alt="Strawberry Lemonade" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Strawberry Lemonade</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desserts Category -->
+            <div id="desserts" class="category-content hidden fade-section">
+                <!-- Filter Buttons -->
+                <div class="menu-filters mb-8 flex flex-wrap justify-center gap-3">
+                    <button class="filter-btn active" data-filter="all-desserts">
+                        <i class="fas fa-th"></i>
+                        <span>All</span>
+                    </button>
+                    <button class="filter-btn" data-filter="sweet-collection">
+                        <i class="fas fa-birthday-cake"></i>
+                        <span>99 Sweet Collection</span>
+                    </button>
+                    <button class="filter-btn" data-filter="bakery-bites">
+                        <i class="fas fa-bread-slice"></i>
+                        <span>Bakery Bites</span>
+                    </button>
+                    <button class="filter-btn" data-filter="toast-salad">
+                        <i class="fas fa-utensils"></i>
+                        <span>99 Toast & Salad</span>
+                    </button>
+                </div>
+                
+                <!-- All Desserts Items Grid -->
+                <div class="menu-items-grid grid">
+                    <!-- 99 Sweet Collection -->
+                    <!-- Cheesecake -->
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-cheese icon-placeholder"></i>
+                            <!-- <img src="../img/menu/dulce-cheesecake.jpg" alt="Dulce Cheesecake" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Dulce Cheesecake</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$10.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-cheese icon-placeholder"></i>
+                            <!-- <img src="../img/menu/golden-praline-cheesecake.jpg" alt="Golden Praline Cheesecake" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Golden Praline Cheesecake</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$10.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-cheese icon-placeholder"></i>
+                            <!-- <img src="../img/menu/lemon-cheesecake.jpg" alt="Lemon Cheesecake" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Lemon Cheesecake</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$10.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- San Sebastian -->
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-cake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/matcha-san-sebastian.jpg" alt="Matcha San Sebastian" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Matcha San Sebastian</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$13.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-cake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/nutella-san-sebastian.jpg" alt="Nutella San Sebastian" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Nutella San Sebastian</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$12.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-cake icon-placeholder"></i>
+                            <!-- <img src="../img/menu/vanilla-san-sebastian.jpg" alt="Vanilla San Sebastian" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Vanilla San Sebastian</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$12.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Muffin -->
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-bread-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/blueberry-crumb-muffins.jpg" alt="Blueberry Crumb Muffins" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Blueberry Crumb Muffins</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Shooters -->
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-wine-glass icon-placeholder"></i>
+                            <!-- <img src="../img/menu/tiramisu-shooters.jpg" alt="Tiramisu Shooters" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Tiramisu Shooters</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cookies -->
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-cookie icon-placeholder"></i>
+                            <!-- <img src="../img/menu/double-chocolate-cookie.jpg" alt="Double Chocolate Cookie" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Double Chocolate Cookie</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-cookie icon-placeholder"></i>
+                            <!-- <img src="../img/menu/key-lime-sugar-cookie.jpg" alt="Key Lime Sugar Cookie" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Key Lime Sugar Cookie</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-cookie icon-placeholder"></i>
+                            <!-- <img src="../img/menu/seasonal-gingerbread-cookie.jpg" alt="Seasonal Gingerbread Cookie" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Seasonal Gingerbread Cookie</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Velvet Squares -->
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-square icon-placeholder"></i>
+                            <!-- <img src="../img/menu/flourless-midnight-velvet-mousse.jpg" alt="Flourless Midnight Velvet Mousse" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Flourless Midnight Velvet Mousse</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sweet-collection">
+                        <div class="menu-item-image">
+                            <i class="fas fa-square icon-placeholder"></i>
+                            <!-- <img src="../img/menu/raspberry-crumb.jpg" alt="Raspberry Crumb" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Raspberry Crumb</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bakery Bites -->
+                    <div class="menu-item-card" data-filter="bakery-bites">
+                        <div class="menu-item-image">
+                            <i class="fas fa-egg icon-placeholder"></i>
+                            <!-- <img src="../img/menu/morning-egg-bun.jpg" alt="Morning Egg Bun" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Morning Egg Bun</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="bakery-bites">
+                        <div class="menu-item-image">
+                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
+                            <!-- <img src="../img/menu/turkey-sausage-cheese.jpg" alt="Turkey Sausage & Cheese" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Turkey Sausage & Cheese</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$10.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="bakery-bites">
+                        <div class="menu-item-image">
+                            <i class="fas fa-apple-alt icon-placeholder"></i>
+                            <!-- <img src="../img/menu/apple-spice-bites.jpg" alt="Apple Spice Bites" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Apple Spice Bites</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 99 Toast & Salad -->
+                    <div class="menu-item-card" data-filter="toast-salad">
+                        <div class="menu-item-image">
+                            <i class="fas fa-bread-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/creamy-avocado-toast.jpg" alt="Creamy Avocado Toast" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Creamy Avocado Toast</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="toast-salad">
+                        <div class="menu-item-image">
+                            <i class="fas fa-bread-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/signature-egg-toast.jpg" alt="Signature Egg Toast" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Signature Egg Toast</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="toast-salad">
+                        <div class="menu-item-image">
+                            <i class="fas fa-bread-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/tuna-toast.jpg" alt="Tuna Toast" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Tuna Toast</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Salad -->
+                    <div class="menu-item-card" data-filter="toast-salad">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/crunchy-caesar-salad.jpg" alt="Crunchy Caesar Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Crunchy Caesar Salad</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="toast-salad">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/greek-salad.jpg" alt="Greek Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Greek Salad</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="toast-salad">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/zesty-tuna-salad.jpg" alt="Zesty Tuna Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Zesty Tuna Salad</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$10.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Food Category -->
+            <div id="food" class="category-content hidden fade-section">
+                <!-- Filter Buttons -->
+                <div class="menu-filters mb-8 flex flex-wrap justify-center gap-3">
+                    <button class="filter-btn active" data-filter="all-food">
+                        <i class="fas fa-th"></i>
+                        <span>All</span>
+                    </button>
+                    <button class="filter-btn" data-filter="appetizers">
+                        <i class="fas fa-drumstick-bite"></i>
+                        <span>Appetizers</span>
+                    </button>
+                    <button class="filter-btn" data-filter="salads">
+                        <i class="fas fa-leaf"></i>
+                        <span>Salads</span>
+                    </button>
+                    <button class="filter-btn" data-filter="sandwiches">
+                        <i class="fas fa-hamburger"></i>
+                        <span>Sandwiches</span>
+                    </button>
+                    <button class="filter-btn" data-filter="pastas">
+                        <i class="fas fa-utensils"></i>
+                        <span>Pastas</span>
+                    </button>
+                    <button class="filter-btn" data-filter="pizzas">
+                        <i class="fas fa-pizza-slice"></i>
+                        <span>Pizzas</span>
+                    </button>
+                    <button class="filter-btn" data-filter="main-dishes">
+                        <i class="fas fa-drumstick-bite"></i>
+                        <span>Main Dishes</span>
+                    </button>
+                </div>
+                
+                <!-- All Food Items Grid -->
+                <div class="menu-items-grid grid">
+                    <!-- Appetizers -->
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
+                            <!-- <img src="../img/menu/popcorn-chicken.jpg" alt="Popcorn Chicken" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Popcorn Chicken</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$29.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
+                            <!-- <img src="../img/menu/chicken-fingers.jpg" alt="Chicken Fingers" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Chicken Fingers</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$29.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
+                            <!-- <img src="../img/menu/nachos.jpg" alt="Nachos" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Nachos</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$34.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
+                            <!-- <img src="../img/menu/wings.jpg" alt="Wings" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Wings</h4>
+                            </div>
+                            <p class="menu-item-description">Buffalo, Barbecue, Sweet Chili</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$39.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-fish icon-placeholder"></i>
+                            <!-- <img src="../img/menu/fish-chips.jpg" alt="Fish and Chips" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Fish and Chips</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$39.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
+                            <!-- <img src="../img/menu/mix-platter.jpg" alt="Mix Platter" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Mix Platter</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$49.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-french-fries icon-placeholder"></i>
+                            <!-- <img src="../img/menu/classic-fries.jpg" alt="Classic Fries" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Classic Fries</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$14.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-french-fries icon-placeholder"></i>
+                            <!-- <img src="../img/menu/wedge-fries.jpg" alt="Wedge Fries" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Wedge Fries</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$18.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-french-fries icon-placeholder"></i>
+                            <!-- <img src="../img/menu/curly-fries.jpg" alt="Curly Fries" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Curly Fries</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$18.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-bread-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/garlic-bread.jpg" alt="Garlic Bread" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Garlic Bread</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$19.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Salads -->
+                    <div class="menu-item-card" data-filter="salads">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/greek-salad.jpg" alt="Greek Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Greek Salad</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$33.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="salads">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/haloomi-salad.jpg" alt="Haloomi Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Haloomi Salad</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$33.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="salads">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/quinoa-salad.jpg" alt="Quinoa Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Quinoa Salad</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$33.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="salads">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/caesar-salad.jpg" alt="Caesar Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Caesar Salad</h4>
+                            </div>
+                            <p class="menu-item-description">Add Chicken + $5.00</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$29.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="salads">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/tabbouleh-quinoa-salad.jpg" alt="Tabbouleh Quinoa Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Tabbouleh Quinoa Salad</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$33.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="salads">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/tuna-salad.jpg" alt="Tuna Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Tuna Salad</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$29.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="salads">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <!-- <img src="../img/menu/falahy-salad.jpg" alt="Falahy Salad" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Falahy Salad</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$28.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sandwiches -->
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/classic-chicken.jpg" alt="Classic Chicken" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Classic Chicken</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$29.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/white-sauce-sandwich.jpg" alt="White Sauce Sandwich" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">White Sauce Sandwich</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$34.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/pesto-chicken.jpg" alt="Pesto Chicken" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Pesto Chicken</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$36.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/mexican-sandwich.jpg" alt="Mexican Sandwich" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Mexican Sandwich</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$34.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/italian-sandwich.jpg" alt="Italian Sandwich" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Italian Sandwich</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$33.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/grilled-chicken-steak.jpg" alt="Grilled Chicken Steak" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Grilled Chicken Steak</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$29.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/quesadilla-wrap.jpg" alt="Quesadilla Wrap" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Quesadilla Wrap</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$33.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/zingar-wrap.jpg" alt="Zingar Wrap" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Zingar Wrap</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$34.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/caesar-wrap.jpg" alt="Caesar Wrap" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Caesar Wrap</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$34.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/halloumi-wrap.jpg" alt="Halloumi Wrap" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Halloumi Wrap</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$19.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/tuna-sandwich.jpg" alt="Tuna Sandwich" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Tuna Sandwich</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$19.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/omelette-wrap.jpg" alt="Omelette Wrap" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Omelette Wrap</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$17.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="sandwiches">
+                        <div class="menu-item-image">
+                            <i class="fas fa-hamburger icon-placeholder"></i>
+                            <!-- <img src="../img/menu/labaneh-wrap.jpg" alt="Labaneh Wrap" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Labaneh Wrap</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$14.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pastas -->
+                    <div class="menu-item-card" data-filter="pastas">
+                        <div class="menu-item-image">
+                            <i class="fas fa-utensils icon-placeholder"></i>
+                            <!-- <img src="../img/menu/fettuccine-alfredo.jpg" alt="Fettuccine Alfredo" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Fettuccine Alfredo</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$44.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="pastas">
+                        <div class="menu-item-image">
+                            <i class="fas fa-utensils icon-placeholder"></i>
+                            <!-- <img src="../img/menu/spaghetti-rose.jpg" alt="Spaghetti Rose" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Spaghetti Rose</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$44.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="pastas">
+                        <div class="menu-item-image">
+                            <i class="fas fa-utensils icon-placeholder"></i>
+                            <!-- <img src="../img/menu/penne-pesto.jpg" alt="Penne Pesto" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Penne Pesto</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$44.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pizzas -->
+                    <div class="menu-item-card" data-filter="pizzas">
+                        <div class="menu-item-image">
+                            <i class="fas fa-pizza-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/alfredo-pizza.jpg" alt="Alfredo Pizza" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Alfredo Pizza</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$49.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="pizzas">
+                        <div class="menu-item-image">
+                            <i class="fas fa-pizza-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/bbq-pizza.jpg" alt="BBQ Pizza" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">BBQ Pizza</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$45.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="pizzas">
+                        <div class="menu-item-image">
+                            <i class="fas fa-pizza-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/veggies-pizza.jpg" alt="Veggies Pizza" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Veggies Pizza</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$45.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="pizzas">
+                        <div class="menu-item-image">
+                            <i class="fas fa-pizza-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/margherita-pizza.jpg" alt="Margherita Pizza" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Margherita Pizza</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$45.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="pizzas">
+                        <div class="menu-item-image">
+                            <i class="fas fa-pizza-slice icon-placeholder"></i>
+                            <!-- <img src="../img/menu/pepperoni-pizza.jpg" alt="Pepperoni Pizza" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Pepperoni Pizza</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$45.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Main Dishes -->
+                    <div class="menu-item-card" data-filter="main-dishes">
+                        <div class="menu-item-image">
+                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
+                            <!-- <img src="../img/menu/classic-grilled-chicken.jpg" alt="Classic Grilled Chicken" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Classic Grilled Chicken</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$49.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="main-dishes">
+                        <div class="menu-item-image">
+                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
+                            <!-- <img src="../img/menu/white-sauce-mushroom.jpg" alt="White Sauce Mushroom" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">White Sauce Mushroom</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$54.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- New Items -->
+                    <div class="menu-item-card" data-filter="appetizers">
+                        <div class="menu-item-image">
+                            <i class="fas fa-star icon-placeholder"></i>
+                            <!-- <img src="../img/menu/classic-burger.jpg" alt="Classic Burger" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Classic Burger</h4>
+                            </div>
+                            <p class="menu-item-description">Extra Cheese + $3.00 | Extra Patty + $15.00</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$39.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item-card" data-filter="main-dishes">
+                        <div class="menu-item-image">
+                            <i class="fas fa-star icon-placeholder"></i>
+                            <!-- <img src="../img/menu/mushroom-white-sauce.jpg" alt="Mushroom White Sauce" /> -->
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Mushroom White Sauce</h4>
+                            </div>
+                            <p class="menu-item-description">Extra Patty + $15.00</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="price-value">$44.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="bg-cafe-black text-cafe-white py-8">
+        <button id="backToTop" aria-label="Back to top" class="hidden fixed bottom-6 right-6 z-40 bg-cafe-red text-white w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 grid place-items-center">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col items-center justify-center mb-4">
+                <img src="../img/99cafe-logo2.png" alt="99 Cafe Logo" class="w-24 h-24 object-contain mb-3" />
+                <div class="text-xl md:text-2xl font-semibold italic text-cafe-red-light tracking-wide mb-2" style="font-family: 'Montserrat', sans-serif; letter-spacing: 2px;">
+                    It's more than a number
+                </div>
+            </div>
+            <p class="text-cafe-gray mb-4">Enjoy the best drinks and food in a cozy atmosphere</p>
+           
+            <p class="text-cafe-gray mt-6">&copy; 2025 99 Cafe. All rights reserved.</p>
+            
+        </div>
+    </footer>
+
+    <!-- Flavor Picker Modal -->
+    <div id="flavorModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/40" data-close-flavor></div>
+        <div class="relative rounded-2xl modal-card w-[94vw] max-w-xl overflow-hidden">
+            <div class="bg-gradient-to-r from-cafe-red to-cafe-red-light text-white px-5 py-3 flex items-center justify-between">
+                <div class="font-bold">???? ??????</div>
+                <button id="closeFlavor" class="text-white/90 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="bg-white p-5">
+                <div class="mb-4">
+                    <input id="flavorSearch" type="text" placeholder="???? ?? ????..." class="w-full rounded-lg border border-cafe-red/30 focus:border-cafe-red px-4 py-2 outline-none" />
+                </div>
+                <div id="flavorList" class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-80 overflow-auto">
+                    <!-- items injected by JS -->
+                </div>
+                <div class="mt-4 text-right">
+                    <button id="clearFlavor" class="px-3 py-2 rounded border border-cafe-red text-cafe-red hover:bg-cafe-red hover:text-white transition">??? ????????</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="us.js"></script>
+</body>
+</html>
