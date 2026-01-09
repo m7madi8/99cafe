@@ -1235,7 +1235,7 @@ html.ar .menu-item-tagline {
 /* Smooth Scroll Reveal */
 .menu-item-card {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(16px);
     animation: fadeInUp 0.6s ease forwards;
 }
 
@@ -1495,8 +1495,9 @@ html.ar .menu-item-tagline {
     text-transform: uppercase;
     font-size: 1rem;
     z-index: 3;
-    opacity: 1;
+    opacity: 0.9;
     pointer-events: none;
+    animation: visualsPulse 2.6s ease-in-out infinite;
 }
 
 /* Enhanced Image Loading State */
@@ -1627,6 +1628,7 @@ html.ar .menu-item-tagline {
 
 .menu-item-card {
     animation: cardEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
 /* Staggered Animation for Cards */
@@ -1695,6 +1697,17 @@ html.ar .menu-item-tagline {
     animation: fadeInContent 0.5s ease forwards;
 }
 
+/* Footer entrance softness */
+footer {
+    opacity: 0;
+    animation: footerFade 0.9s ease forwards;
+}
+
+@keyframes footerFade {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .category-content {
         transition: none;
@@ -1731,8 +1744,15 @@ html.ar .menu-item-tagline {
     text-transform: uppercase;
     font-size: 1rem;
     z-index: 3;
-    opacity: 1 !important;
+    opacity: 0.9 !important;
     pointer-events: none;
+    animation: visualsPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes visualsPulse {
+    0%   { opacity: 0.35; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.35; }
 }
 
 .menu-item-card:hover .menu-item-image img {
