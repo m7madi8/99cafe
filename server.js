@@ -5,6 +5,11 @@ const app = express();
 // JSON body parsing
 app.use(express.json());
 
+// Redirect root to US menu
+app.get('/', (req, res) => {
+  res.redirect('/us/');
+});
+
 // API route using the provided handler
 const wheelHandler = require(path.join(__dirname, 'api', 'wheel-global.js'));
 app.all('/api/wheel-global', (req, res) => wheelHandler(req, res));
