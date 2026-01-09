@@ -133,13 +133,17 @@
                     </span>
                     <span class="tab-label">Drinks</span>
                 </button>
+                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="desserts">
+                    <i class="fas fa-birthday-cake"></i>
+                    <span class="tab-label">Desserts</span>
+                </button>
                 <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="food">
                     <i class="fas fa-utensils"></i>
                     <span class="tab-label">Food</span>
                 </button>
-                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="desserts">
-                    <i class="fas fa-birthday-cake"></i>
-                    <span class="tab-label">Desserts</span>
+                <button class="category-tab bg-cafe-white text-cafe-black px-6 py-3 rounded-lg font-semibold hover:bg-cafe-gray inline-flex items-center gap-2" data-category="healthy">
+                    <i class="fas fa-leaf"></i>
+                    <span class="tab-label">Healthy</span>
                 </button>
             </div>
 
@@ -156,19 +160,23 @@
                         <span>99 Classic Hot Coffee</span>
                     </button>
                     <button class="filter-btn" data-filter="classic-cold-coffee">
-                        <i class="fas fa-ice-cream"></i>
+                        <img src="../img/iced-coffee.png" alt="Iced Coffee" class="w-5 h-5 object-contain">
                         <span>99 Classic Cold Coffee</span>
+                    </button>
+                    <button class="filter-btn" data-filter="iced-tea">
+                        <img src="../img/tea.png" alt="Tea" class="w-5 h-5 object-contain">
+                        <span>99 Tea Selection</span>
                     </button>
                     <button class="filter-btn" data-filter="signature">
                         <i class="fas fa-star"></i>
                         <span>99 Signature</span>
                     </button>
                     <button class="filter-btn" data-filter="matcha">
-                        <i class="fas fa-leaf"></i>
+                        <img src="../img/matcha-latte.png" alt="Matcha" class="w-5 h-5 object-contain">
                         <span>99 Matcha Creations</span>
                     </button>
                     <button class="filter-btn" data-filter="chocolate">
-                        <i class="fas fa-candy-cane"></i>
+                        <img src="../img/hot-chocolate.png" alt="Chocolate" class="w-5 h-5 object-contain">
                         <span>99 Chocolate Lovers</span>
                     </button>
                     <button class="filter-btn" data-filter="freeze">
@@ -176,25 +184,17 @@
                         <span>99 Freeze Favorites</span>
                     </button>
                     <button class="filter-btn" data-filter="coolers">
-                        <i class="fas fa-glass-water"></i>
+                        <img src="../img/coolers.png" alt="Coolers" class="w-5 h-5 object-contain">
                         <span>99 Coolers</span>
                     </button>
                     <button class="filter-btn" data-filter="freshers">
-                        <i class="fas fa-apple-alt"></i>
+                        <img src="../img/Freshers.png" alt="Freshers" class="w-5 h-5 object-contain">
                         <span>99 In-House Freshers</span>
                     </button>
                     <button class="filter-btn" data-filter="lemonade">
                         <i class="fas fa-lemon"></i>
                         <span>99 Organic Lemonade</span>
-                    </button>
-                    <button class="filter-btn" data-filter="iced-tea">
-                        <i class="fas fa-glass-water"></i>
-                        <span>99 Tea Selection</span>
-                    </button>
-                    <button class="filter-btn" data-filter="hot-tea">
-                        <i class="fas fa-mug-hot"></i>
-                        <span>Hot Tea</span>
-                    </button>
+                    </button> 
                 </div>
                 
                 <!-- All Menu Items Grid -->
@@ -203,7 +203,7 @@
                     <div class="menu-item-card" data-filter="classic-hot-coffee">
                         <div class="menu-item-image">
                             <i class="fas fa-coffee icon-placeholder"></i>
-                            <!-- <img src="../img/menu/americano.jpg" alt="Americano" /> 
+                            <!-- <img src="../img/menu/americano.jpg" alt="Americano" /> -->
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -225,7 +225,7 @@
                     <div class="menu-item-card" data-filter="classic-hot-coffee">
                         <div class="menu-item-image">
                             <i class="fas fa-coffee icon-placeholder"></i>
-                            <!-- <img src="../img/menu/americano.jpg" alt="Americano" /> 
+                            <!-- <img src="../img/menu/americano.jpg" alt="Americano" /> -->
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -465,10 +465,10 @@
                         </div>
                     </div>
                     
-                    <!-- Hot Tea -->
-                    <div class="menu-item-card" data-filter="hot-tea">
+                    <!-- Hot Tea now under Tea Selection -->
+                    <div class="menu-item-card" data-filter="iced-tea">
                         <div class="menu-item-image">
-                            <i class="fas fa-mug-hot icon-placeholder"></i>
+                            <i class="fas fa-glass-water icon-placeholder"></i>
                             <!-- <img src="../img/menu/hot-tea.jpg" alt="Hot Tea" /> -->
                         </div>
                         <div class="menu-item-content">
@@ -575,7 +575,7 @@
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
-                                <h4 class="menu-item-title">Cloudy Brown</h4>
+                                <h4 class="menu-item-title">Cloudy Brown Sugar Cinnamon</h4>
                             </div>
                             <div class="menu-item-prices">
                                 <div class="price-badge">
@@ -594,32 +594,6 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="signature">
-                        <div class="menu-item-image">
-                            <i class="fas fa-star icon-placeholder"></i>
-                            <!-- <img src="../img/menu/sugar-cinnamon.jpg" alt="Sugar Cinnamon" /> -->
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Sugar Cinnamon</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="size-label">Mini</span>
-                                    <span class="price-value">$6.99</span>
-                                </div>
-                                <div class="price-badge">
-                                    <span class="size-label">Normal</span>
-                                    <span class="price-value">$7.99</span>
-                                </div>
-                                <div class="price-badge">
-                                    <span class="size-label">Maxi</span>
-                                    <span class="price-value">$8.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- 99 Matcha Creations -->
                     <div class="menu-item-card" data-filter="matcha">
                         <div class="menu-item-image">
@@ -1348,17 +1322,29 @@
                         <i class="fas fa-th"></i>
                         <span>All</span>
                     </button>
-                    <button class="filter-btn" data-filter="sweet-collection">
+                    <button class="filter-btn" data-filter="cheesecake">
                         <i class="fas fa-birthday-cake"></i>
-                        <span>99 Sweet Collection</span>
+                        <span>Cheesecake</span>
                     </button>
-                    <button class="filter-btn" data-filter="bakery-bites">
-                        <i class="fas fa-bread-slice"></i>
-                        <span>Bakery Bites</span>
+                    <button class="filter-btn" data-filter="san-sebastian">
+                        <i class="fas fa-cake"></i>
+                        <span>San Sebastian</span>
                     </button>
-                    <button class="filter-btn" data-filter="toast-salad">
-                        <i class="fas fa-utensils"></i>
-                        <span>99 Toast & Salad</span>
+                    <button class="filter-btn" data-filter="muffin">
+                        <img src="../img/muffin.png" alt="Muffin" class="w-5 h-5 object-contain">
+                        <span>Muffin</span>
+                    </button>
+                    <button class="filter-btn" data-filter="shooters">
+                        <img src="../img/tiramisu.png" alt="Tiramisu" class="w-5 h-5 object-contain">
+                        <span>Shooters</span>
+                    </button>
+                    <button class="filter-btn" data-filter="cookies">
+                        <i class="fas fa-cookie"></i>
+                        <span>Cookies</span>
+                    </button>
+                    <button class="filter-btn" data-filter="velvet-squares">
+                        <img src="../img/red-velvet.png" alt="Red Velvet" class="w-5 h-5 object-contain">
+                        <span>Velvet Squares</span>
                     </button>
                 </div>
                 
@@ -1366,7 +1352,7 @@
                 <div class="menu-items-grid grid">
                     <!-- 99 Sweet Collection -->
                     <!-- Cheesecake -->
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="cheesecake">
                         <div class="menu-item-image">
                             <i class="fas fa-cheese icon-placeholder"></i>
                             <!-- <img src="../img/menu/dulce-cheesecake.jpg" alt="Dulce Cheesecake" /> -->
@@ -1383,7 +1369,7 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="cheesecake">
                         <div class="menu-item-image">
                             <i class="fas fa-cheese icon-placeholder"></i>
                             <!-- <img src="../img/menu/golden-praline-cheesecake.jpg" alt="Golden Praline Cheesecake" /> -->
@@ -1400,7 +1386,7 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="cheesecake">
                         <div class="menu-item-image">
                             <i class="fas fa-cheese icon-placeholder"></i>
                             <!-- <img src="../img/menu/lemon-cheesecake.jpg" alt="Lemon Cheesecake" /> -->
@@ -1418,7 +1404,7 @@
                     </div>
                     
                     <!-- San Sebastian -->
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="san-sebastian">
                         <div class="menu-item-image">
                             <i class="fas fa-cake icon-placeholder"></i>
                             <!-- <img src="../img/menu/matcha-san-sebastian.jpg" alt="Matcha San Sebastian" /> -->
@@ -1435,7 +1421,7 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="san-sebastian">
                         <div class="menu-item-image">
                             <i class="fas fa-cake icon-placeholder"></i>
                             <!-- <img src="../img/menu/nutella-san-sebastian.jpg" alt="Nutella San Sebastian" /> -->
@@ -1452,7 +1438,7 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="san-sebastian">
                         <div class="menu-item-image">
                             <i class="fas fa-cake icon-placeholder"></i>
                             <!-- <img src="../img/menu/vanilla-san-sebastian.jpg" alt="Vanilla San Sebastian" /> -->
@@ -1470,7 +1456,7 @@
                     </div>
                     
                     <!-- Muffin -->
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="muffin">
                         <div class="menu-item-image">
                             <i class="fas fa-bread-slice icon-placeholder"></i>
                             <!-- <img src="../img/menu/blueberry-crumb-muffins.jpg" alt="Blueberry Crumb Muffins" /> -->
@@ -1488,7 +1474,7 @@
                     </div>
                     
                     <!-- Shooters -->
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="shooters">
                         <div class="menu-item-image">
                             <i class="fas fa-wine-glass icon-placeholder"></i>
                             <!-- <img src="../img/menu/tiramisu-shooters.jpg" alt="Tiramisu Shooters" /> -->
@@ -1506,7 +1492,7 @@
                     </div>
                     
                     <!-- Cookies -->
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="cookies">
                         <div class="menu-item-image">
                             <i class="fas fa-cookie icon-placeholder"></i>
                             <!-- <img src="../img/menu/double-chocolate-cookie.jpg" alt="Double Chocolate Cookie" /> -->
@@ -1523,7 +1509,7 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="cookies">
                         <div class="menu-item-image">
                             <i class="fas fa-cookie icon-placeholder"></i>
                             <!-- <img src="../img/menu/key-lime-sugar-cookie.jpg" alt="Key Lime Sugar Cookie" /> -->
@@ -1540,7 +1526,7 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="cookies">
                         <div class="menu-item-image">
                             <i class="fas fa-cookie icon-placeholder"></i>
                             <!-- <img src="../img/menu/seasonal-gingerbread-cookie.jpg" alt="Seasonal Gingerbread Cookie" /> -->
@@ -1558,7 +1544,7 @@
                     </div>
                     
                     <!-- Velvet Squares -->
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="velvet-squares">
                         <div class="menu-item-image">
                             <i class="fas fa-square icon-placeholder"></i>
                             <!-- <img src="../img/menu/flourless-midnight-velvet-mousse.jpg" alt="Flourless Midnight Velvet Mousse" /> -->
@@ -1575,7 +1561,7 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="sweet-collection">
+                    <div class="menu-item-card" data-filter="velvet-squares">
                         <div class="menu-item-image">
                             <i class="fas fa-square icon-placeholder"></i>
                             <!-- <img src="../img/menu/raspberry-crumb.jpg" alt="Raspberry Crumb" /> -->
@@ -1592,6 +1578,33 @@
                         </div>
                     </div>
                     
+                </div>
+            </div>
+
+            <!-- Food Category -->
+            <div id="food" class="category-content hidden fade-section">
+                <!-- Filter Buttons -->
+                <div class="menu-filters mb-8 flex flex-wrap justify-center gap-3">
+                    <button class="filter-btn active" data-filter="all-food">
+                        <i class="fas fa-th"></i>
+                        <span>All</span>
+                    </button>
+                    <button class="filter-btn" data-filter="bakery-bites">
+                        <i class="fas fa-bread-slice"></i>
+                        <span>Bakery Bites</span>
+                    </button>
+                    <button class="filter-btn" data-filter="toast-salad">
+                        <i class="fas fa-utensils"></i>
+                        <span>99 Toast & Salad</span>
+                    </button>
+                    <button class="filter-btn" data-filter="acai-bowl">
+                        <img src="../img/Acai Bowl.png" alt="Acai Bowl" class="w-5 h-5 object-contain">
+                        <span>Acai Bowl</span>
+                    </button>
+                </div>
+                
+                <!-- All Food Items Grid -->
+                <div class="menu-items-grid grid">
                     <!-- Bakery Bites -->
                     <div class="menu-item-card" data-filter="bakery-bites">
                         <div class="menu-item-image">
@@ -1747,45 +1760,31 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Food Category -->
-            <div id="food" class="category-content hidden fade-section">
-                <!-- Filter Buttons -->
-                <div class="menu-filters mb-8 flex flex-wrap justify-center gap-3">
-                    <button class="filter-btn active" data-filter="all-food">
-                        <i class="fas fa-th"></i>
-                        <span>All</span>
-                    </button>
-                    <button class="filter-btn" data-filter="appetizers">
-                        <i class="fas fa-drumstick-bite"></i>
-                        <span>Appetizers</span>
-                    </button>
-                    <button class="filter-btn" data-filter="salads">
-                        <i class="fas fa-leaf"></i>
-                        <span>Salads</span>
-                    </button>
-                    <button class="filter-btn" data-filter="sandwiches">
-                        <i class="fas fa-hamburger"></i>
-                        <span>Sandwiches</span>
-                    </button>
-                    <button class="filter-btn" data-filter="pastas">
-                        <i class="fas fa-utensils"></i>
-                        <span>Pastas</span>
-                    </button>
-                    <button class="filter-btn" data-filter="pizzas">
-                        <i class="fas fa-pizza-slice"></i>
-                        <span>Pizzas</span>
-                    </button>
-                    <button class="filter-btn" data-filter="main-dishes">
-                        <i class="fas fa-drumstick-bite"></i>
-                        <span>Main Dishes</span>
-                    </button>
-                </div>
-                
-                <!-- All Food Items Grid -->
-                <div class="menu-items-grid grid">
+                    <!-- Acai Bowl -->
+                    <div class="menu-item-card" data-filter="acai-bowl">
+                        <div class="menu-item-image">
+                            <img src="../img/Acai Bowl.png" alt="Acai Bowl" class="w-12 h-12 object-contain">
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Original Acai Bowl</h4>
+                            </div>
+                            <p class="menu-item-description">Toppings (Included): Classic Granola • Strawberry • Banana • Blueberry</p>
+                            <p class="menu-item-description">AddOns (+$0.99 each): Nutella • Peanut Butter • Biscoff • Honey</p>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$12.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- Appetizers -->
                     <div class="menu-item-card" data-filter="appetizers">
                         <div class="menu-item-image">
@@ -2512,6 +2511,336 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Healthy Options Category -->
+            <div id="healthy" class="category-content hidden fade-section">
+                <!-- Filter Buttons -->
+                <div class="menu-filters mb-8 flex flex-wrap justify-center gap-3">
+                    <button class="filter-btn active" data-filter="all-healthy">
+                        <i class="fas fa-th"></i>
+                        <span>All</span>
+                    </button>
+                    <button class="filter-btn" data-filter="sugar-free">
+                        <i class="fas fa-leaf"></i>
+                        <span>99 Sugar Free</span>
+                    </button>
+                    <button class="filter-btn" data-filter="protein-shakes">
+                        <img src="../img/protein-shake.png" alt="Protein Shakes" class="w-5 h-5 object-contain">
+                        <span>99 Protein Shakes</span>
+                    </button>
+                    <button class="filter-btn" data-filter="energy-boost">
+                        <i class="fas fa-bolt"></i>
+                        <span>99 Energy Boost</span>
+                    </button>
+                </div>
+
+                <!-- Healthy Items Grid -->
+                <div class="menu-items-grid grid">
+                    <!-- 99 Sugar Free Selection -->
+                    <div class="menu-item-card" data-filter="sugar-free">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Caramel Latte (Sugar Free)</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="sugar-free">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Salted Caramel Latte (Sugar Free)</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="sugar-free">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">French Latte (Sugar Free)</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="sugar-free">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Pina Colada Cooler (Sugar Free)</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$6.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="sugar-free">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Iced Tea Peach (Sugar Free)</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$3.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="sugar-free">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Watermelon Energy (Sugar Free)</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="sugar-free">
+                        <div class="menu-item-image">
+                            <i class="fas fa-leaf icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Peach Energy (Sugar Free)</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 99 Protein Shakes -->
+                    <div class="menu-item-card" data-filter="protein-shakes">
+                        <div class="menu-item-image">
+                            <i class="fas fa-dumbbell icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Vanilla Protein Shake</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="protein-shakes">
+                        <div class="menu-item-image">
+                            <i class="fas fa-dumbbell icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Chocolate Protein Shake</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="protein-shakes">
+                        <div class="menu-item-image">
+                            <i class="fas fa-dumbbell icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Banana Butter Protein Shake</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 99 Energy Boost Drinks -->
+                    <div class="menu-item-card" data-filter="energy-boost">
+                        <div class="menu-item-image">
+                            <i class="fas fa-bolt icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Raspberry Energy</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="energy-boost">
+                        <div class="menu-item-image">
+                            <i class="fas fa-bolt icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Watermelon Energy</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-card" data-filter="energy-boost">
+                        <div class="menu-item-image">
+                            <i class="fas fa-bolt icon-placeholder"></i>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h4 class="menu-item-title">Peach Energy</h4>
+                            </div>
+                            <div class="menu-item-prices">
+                                <div class="price-badge">
+                                    <span class="size-label">Mini</span>
+                                    <span class="price-value">$7.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Normal</span>
+                                    <span class="price-value">$8.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$9.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -2523,14 +2852,13 @@
         </button>
         <div class="container mx-auto px-4 text-center">
             <div class="flex flex-col items-center justify-center mb-4">
-                <img src="../img/99cafe-logo2.png" alt="99 Cafe Logo" class="w-24 h-24 object-contain mb-3" />
+                <img src="../img/99logo2.png" alt="99 Cafe Logo" class="w-24 h-24 object-contain mb-3" />
                 <div class="text-xl md:text-2xl font-semibold italic text-cafe-red-light tracking-wide mb-2" style="font-family: 'Montserrat', sans-serif; letter-spacing: 2px;">
                     It's more than a number
                 </div>
             </div>
-            <p class="text-cafe-gray mb-4">Enjoy the best drinks and food in a cozy atmosphere</p>
-           
-            <p class="text-cafe-gray mt-6">&copy; 2025 99 Cafe. All rights reserved.</p>
+            <p class="text-cafe-gray mb-4">Enjoy the best drinks and food in a cozy atmosphere</p>   
+            <p class="text-cafe-gray mt-6">&copy; 2026 99 Cafe. All rights reserved.</p>
             
         </div>
     </footer>

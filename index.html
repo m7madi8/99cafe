@@ -341,7 +341,8 @@ body{
 }
 
 .nav-logo:hover img{
-  transform:scale(1.05) rotate(2deg);
+  /* Keep size fixed; only adjust glow on hover */
+  transform:none;
   filter:drop-shadow(0 4px 8px rgba(196,22,28,0.2));
 }
 
@@ -536,7 +537,8 @@ body{
 }
 
 .hero-logo:hover img{
-  transform:scale(1.05) translateY(-4px);
+  /* Disable grow on hover; keep glow effect */
+  transform:none;
   filter:drop-shadow(0 32px 100px rgba(196,22,28,0.3));
 }
 
@@ -1129,7 +1131,8 @@ body{
 }
 
 .branch:hover{
-  transform:translateY(-12px) scale(1.01);
+  /* Keep card size fixed; only elevate */
+  transform:translateY(-12px);
   box-shadow:var(--shadow-xl), 0 0 0 1px rgba(196,22,28,0.1);
   border-color:var(--primary);
 }
@@ -1632,7 +1635,8 @@ body{
 }
 
 .footer-logo:hover img{
-  transform:scale(1.05) rotate(2deg);
+  /* Keep size fixed; maintain hover glow */
+  transform:none;
   filter:brightness(0) invert(1) drop-shadow(0 6px 12px rgba(255,255,255,0.2));
 }
 

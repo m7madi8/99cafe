@@ -1043,6 +1043,18 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     margin-bottom: 0;
 }
 
+/* Small brand logo at the right side of each item title */
+.menu-item-header::after {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-left: auto;
+    background: url('../img/99cafe-logo2.png') center center / contain no-repeat;
+    flex-shrink: 0;
+    opacity: 0.95;
+}
+
 .menu-item-title {
     font-size: 1.125rem;
     font-weight: 700;
@@ -1460,6 +1472,33 @@ html.ar .menu-item-tagline {
     animation-delay: calc(var(--index, 0) * 0.05s);
 }
 
+/* --- Overrides: disable image hover scaling and add the premium badge --- */
+.menu-item-card:hover .menu-item-image img {
+    transform: none;
+}
+
+.menu-item-card:hover .menu-item-image::before {
+    opacity: 0;
+}
+
+/* Full-cover 'VISUALS IN PROGRESS' overlay on each item */
+.menu-item-image::after {
+    content: "VISUALS IN PROGRESS";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, rgba(217, 4, 41, 0.4) 0%, rgba(239, 35, 60, 0.35) 100%);
+    color: #ffffff;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 1rem;
+    z-index: 3;
+    opacity: 1;
+    pointer-events: none;
+}
+
 /* Enhanced Image Loading State */
 .menu-item-image img {
     opacity: 1;
@@ -1640,6 +1679,9 @@ html.ar .menu-item-tagline {
 /* Smooth Category Transition */
 .category-content {
     min-height: 400px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.38s ease, transform 0.38s ease;
 }
 
 .category-content.hidden {
@@ -1648,7 +1690,57 @@ html.ar .menu-item-tagline {
 
 .category-content.show {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
     animation: fadeInContent 0.5s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .category-content {
+        transition: none;
+        transform: none;
+    }
+    .category-content.show {
+        animation: none;
+    }
+}
+
+/* Final overrides: show only the 'VISUALS IN PROGRESS' overlay, hide icons/images scaling */
+.menu-item-image .icon-placeholder {
+    display: none !important;
+}
+
+.menu-item-image img {
+    display: none !important;
+}
+
+.menu-item-image::before {
+    opacity: 0 !important;
+}
+
+.menu-item-image::after {
+    content: "VISUALS IN PROGRESS" !important;
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.78) 0%, rgba(240, 240, 240, 0.9) 100%) !important;
+    color: #d90429;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 1rem;
+    z-index: 3;
+    opacity: 1 !important;
+    pointer-events: none;
+}
+
+.menu-item-card:hover .menu-item-image img {
+    transform: none !important;
+}
+
+.menu-item-card:hover .menu-item-image::after {
+    opacity: 1 !important;
 }
 
 @keyframes fadeInContent {

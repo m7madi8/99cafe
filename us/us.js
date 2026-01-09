@@ -73,6 +73,7 @@ function updateCategoryTabIcons() {
 categoryTabs.forEach(tab => {
     tab.addEventListener('click', () => {
         const targetCategory = tab.getAttribute('data-category');
+        const menuSection = document.getElementById('menu');
         
         // Ripple visual
         const rect = tab.getBoundingClientRect();
@@ -106,6 +107,11 @@ categoryTabs.forEach(tab => {
         const target = document.getElementById(targetCategory);
         target.classList.remove('hidden');
         requestAnimationFrame(() => target.classList.add('show'));
+
+        // Smoothly keep the menu in view when switching categories
+        if (menuSection) {
+            menuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     });
 });
 // Initialize icons on first load
@@ -870,7 +876,7 @@ document.head.appendChild(style);
                 menuItems.forEach(item => {
                     const itemFilter = item.getAttribute('data-filter');
                     
-                    if (filterValue === 'all' || filterValue === 'all-food' || itemFilter === filterValue) {
+                    if ((filterValue && filterValue.startsWith('all')) || itemFilter === filterValue) {
                         // Show item with animation
                         item.style.display = '';
                         item.style.opacity = '0';
@@ -892,6 +898,9 @@ document.head.appendChild(style);
                         }, 200);
                     }
                 });
+
+                // Keep the category content in view on filter change (useful on mobile)
+                categoryEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
     }
@@ -900,6 +909,7 @@ document.head.appendChild(style);
     initCategoryFiltering('drinks');
     initCategoryFiltering('food');
     initCategoryFiltering('desserts');
+    initCategoryFiltering('healthy');
 })();
 
 // Add attractive taglines to menu items based on category
@@ -966,6 +976,26 @@ document.head.appendChild(style);
             "Crafted with love, served with joy",
             "Every bite is a celebration",
             "Sweet dreams made real"
+        ],
+        // Healthy taglines
+        healthy: isArabic ? [
+            "خيارات صحية بطعم رائع",
+            "طاقة نظيفة لكل يوم",
+            "انتعاش طبيعي يوازن يومك",
+            "سكر أقل ومتعة أكثر",
+            "بروتين لذيذ يدعم نشاطك",
+            "مشروبات خفيفة ومغذية",
+            "جرعة نشاط صحية",
+            "توازن مثالي بين الطعم والفائدة"
+        ] : [
+            "Healthier choices, great taste",
+            "Clean energy for every day",
+            "Naturally refreshing balance",
+            "Less sugar, more joy",
+            "Protein-packed and delicious",
+            "Light, nourishing sips",
+            "A healthy boost of energy",
+            "Flavor that feels good"
         ]
     };
     
@@ -974,16 +1004,18 @@ document.head.appendChild(style);
         const drinksSection = card.closest('#drinks');
         const foodSection = card.closest('#food');
         const dessertsSection = card.closest('#desserts');
+        const healthySection = card.closest('#healthy');
         
         if (drinksSection) return 'drinks';
         if (foodSection) return 'food';
         if (dessertsSection) return 'desserts';
+        if (healthySection) return 'healthy';
         return 'drinks'; // default
     }
     
     function addTaglinesToCards() {
         const cards = document.querySelectorAll('.menu-item-card');
-        const categoryCounts = { drinks: 0, food: 0, desserts: 0 };
+        const categoryCounts = { drinks: 0, food: 0, desserts: 0, healthy: 0 };
         
         cards.forEach(card => {
             // Skip if tagline already exists
