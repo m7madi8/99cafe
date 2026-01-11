@@ -1177,14 +1177,17 @@ document.head.appendChild(style);
                 // Check if image has a valid src and is loaded
                 if (img.src && img.src !== window.location.href) {
                     icon.style.display = 'none';
+                    imageContainer.classList.add('has-photo');
                 } else {
                     // If image fails to load, show icon
                     img.addEventListener('error', () => {
                         icon.style.display = 'block';
+                        imageContainer.classList.remove('has-photo');
                     });
                     // If image loads successfully, hide icon
                     img.addEventListener('load', () => {
                         icon.style.display = 'none';
+                        imageContainer.classList.add('has-photo');
                     });
                 }
             }
@@ -1202,3 +1205,78 @@ document.head.appendChild(style);
     setTimeout(hideIconsWhenImagePresent, 500);
 })();
 
+// Auto-attach images to menu items based on matching filenames in /img/drinks and /img/cake
+(function attachMenuImages() {
+    const imageMap = {
+        // Drinks
+        'Espresso': '../img/drinks/espresso.png',
+        'Americano': '../img/drinks/Americano.png',
+        'Cappuccino': '../img/drinks/Cappuccino.png',
+        'Latte': '../img/drinks/Latte.png',
+        'Iced Latte': '../img/drinks/Iced latte.png',
+        'Mocha': '../img/drinks/mocha.png',
+        'Iced Mocha': '../img/drinks/Iced mocha.png',
+        'Iced Americano': '../img/drinks/iced Americano.png',
+        'Iced Tea': '../img/drinks/Iced Tea.png',
+        'Unsweetened Iced Tea': '../img/drinks/Unsweetened Iced Tea.png',
+        'French Latte': '../img/drinks/French Latte.png',
+        '99 Signature Latte': '../img/drinks/99 Signature Latte.png',
+        '99 Signature Matcha': '../img/drinks/99 Signature Matcha.png',
+        'Classic Matcha': '../img/drinks/Classic Matcha.png',
+        'Classic Coffee Freeze': '../img/drinks/Classic Coffee Freeze.png',
+        'Caramel Crunch Freeze': '../img/drinks/Caramel Crunch Freeze.png',
+        'Chocolate Freeze': '../img/drinks/Chocolate Freeze.png',
+        'Pumpkin Pie Freeze': '../img/drinks/Pumpkin Pie Freeze.png',
+        'Mango Freeze': '../img/drinks/Mango Freeze.png',
+        'Strawberry Freeze': '../img/drinks/Strawberry Freeze.png',
+        'Crunch Biscoff Freeze': '../img/drinks/Crunch Biscoff Freeze.png',
+        'Premium Hot Chocolate': '../img/drinks/Premium Hot Chocolate.png',
+        'Dark Hot Chocolate': '../img/drinks/Dark Hot Chocolate.png',
+        'White Hot Chocolate': '../img/drinks/White Hot Chocolate.png',
+        'Nutella Chocolate': '../img/drinks/Nutella Chocolate.png',
+        'Salted Caramel Chocolate': '../img/drinks/Salted Caramel Chocolate.png',
+        'Crème de Banana Latte': '../img/drinks/Crème de Banana Latte.png',
+        'Banana Velvet Matcha': '../img/drinks/Banana Velvet Matcha.png',
+        'Honey Bees Matcha': '../img/drinks/Honey Bees Matcha.png',
+        'Strawberry Matcha': '../img/drinks/Strawberry Matcha.png',
+        'Tropical Velvet Matcha': '../img/drinks/Tropical Velvet Matcha.png',
+        'Cortado': '../img/drinks/Cortado.png',
+        'Cloudy Brown Sugar Cinnamon': '../img/drinks/Cloudy Brown Sugar Cinnamon.png',
+        // Cakes
+        'Dulce Cheesecake': '../img/cake/Dulce Cheesecake.png',
+        'Golden Praline Cheesecake': '../img/cake/Golden Praline Cheesecake.png',
+        'Lemon Cheesecake': '../img/cake/Lemon Cheesecake.png',
+        'Matcha San Sebastian': '../img/cake/Matcha San Sebastian.png',
+        'Nutella San Sebastian': '../img/cake/Nutella San Sebastian.png',
+        'Vanilla San Sebastian': '../img/cake/Vanilla San Sebastian.png'
+    };
+
+    function applyImages() {
+        const cards = document.querySelectorAll('.menu-item-card');
+        cards.forEach(card => {
+            const titleEl = card.querySelector('.menu-item-title');
+            const imageWrapper = card.querySelector('.menu-item-image');
+            if (!titleEl || !imageWrapper) return;
+
+            const name = (titleEl.textContent || '').trim();
+            const src = imageMap[name];
+            if (!src) return;
+
+            let img = imageWrapper.querySelector('img.menu-item-photo');
+            if (!img) {
+                img = document.createElement('img');
+                img.className = 'menu-item-photo';
+                imageWrapper.prepend(img);
+            }
+            img.src = src;
+            img.alt = name;
+            imageWrapper.classList.add('has-photo');
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyImages);
+    } else {
+        applyImages();
+    }
+})();
