@@ -274,7 +274,7 @@ section.bg-transparent {
     content: '';
     position: absolute;
     inset: 0;
-    background: url('99cafe-logo2.png') center / clamp(140px, 50%, 300px) no-repeat;
+    background: url('../ps/99cafe-logo2.png') center / clamp(140px, 50%, 300px) no-repeat;
     opacity: 0.1;
     pointer-events: none;
     z-index: 20;
@@ -288,7 +288,7 @@ section.bg-transparent {
     right: -10px;
     width: 72px;
     height: 72px;
-    background: url('99cafe-logo2.png') no-repeat center / contain;
+    background: url('../ps/99cafe-logo2.png') no-repeat center / contain;
     opacity: 0.18;
     filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
     pointer-events: none;
@@ -638,7 +638,7 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
 .wheel-axle {
     position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
 }
-.wheel-axle > div { width: 64px; height: 64px; border-radius: 9999px; background: white url('99cafe-logo2.png') center/70% no-repeat; border: 2px solid rgba(217,4,41,.3); box-shadow: 0 8px 18px rgba(0,0,0,.12); }
+.wheel-axle > div { width: 64px; height: 64px; border-radius: 9999px; background: white url('../ps/99cafe-logo2.png') center/70% no-repeat; border: 2px solid rgba(217,4,41,.3); box-shadow: 0 8px 18px rgba(0,0,0,.12); }
 .spin-disabled { opacity: .6; cursor: not-allowed; }
 
 /* Win effects */
@@ -682,7 +682,7 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     position: absolute;
     left: 50%; top: 50%; transform: translate(-50%, -50%);
     width: min(64%, 520px); aspect-ratio: 1/1;
-    background: url('99cafe-logo2.png') center / contain no-repeat;
+    background: url('../ps/99cafe-logo2.png') center / contain no-repeat;
     opacity: 0.12; pointer-events: none; z-index: 0;
     filter: saturate(110%) drop-shadow(0 6px 12px rgba(0,0,0,.06));
 }
@@ -1050,7 +1050,7 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     width: 32px;
     height: 32px;
     margin-left: auto;
-    background: url('../img/99cafe-logo2.png') center center / contain no-repeat;
+    background: url('../ps/99cafe-logo2.png') center center / contain no-repeat;
     flex-shrink: 0;
     opacity: 0.95;
 }
