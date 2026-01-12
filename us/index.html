@@ -37,6 +37,31 @@
         ]
     }
     </script>
+    <script>
+    // Silence GA MP errors in console when blockers stop the request
+    (function() {
+        const GA_ENDPOINT = 'https://www.google-analytics.com/mp/collect';
+        const originalFetch = window.fetch;
+        if (originalFetch) {
+            window.fetch = (...args) => {
+                const url = (args[0] && args[0].url) || args[0];
+                if (typeof url === 'string' && url.startsWith(GA_ENDPOINT)) {
+                    return Promise.resolve(new Response(null, { status: 204 }));
+                }
+                return originalFetch(...args);
+            };
+        }
+        const originalBeacon = navigator.sendBeacon ? navigator.sendBeacon.bind(navigator) : null;
+        if (originalBeacon) {
+            navigator.sendBeacon = (url, data) => {
+                if (typeof url === 'string' && url.startsWith(GA_ENDPOINT)) {
+                    return true;
+                }
+                return originalBeacon(url, data);
+            };
+        }
+    })();
+    </script>
     <title>99 Cafe - Menu</title>
     <meta name="description" content="99 Cafe ">
     <meta name="theme-color" content="#D90429">
