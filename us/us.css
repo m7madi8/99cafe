@@ -1508,6 +1508,19 @@ html.ar .menu-item-tagline {
     background: none;
 }
 
+.menu-item-image .image-placeholder-text {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #D90429;
+    padding: 16px;
+}
+
 #mapModal {
     transition: opacity 0.25s ease;
 }

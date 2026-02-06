@@ -66,11 +66,19 @@ window.addEventListener('DOMContentLoaded', () => {
             if (hasImg) {
                 container.classList.add('has-image');
                 container.classList.remove('no-image');
+                container.querySelectorAll('.image-placeholder-text').forEach(p => p.remove());
             } else {
                 container.classList.add('no-image');
                 container.classList.remove('has-image');
                 // Remove icon placeholders from cards without images
                 container.querySelectorAll('.icon-placeholder').forEach(icon => icon.remove());
+                // Insert visible placeholder text if not present
+                if (!container.querySelector('.image-placeholder-text')) {
+                    const span = document.createElement('span');
+                    span.className = 'image-placeholder-text';
+                    span.textContent = 'VISUALS IN PROGRESS';
+                    container.appendChild(span);
+                }
             }
         });
     };
