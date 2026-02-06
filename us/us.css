@@ -192,8 +192,8 @@ section.bg-transparent {
 @keyframes floatY { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
 .float-y { animation: floatY 6s ease-in-out infinite; }
 /* Fade section when switching tabs */
-.fade-section { opacity: 0; transform: translateY(10px); transition: opacity .4s ease, transform .4s ease; }
-.fade-section.show { opacity: 1; transform: translateY(0); }
+.fade-section { opacity: 0; transform: translateY(14px) scale(0.98); transition: opacity .45s ease, transform .45s ease; }
+.fade-section.show { opacity: 1; transform: translateY(0) scale(1); }
 /* Micro-interactions */
 .menu-item .font-bold.text-cafe-red { transition: transform .25s ease; }
 .menu-item:hover .font-bold.text-cafe-red { transform: scale(1.05); }
@@ -913,10 +913,8 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     background: #ffffff;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 
-        0 2px 8px rgba(0, 0, 0, 0.04),
-        0 4px 16px rgba(0, 0, 0, 0.06);
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+    transition: none;
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.06);
     display: flex;
@@ -930,37 +928,29 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
 
 .menu-item-card::before {
     content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(217, 4, 41, 0.03) 0%, rgba(239, 35, 60, 0.01) 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 1;
-    pointer-events: none;
+    display: none;
 }
 
 .menu-item-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 
-        0 8px 24px rgba(217, 4, 41, 0.12),
-        0 16px 48px rgba(217, 4, 41, 0.08),
-        0 0 0 1px rgba(217, 4, 41, 0.08);
-    border-color: rgba(217, 4, 41, 0.15);
+    transform: none;
+    box-shadow: none;
+    border-color: rgba(0, 0, 0, 0.06);
 }
 
 .menu-item-card:active {
-    transform: translateY(-4px);
+    transform: none;
 }
 
 .menu-item-card:hover::before {
-    opacity: 1;
+    opacity: 0;
 }
 
 /* Image Container - Premium Design */
 .menu-item-image {
     position: relative;
     width: 100%;
-    height: 200px;
+    aspect-ratio: 1248 / 832;
+    height: auto;
     overflow: hidden;
     background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
     display: block;
@@ -974,34 +964,26 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center bottom;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    object-position: center;
+    transition: none;
     z-index: 2;
     display: block;
 }
 
 .menu-item-card:hover .menu-item-image img {
-    transform: scale(1.08);
+    transform: none;
 }
 
 /* Placeholder for items without images */
 .menu-item-image::after {
     content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(217, 4, 41, 0.1) 0%, rgba(239, 35, 60, 0.05) 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.menu-item-card:hover .menu-item-image::after {
-    opacity: 1;
+    display: none;
 }
 
 .menu-item-image .icon-placeholder {
     font-size: 3.5rem;
     color: rgba(217, 4, 41, 0.15);
-    transition: all 0.35s ease;
+    transition: none;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1018,8 +1000,8 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
 }
 
 .menu-item-card:hover .menu-item-image .icon-placeholder {
-    color: rgba(217, 4, 41, 0.3);
-    transform: scale(1.05);
+    color: rgba(217, 4, 41, 0.15);
+    transform: none;
 }
 
 /* Content Section - Premium Spacing */
@@ -1232,27 +1214,10 @@ html.ar .menu-item-tagline {
     opacity: 0.8;
 }
 
-/* Smooth Scroll Reveal */
 .menu-item-card {
-    opacity: 0;
-    transform: translateY(16px);
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.menu-item-card:nth-child(1) { animation-delay: 0.05s; }
-.menu-item-card:nth-child(2) { animation-delay: 0.1s; }
-.menu-item-card:nth-child(3) { animation-delay: 0.15s; }
-.menu-item-card:nth-child(4) { animation-delay: 0.2s; }
-.menu-item-card:nth-child(5) { animation-delay: 0.25s; }
-.menu-item-card:nth-child(6) { animation-delay: 0.3s; }
-.menu-item-card:nth-child(7) { animation-delay: 0.35s; }
-.menu-item-card:nth-child(8) { animation-delay: 0.4s; }
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    opacity: 1;
+    transform: none;
+    animation: none;
 }
 
 /* Mobile-First Premium Design */
@@ -1264,9 +1229,10 @@ html.ar .menu-item-tagline {
     }
     
     .menu-item-image {
-        height: 280px;
-        flex: 1;
-        min-height: 280px;
+        aspect-ratio: 1248 / 832;
+        height: auto;
+        flex: none;
+        min-height: unset;
     }
     
     .menu-item-image img {
@@ -1372,77 +1338,22 @@ html.ar .menu-item-tagline {
     margin: 0 !important;
 }
 
-/* Enhanced Hover Effects */
-.menu-item-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 24px;
-    background: linear-gradient(135deg, rgba(217, 4, 41, 0.05) 0%, rgba(239, 35, 60, 0.02) 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.menu-item-card:hover::after {
-    opacity: 1;
-}
-
 /* Image Zoom Effect */
 .menu-item-image {
     position: relative;
     overflow: hidden;
 }
 
+/* Disable shine/overlay on images */
 .menu-item-image::before {
     content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 1;
-    pointer-events: none;
+    display: none;
 }
 
-.menu-item-card:hover .menu-item-image::before {
-    opacity: 1;
-}
-
-/* Shine Effect on Hover */
+/* Remove shine effect on card */
 .menu-item-card::before {
     content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        45deg,
-        transparent 30%,
-        rgba(255, 255, 255, 0.3) 50%,
-        transparent 70%
-    );
-    transform: rotate(45deg);
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    pointer-events: none;
-    z-index: 3;
-}
-
-.menu-item-card:hover::before {
-    opacity: 1;
-    animation: shine 0.8s ease forwards;
-}
-
-@keyframes shine {
-    0% {
-        transform: translateX(-100%) translateY(-100%) rotate(45deg);
-    }
-    100% {
-        transform: translateX(100%) translateY(100%) rotate(45deg);
-    }
+    display: none;
 }
 
 /* Price Badge Hover Enhancement */
@@ -1467,9 +1378,177 @@ html.ar .menu-item-tagline {
     }
 }
 
-/* Stagger Animation for Cards */
+/* Drinks section: white image backdrop */
+#drinks .menu-item-image {
+    background: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    aspect-ratio: 4 / 3;
+}
+
+#drinks .menu-item-image img {
+    position: static;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+}
+
+/* Drinks filter buttons: tighter spacing for many items */
+#drinks .menu-filters .filter-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    gap: 0.4rem;
+    border-radius: 0.55rem;
+}
+
+/* Hide scrollbar for horizontal overflow */
+.no-scrollbar {
+    scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.find-us-btn {
+    background: #D90429;
+    color: #ffffff;
+    box-shadow: 0 12px 28px rgba(217, 4, 41, 0.25);
+    border: 1px solid rgba(217, 4, 41, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.2s ease, color 0.2s ease;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    outline: none;
+}
+
+.find-us-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(217, 4, 41, 0.3);
+}
+
+.find-us-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 12px 26px rgba(217, 4, 41, 0.26);
+}
+
+.find-us-btn:focus-visible {
+    box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.28);
+}
+
+.find-us-icon {
+    width: 2rem;
+    height: 2rem;
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.find-us-btn:hover .find-us-icon,
+.find-us-btn:active .find-us-icon {
+    background: #ffffff;
+    color: #D90429;
+}
+
+.find-us-text {
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    transition: color 0.2s ease;
+}
+
+.find-us-btn:hover .find-us-text,
+.find-us-btn:active .find-us-text {
+    color: #ffffff;
+}
+
+/* Placeholder for items without images */
+.menu-item-image.no-image,
+.menu-item-image:not(.has-image) {
+    position: relative;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #f7f7f7 0%, #ededed 100%);
+    color: #9a9a9a;
+    min-height: 220px;
+    text-align: center;
+}
+
+.menu-item-image.no-image::after,
+.menu-item-image:not(.has-image)::after {
+    content: "VISUALS IN PROGRESS";
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #D90429;
+    display: block;
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+}
+
+.menu-item-image.no-image .icon-placeholder,
+.menu-item-image:not(.has-image) .icon-placeholder {
+    display: none !important;
+}
+
+.menu-item-image.no-image::before,
+.menu-item-image.no-image::after {
+    background: none;
+}
+
+.menu-item-image:not(.has-image)::before,
+.menu-item-image:not(.has-image)::after {
+    background: none;
+}
+
+#mapModal {
+    transition: opacity 0.25s ease;
+}
+
+#mapModal.hidden {
+    opacity: 0;
+}
+
+#mapModal .map-modal-backdrop {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+#mapModal .map-modal-panel {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+#mapModal.show .map-modal-backdrop {
+    opacity: 1;
+}
+
+#mapModal.show .map-modal-panel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+@media (max-width: 640px) {
+    #drinks .menu-filters {
+        gap: 0.4rem;
+        padding-bottom: 0.25rem;
+    }
+    #drinks .menu-filters .filter-btn {
+        font-size: 0.85rem;
+        padding: 0.45rem 0.7rem;
+    }
+}
+
 .category-content.show .menu-item-card {
-    animation-delay: calc(var(--index, 0) * 0.05s);
+    animation-delay: 0s;
 }
 
 /* --- Overrides: disable image hover scaling and add the premium badge --- */
@@ -1481,23 +1560,13 @@ html.ar .menu-item-tagline {
     opacity: 0;
 }
 
-/* Full-cover 'VISUALS IN PROGRESS' overlay on each item */
+/* Remove temporary overlay so real images show */
 .menu-item-image::after {
-    content: "VISUALS IN PROGRESS";
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(135deg, rgba(217, 4, 41, 0.4) 0%, rgba(239, 35, 60, 0.35) 100%);
-    color: #ffffff;
-    font-weight: 800;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    font-size: 1rem;
-    z-index: 3;
-    opacity: 0.9;
-    pointer-events: none;
-    animation: visualsPulse 2.6s ease-in-out infinite;
+    content: '';
+    display: none;
+    background: none;
+    opacity: 0;
+    animation: none;
 }
 
 /* Enhanced Image Loading State */
@@ -1513,9 +1582,10 @@ html.ar .menu-item-tagline {
 /* Responsive Image Sizing */
 @media (max-width: 640px) {
     .menu-item-image {
-        height: 320px;
-        flex: 1;
-        min-height: 320px;
+        aspect-ratio: 1248 / 832;
+        height: auto;
+        flex: none;
+        min-height: unset;
     }
     
     .menu-item-image img {
@@ -1528,9 +1598,8 @@ html.ar .menu-item-tagline {
     }
 }
 
-/* Smooth Transitions for All Interactive Elements */
 .menu-item-card * {
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: none;
 }
 
 /* Enhanced Focus States for Accessibility */
@@ -1613,36 +1682,12 @@ html.ar .menu-item-tagline {
 }
 
 /* Card Entrance Animation Enhancement */
-@keyframes cardEntrance {
-    from {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-        filter: blur(4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-}
+@keyframes cardEntrance {}
 
 .menu-item-card {
-    animation: cardEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    transition: opacity 0.35s ease, transform 0.35s ease;
+    animation: none;
+    transition: opacity .28s ease, transform .28s ease;
 }
-
-/* Staggered Animation for Cards */
-.category-content.show .menu-item-card:nth-child(1) { animation-delay: 0.05s; }
-.category-content.show .menu-item-card:nth-child(2) { animation-delay: 0.1s; }
-.category-content.show .menu-item-card:nth-child(3) { animation-delay: 0.15s; }
-.category-content.show .menu-item-card:nth-child(4) { animation-delay: 0.2s; }
-.category-content.show .menu-item-card:nth-child(5) { animation-delay: 0.25s; }
-.category-content.show .menu-item-card:nth-child(6) { animation-delay: 0.3s; }
-.category-content.show .menu-item-card:nth-child(7) { animation-delay: 0.35s; }
-.category-content.show .menu-item-card:nth-child(8) { animation-delay: 0.4s; }
-.category-content.show .menu-item-card:nth-child(9) { animation-delay: 0.45s; }
-.category-content.show .menu-item-card:nth-child(10) { animation-delay: 0.5s; }
-.category-content.show .menu-item-card:nth-child(n+11) { animation-delay: 0.55s; }
 
 /* Enhanced Image Container */
 .menu-item-image {
@@ -1652,38 +1697,24 @@ html.ar .menu-item-tagline {
 
 .menu-item-image::after {
     content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center, transparent 0%, rgba(217, 4, 41, 0.05) 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-}
-
-.menu-item-card:hover .menu-item-image::after {
-    opacity: 1;
+    display: none;
 }
 
 /* Premium Shadow Effects - Refined */
 .menu-item-card {
-    box-shadow: 
-        0 2px 8px rgba(0, 0, 0, 0.04),
-        0 1px 3px rgba(0, 0, 0, 0.06);
+    box-shadow: none;
 }
 
 .menu-item-card:hover {
-    box-shadow: 
-        0 8px 24px rgba(217, 4, 41, 0.12),
-        0 4px 12px rgba(217, 4, 41, 0.08),
-        0 0 0 1px rgba(217, 4, 41, 0.1);
+    box-shadow: none;
 }
 
 /* Smooth Category Transition */
 .category-content {
     min-height: 400px;
     opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.38s ease, transform 0.38s ease;
+    transform: translateY(12px) scale(0.98);
+    transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
 .category-content.hidden {
@@ -1693,8 +1724,33 @@ html.ar .menu-item-tagline {
 .category-content.show {
     display: block;
     opacity: 1;
-    transform: translateY(0);
-    animation: fadeInContent 0.5s ease forwards;
+    transform: translateY(0) scale(1);
+}
+
+.category-content .menu-item-card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    filter: none;
+    transition:
+        opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+        transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: calc(var(--index, 0) * 100ms);
+}
+
+.category-content.show .menu-item-card {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .category-content .menu-item-card,
+    .category-content.show .menu-item-card {
+        transition: none;
+        transform: none;
+        filter: none;
+        opacity: 1;
+    }
 }
 
 /* Footer entrance softness */
@@ -1718,50 +1774,6 @@ footer {
     }
 }
 
-/* Final overrides: show only the 'VISUALS IN PROGRESS' overlay, hide icons/images scaling */
-.menu-item-image .icon-placeholder {
-    display: none !important;
-}
-
-.menu-item-image img {
-    display: none !important;
-}
-
-.menu-item-image::before {
-    opacity: 0 !important;
-}
-
-.menu-item-image::after {
-    content: "VISUALS IN PROGRESS" !important;
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.78) 0%, rgba(240, 240, 240, 0.9) 100%) !important;
-    color: #d90429;
-    font-weight: 800;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    font-size: 1rem;
-    z-index: 3;
-    opacity: 0.9 !important;
-    pointer-events: none;
-    animation: visualsPulse 2.6s ease-in-out infinite;
-}
-
-@keyframes visualsPulse {
-    0%   { opacity: 0.35; }
-    50%  { opacity: 1; }
-    100% { opacity: 0.35; }
-}
-
-.menu-item-card:hover .menu-item-image img {
-    transform: none !important;
-}
-
-.menu-item-card:hover .menu-item-image::after {
-    opacity: 1 !important;
-}
 
 @keyframes fadeInContent {
     from {
@@ -1841,6 +1853,79 @@ html.ar .category-group-title {
 .menu-filters {
     margin-bottom: 2rem;
     padding: 0 0.5rem;
+}
+
+/* --- Final kill-switch: remove animations/motion from menu cards --- */
+.menu-item-card {
+    box-shadow: none !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+.menu-item-card::before,
+.menu-item-card::after,
+.menu-item-image::before,
+.menu-item-image::after {
+    display: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+}
+
+.menu-item-image img {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.menu-item-card * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+/* Subtle edge highlight on hover (no shadow/animation) */
+.menu-item-card:hover {
+    border-color: rgba(217, 4, 41, 0.35) !important;
+    box-shadow: 0 4px 12px rgba(217, 4, 41, 0.18) !important;
+}
+
+/* Pressed state: slight border + background tint (no motion) */
+.menu-item-card:active {
+    border-color: rgba(217, 4, 41, 0.5) !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f8eef1 100%) !important;
+    box-shadow:
+        0 0 0 2px rgba(217, 4, 41, 0.25) !important,        /* outer soft glow */
+        0 0 0 1px rgba(217, 4, 41, 0.35) inset !important,  /* crisp inner edge */
+        0 6px 18px rgba(0, 0, 0, 0.06) !important;          /* subtle depth */
+    transform: translateY(1px) scale(0.995) !important;
+    transition: none !important;
+}
+
+/* Pressed highlight overlay (single frame, no animation) */
+.menu-item-card:active::before {
+    display: block !important;
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(135deg, rgba(217, 4, 41, 0.24) 0%, rgba(239, 35, 60, 0.42) 100%),
+        radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.28), transparent 62%);
+    opacity: 0.9 !important;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* Keep text/content above the pressed overlay */
+.menu-item-card .menu-item-content,
+.menu-item-card .menu-item-header,
+.menu-item-card .menu-item-title,
+.menu-item-card .menu-item-prices,
+.menu-item-card .menu-item-description {
+    position: relative;
+    z-index: 5;
 }
 
 .filter-btn {

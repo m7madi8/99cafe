@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -89,6 +89,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body class="bg-cafe-white min-h-screen">
+    <!-- Floating Quick Actions -->
+    <button id="backToTop" aria-label="Back to top" class="hidden fixed bottom-6 right-6 z-50 bg-cafe-red text-white w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 grid place-items-center">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Preloader -->
     <div class="loader" id="loader">
         <div class="loader-content">
@@ -109,8 +114,16 @@
                 
                 <img src="../ps/99logo.png" alt="99 Cafe Logo" id="heroLogo" class="w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 object-contain mb-0 float-y cursor-pointer mx-auto block" />
             </div>
-            <div class="reveal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-serif text-cafe-black tracking-widest mb-2 text-center px-2 hero-text" style="letter-spacing: 2px;">
-                It's more than a number
+            <div class="reveal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-cafe-black tracking-widest mb-2 text-center px-2 hero-text" style="letter-spacing: 2px; font-family: 'Montserrat', sans-serif;">
+                IT'S MORE THAN A NUMBER
+            </div>
+            <div class="mt-4">
+                <button id="findUsBtn" type="button" class="find-us-btn group inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold">
+                    <span class="find-us-icon flex items-center justify-center rounded-full">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                    <span class="find-us-text">Find us</span>
+                </button>
             </div>
         </div>
     </section>
@@ -118,6 +131,64 @@
     <!-- Menu Section -->
     <section id="menu" class="bg-cafe-gray">
         <div class="container mx-auto">
+            <!-- Map Modal -->
+            <div id="mapModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+                <div class="absolute inset-0 bg-black/80 map-modal-backdrop" data-close-map></div>
+                <div class="relative bg-white rounded-3xl shadow-2xl max-w-5xl w-[94vw] overflow-hidden border border-cafe-red/20 map-modal-panel">
+                    <div class="bg-gradient-to-r from-cafe-red to-cafe-red-light px-6 py-4 flex items-center justify-between text-white">
+                        <div class="flex items-center gap-2 font-semibold">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Find us</span>
+                        </div>
+                        <button type="button" id="closeMap" class="text-white/90 hover:text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="grid md:grid-cols-2">
+                        <div class="p-6 pb-8 bg-white/80 text-cafe-black space-y-4">
+                            <div class="flex items-center gap-3 text-cafe-red">
+                                <img src="../ps/99logo.png" alt="99 Cafe logo" class="w-24 h-24 object-contain">
+                            </div>
+                            
+                            <div>
+                                <p class="text-sm uppercase tracking-[0.2em] text-cafe-red font-semibold">Visit us</p>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-start gap-2">
+                                    <i class="fas fa-location-dot text-cafe-red mt-1"></i>
+                                    <div>
+                                        <p>Jacksonville Beach, FL</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-clock text-cafe-red"></i>
+                                    <p>Open daily · 8 AM – 11 PM</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://maps.app.goo.gl/Vc5Gse9vXYipujC4A" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cafe-red text-white font-semibold shadow-md hover:shadow-lg transition">
+                                    <i class="fas fa-directions"></i>
+                                    <span>Open in Maps</span>
+                                </a>
+                                
+                            </div>
+                        </div>
+                        <div class="w-full h-[55vh] sm:h-[65vh] md:h-full pb-2">
+                            <iframe
+                                title="99 Cafe Location"
+                                src="https://www.google.com/maps?q=Jacksonville+Beach,+FL&z=16&output=embed"
+                                width="100%"
+                                height="100%"
+                                style="border:0;"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                        <div class="w-full h-[70vh] sm:h-[80vh] md:h-[85vh] pb-2 bg-white"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Surprise Drink Modal -->
             <div id="surpriseModal" class="fixed inset-0 z-50 hidden items-center justify-center">
                 <div class="absolute inset-0 bg-black/40 modal-backdrop"></div>
@@ -175,7 +246,7 @@
             <!-- Drinks Category -->
             <div id="drinks" class="category-content fade-section show">
                 <!-- Filter Buttons -->
-                <div class="menu-filters mb-8 flex flex-wrap justify-center gap-3">
+                <div class="menu-filters overflow-x-auto no-scrollbar mb-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 place-items-stretch">
                     <button class="filter-btn active" data-filter="all">
                         <i class="fas fa-th"></i>
                         <span>All</span>
@@ -227,8 +298,7 @@
                     <!-- 99 Classic Hot Coffee -->
                     <div class="menu-item-card" data-filter="classic-hot-coffee">
                         <div class="menu-item-image">
-                            <i class="fas fa-coffee icon-placeholder"></i>
-
+                            <img src="../img/drinks/Espresso.PNG" alt="Espresso" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -238,19 +308,14 @@
                                 <div class="price-badge">
                                     <span class="size-label">Mini</span>
                                     <span class="price-value">$3.99</span>
-                                </div>
-                                <div class="price-badge">
-                                    <span class="size-label">Normal</span>
-                                    <span class="price-value">$4.99</span>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                     </div>
                     
                     <div class="menu-item-card" data-filter="classic-hot-coffee">
                         <div class="menu-item-image">
-                            <i class="fas fa-coffee icon-placeholder"></i>
-
+                            <img src="../img/drinks/Americano.webp" alt="Americano" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -265,14 +330,17 @@
                                     <span class="size-label">Normal</span>
                                     <span class="price-value">$4.99</span>
                                 </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="menu-item-card" data-filter="classic-hot-coffee">
                         <div class="menu-item-image">
-                            <i class="fas fa-coffee icon-placeholder"></i>
-
+                            <img src="../img/drinks/Cappuccino.png" alt="Cappuccino" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -287,14 +355,17 @@
                                     <span class="size-label">Normal</span>
                                     <span class="price-value">$5.99</span>
                                 </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="menu-item-card" data-filter="classic-hot-coffee">
                         <div class="menu-item-image">
-                            <i class="fas fa-coffee icon-placeholder"></i>
-
+                            <img src="../img/drinks/Latte.webp" alt="Latte" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -309,14 +380,17 @@
                                     <span class="size-label">Normal</span>
                                     <span class="price-value">$5.99</span>
                                 </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="menu-item-card" data-filter="classic-hot-coffee">
                         <div class="menu-item-image">
-                            <i class="fas fa-coffee icon-placeholder"></i>
-
+                            <img src="../img/drinks/Cortado.png" alt="Cortado" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -330,6 +404,10 @@
                                 <div class="price-badge">
                                     <span class="size-label">Normal</span>
                                     <span class="price-value">$4.99</span>
+                                </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$5.99</span>
                                 </div>
                             </div>
                         </div>
@@ -353,6 +431,10 @@
                                     <span class="size-label">Normal</span>
                                     <span class="price-value">$6.99</span>
                                 </div>
+                                <div class="price-badge">
+                                    <span class="size-label">Maxi</span>
+                                    <span class="price-value">$5.99</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -360,8 +442,7 @@
                     <!-- 99 Classic Cold Coffee -->
                     <div class="menu-item-card" data-filter="classic-cold-coffee">
                         <div class="menu-item-image">
-                            <i class="fas fa-coffee icon-placeholder"></i>
-
+                            <img src="../img/drinks/Iced%20Americano.webp" alt="Iced Americano" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -386,8 +467,7 @@
                     
                     <div class="menu-item-card" data-filter="classic-cold-coffee">
                         <div class="menu-item-image">
-                            <i class="fas fa-coffee icon-placeholder"></i>
-
+                            <img src="../img/drinks/Iced%20Latte.webp" alt="Iced Latte" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -412,7 +492,7 @@
                     
                     <div class="menu-item-card" data-filter="classic-cold-coffee">
                         <div class="menu-item-image">
-                            <i class="fas fa-coffee icon-placeholder"></i>
+                            <img src="../img/drinks/Iced Mocha.png" alt="Iced Mocha" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -439,8 +519,7 @@
                     <!-- 99 Tea Selection (Iced Tea) -->
                     <div class="menu-item-card" data-filter="iced-tea">
                         <div class="menu-item-image">
-                            <i class="fas fa-glass-water icon-placeholder"></i>
-
+                            <img src="../img/drinks/Iced%20Tea.webp" alt="Iced Tea" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -466,8 +545,7 @@
                     
                     <div class="menu-item-card" data-filter="iced-tea">
                         <div class="menu-item-image">
-                            <i class="fas fa-glass-water icon-placeholder"></i>
-
+                            <img src="../img/drinks/Unsweetened%20Iced%20Tea.webp" alt="Unsweetened Iced Tea" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -517,8 +595,7 @@
                     <!-- 99 Signature -->
                     <div class="menu-item-card" data-filter="signature">
                         <div class="menu-item-image">
-                            <i class="fas fa-star icon-placeholder"></i>
-
+                            <img src="../img/drinks/99 Signature Latte.png" alt="99 Signature Latte" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -527,15 +604,15 @@
                             <div class="menu-item-prices">
                                 <div class="price-badge">
                                     <span class="size-label">Mini</span>
-                                    <span class="price-value">$7.99</span>
+                                    <span class="price-value">$6.99</span>
                                 </div>
                                 <div class="price-badge">
                                     <span class="size-label">Normal</span>
-                                    <span class="price-value">$8.99</span>
+                                    <span class="price-value">$7.99</span>
                                 </div>
                                 <div class="price-badge">
                                     <span class="size-label">Maxi</span>
-                                    <span class="price-value">$9.99</span>
+                                    <span class="price-value">$8.99</span>
                                 </div>
                             </div>
                         </div>
@@ -543,12 +620,11 @@
                     
                     <div class="menu-item-card" data-filter="signature">
                         <div class="menu-item-image">
-                            <i class="fas fa-star icon-placeholder"></i>
-
+                            <img src="../img/drinks/Crème de Banana Latte.webp" alt="Cloudy Brown Sugar Cinnamon" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
-                                <h4 class="menu-item-title">Cr�me de Banana Latte</h4>
+                                <h4 class="menu-item-title">Crème de Banana Latte</h4>
                             </div>
                             <div class="menu-item-prices">
                                 <div class="price-badge">
@@ -569,12 +645,11 @@
                     
                     <div class="menu-item-card" data-filter="signature">
                         <div class="menu-item-image">
-                            <i class="fas fa-star icon-placeholder"></i>
 
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
-                                <h4 class="menu-item-title">French Latte</h4>
+                                <h4 class="menu-item-title">Midnight Pistachio Latte</h4>
                             </div>
                             <div class="menu-item-prices">
                                 <div class="price-badge">
@@ -595,7 +670,7 @@
                     
                     <div class="menu-item-card" data-filter="signature">
                         <div class="menu-item-image">
-                            <i class="fas fa-star icon-placeholder"></i>
+                            <img src="../img/drinks/Cloudy%20Brown%20Sugar%20Cinnamon.webp" alt="Cloudy Brown Sugar Cinnamon" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -622,8 +697,7 @@
                     <!-- 99 Matcha Creations -->
                     <div class="menu-item-card" data-filter="matcha">
                         <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
+                            <img src="../img/drinks/Classic%20Matcha.webp" alt="Classic Matcha" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -648,8 +722,7 @@
                     
                     <div class="menu-item-card" data-filter="matcha">
                         <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
+                            <img src="../img/drinks/Honey%20Bees%20Matcha.webp" alt="Honey Bees Matcha" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -675,7 +748,6 @@
                     <div class="menu-item-card" data-filter="matcha">
                         <div class="menu-item-image">
                             <i class="fas fa-leaf icon-placeholder"></i>
-
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -700,7 +772,7 @@
                     
                     <div class="menu-item-card" data-filter="matcha">
                         <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <img src="../img/drinks/Strawberry Matcha.webp" alt="Strawberry Matcha" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -779,8 +851,7 @@
                     <!-- 99 Chocolate Lovers -->
                     <div class="menu-item-card" data-filter="chocolate">
                         <div class="menu-item-image">
-                            <i class="fas fa-candy-cane icon-placeholder"></i>
-
+                            <img src="../img/drinks/Premium%20Hot%20Chocolate.webp" alt="Premium Hot Chocolate" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -890,8 +961,7 @@
                     <!-- 99 Freeze Favorites -->
                     <div class="menu-item-card" data-filter="freeze">
                         <div class="menu-item-image">
-                            <i class="fas fa-snowflake icon-placeholder"></i>
-
+                            <img src="../img/drinks/Classic%20Coffee%20Freeze.webp" alt="Classic Coffee Freeze" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -916,8 +986,7 @@
                     
                     <div class="menu-item-card" data-filter="freeze">
                         <div class="menu-item-image">
-                            <i class="fas fa-snowflake icon-placeholder"></i>
-
+                            <img src="../img/drinks/Chocolate Freeze.png" alt="Chocolate Freeze" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -942,8 +1011,7 @@
                     
                     <div class="menu-item-card" data-filter="freeze">
                         <div class="menu-item-image">
-                            <i class="fas fa-snowflake icon-placeholder"></i>
-
+                            <img src="../img/drinks/Caramel%20Crunch%20Freeze.webp" alt="Caramel Crunch Freeze" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -968,8 +1036,7 @@
                     
                     <div class="menu-item-card" data-filter="freeze">
                         <div class="menu-item-image">
-                            <i class="fas fa-snowflake icon-placeholder"></i>
-
+                            <img src="../img/drinks/Pumpkin Pie Freeze.png" alt="Pumpkin Pie Freeze" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -994,8 +1061,7 @@
                     
                     <div class="menu-item-card" data-filter="freeze">
                         <div class="menu-item-image">
-                            <i class="fas fa-snowflake icon-placeholder"></i>
-
+                            <img src="../img/drinks/Strawberry%20Freeze.webp" alt="Strawberry Freeze" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1020,7 +1086,7 @@
                     
                     <div class="menu-item-card" data-filter="freeze">
                         <div class="menu-item-image">
-                            <i class="fas fa-snowflake icon-placeholder"></i>
+                            <img src="../img/drinks/Mango%20Freeze.webp" alt="Mango Freeze" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -1073,7 +1139,7 @@
                     <!-- 99 Coolers -->
                     <div class="menu-item-card" data-filter="coolers">
                         <div class="menu-item-image">
-                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <img src="../img/drinks/Strawberry Dragon Fruit.png" alt="Strawberry Dragon Fruit" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -1099,7 +1165,7 @@
                     
                     <div class="menu-item-card" data-filter="coolers">
                         <div class="menu-item-image">
-                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <img src="../img/drinks/Tango.png" alt="Tango" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -1126,7 +1192,7 @@
                     
                     <div class="menu-item-card" data-filter="coolers">
                         <div class="menu-item-image">
-                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <img src="../img/drinks/Hawaiian.png" alt="Hawaiian" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -1153,7 +1219,7 @@
                     
                     <div class="menu-item-card" data-filter="coolers">
                         <div class="menu-item-image">
-                            <i class="fas fa-glass-water icon-placeholder"></i>
+                            <img src="../img/drinks/Pina Colada.png" alt="Pina Colada" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -1181,8 +1247,7 @@
                     <!-- 99 In-House Freshers -->
                     <div class="menu-item-card" data-filter="freshers">
                         <div class="menu-item-image">
-                            <i class="fas fa-apple-alt icon-placeholder"></i>
-
+                            <img src="../img/drinks/Fresh%20Orange.webp" alt="Fresh Orange" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1207,8 +1272,7 @@
                     
                     <div class="menu-item-card" data-filter="freshers">
                         <div class="menu-item-image">
-                            <i class="fas fa-apple-alt icon-placeholder"></i>
-
+                            <img src="../img/drinks/Fresh%20Apple.webp" alt="Fresh Apple" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1233,8 +1297,7 @@
                     
                     <div class="menu-item-card" data-filter="freshers">
                         <div class="menu-item-image">
-                            <i class="fas fa-apple-alt icon-placeholder"></i>
-
+                            <img src="../img/drinks/Fresh%20Carrot.webp" alt="Fresh Carrot" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1287,8 +1350,7 @@
                     <!-- 99 Organic Lemonade -->
                     <div class="menu-item-card" data-filter="lemonade">
                         <div class="menu-item-image">
-                            <i class="fas fa-lemon icon-placeholder"></i>
-
+                            <img src="../img/drinks/Lemonade.webp" alt="Lemonade" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1313,8 +1375,7 @@
                     
                     <div class="menu-item-card" data-filter="lemonade">
                         <div class="menu-item-image">
-                            <i class="fas fa-lemon icon-placeholder"></i>
-
+                            <img src="../img/drinks/Strawberry%20Lemonade.webp" alt="Strawberry Lemonade" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1359,10 +1420,7 @@
                         <i class="fas fa-bread-slice"></i>
                         <span>Muffin</span>
                     </button>
-                    <button class="filter-btn" data-filter="shooters">
-                        <i class="fas fa-martini-glass"></i>
-                        <span>Shooters</span>
-                    </button>
+                   
                     <button class="filter-btn" data-filter="cookies">
                         <i class="fas fa-cookie"></i>
                         <span>Cookies</span>
@@ -1379,8 +1437,7 @@
                     <!-- Cheesecake -->
                     <div class="menu-item-card" data-filter="cheesecake">
                         <div class="menu-item-image">
-                            <i class="fas fa-cheese icon-placeholder"></i>
-
+                            <img src="../img/cake/Dulce%20le%20che%20cheesecake.webp" alt="Dulce Cheesecake" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1396,8 +1453,7 @@
                     
                     <div class="menu-item-card" data-filter="cheesecake">
                         <div class="menu-item-image">
-                            <i class="fas fa-cheese icon-placeholder"></i>
-
+                            <img src="../img/cake/Golden%20praline%20cheesecake.webp" alt="Golden Praline Cheesecake" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1413,8 +1469,7 @@
                     
                     <div class="menu-item-card" data-filter="cheesecake">
                         <div class="menu-item-image">
-                            <i class="fas fa-cheese icon-placeholder"></i>
-
+                            <img src="../img/cake/Lemon%26wild%20bluberry%20cheesecake.webp" alt="Lemon Cheesecake" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1431,8 +1486,7 @@
                     <!-- San Sebastian -->
                     <div class="menu-item-card" data-filter="san-sebastian">
                         <div class="menu-item-image">
-                            <i class="fas fa-cake icon-placeholder"></i>
-
+                            <img src="../img/cake/Matcha%20San%20Sebasti%C3%A1n.webp" alt="Matcha San Sebastian" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1448,8 +1502,7 @@
                     
                     <div class="menu-item-card" data-filter="san-sebastian">
                         <div class="menu-item-image">
-                            <i class="fas fa-cake icon-placeholder"></i>
-
+                            <img src="../img/cake/Nutella%20San%20Sebasti%C3%A1n.webp" alt="Nutella San Sebastian" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1465,8 +1518,7 @@
                     
                     <div class="menu-item-card" data-filter="san-sebastian">
                         <div class="menu-item-image">
-                            <i class="fas fa-cake icon-placeholder"></i>
-
+                            <img src="../img/cake/Vanilla%20San%20Sebasti%C3%A1n.webp" alt="Vanilla San Sebastian" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1483,7 +1535,7 @@
                     <!-- Muffin -->
                     <div class="menu-item-card" data-filter="muffin">
                         <div class="menu-item-image">
-                            <i class="fas fa-bread-slice icon-placeholder"></i>
+                            <img src="../img/cake/Blueberry Crumb Muffins.png" alt="Blueberry Crumb Muffins" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -1497,30 +1549,29 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Shooters -->
-                    <div class="menu-item-card" data-filter="shooters">
+
+                    <div class="menu-item-card" data-filter="muffin">
                         <div class="menu-item-image">
-                            <i class="fas fa-wine-glass icon-placeholder"></i>
+                            <img src="../img/cake/Choccolate Crumb Muffins.png" alt="Chocolate Chip Muffin" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
-                                <h4 class="menu-item-title">Tiramisu Shooters</h4>
+                                <h4 class="menu-item-title">Chocolate Chip Muffin</h4>
                             </div>
                             <div class="menu-item-prices">
                                 <div class="price-badge">
-                                    <span class="price-value">$5.99</span>
+                                    <span class="price-value">$6.99</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
+                  
                     <!-- Cookies -->
                     <div class="menu-item-card" data-filter="cookies">
                         <div class="menu-item-image">
-                            <i class="fas fa-cookie icon-placeholder"></i>
-
+                            <img src="../img/cake/Double%20chocolate%20cookie.webp" alt="Double Chocolate Cookie" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1534,26 +1585,11 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="cookies">
-                        <div class="menu-item-image">
-                            <i class="fas fa-cookie icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Key Lime Sugar Cookie</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$5.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     
                     <div class="menu-item-card" data-filter="cookies">
                         <div class="menu-item-image">
-                            <i class="fas fa-cookie icon-placeholder"></i>
+                            <img src="../img/cake/Seasonal Gingerbread Cookie.webp" alt="Seasonal Gingerbread Cookie" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -1571,8 +1607,7 @@
                     <!-- Velvet Squares -->
                     <div class="menu-item-card" data-filter="velvet-squares">
                         <div class="menu-item-image">
-                            <i class="fas fa-square icon-placeholder"></i>
-
+                            <img src="../img/cake/Flourless%20Midnight%20Velvet%20Mousse.webp" alt="Flourless Midnight Velvet Mousse" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1588,8 +1623,7 @@
                     
                     <div class="menu-item-card" data-filter="velvet-squares">
                         <div class="menu-item-image">
-                            <i class="fas fa-square icon-placeholder"></i>
-
+                            <img src="../img/cake/Raspberry%20Crumb.webp" alt="Raspberry Crumb" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1633,8 +1667,7 @@
                     <!-- Bakery Bites -->
                     <div class="menu-item-card" data-filter="bakery-bites">
                         <div class="menu-item-image">
-                            <i class="fas fa-egg icon-placeholder"></i>
-
+                            <img src="../img/food/morning-egg-bun.webp" alt="Morning Egg Bun" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1642,7 +1675,7 @@
                             </div>
                             <div class="menu-item-prices">
                                 <div class="price-badge">
-                                    <span class="price-value">$9.99</span>
+                                    <span class="price-value">$7.99</span>
                                 </div>
                             </div>
                         </div>
@@ -1650,8 +1683,7 @@
                     
                     <div class="menu-item-card" data-filter="bakery-bites">
                         <div class="menu-item-image">
-                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
-
+                            <img src="../img/food/Turkey Sausage & Cheese.png" alt="Turkey Sausage &amp; Cheese" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1659,7 +1691,7 @@
                             </div>
                             <div class="menu-item-prices">
                                 <div class="price-badge">
-                                    <span class="price-value">$10.99</span>
+                                    <span class="price-value">$7.99</span>
                                 </div>
                             </div>
                         </div>
@@ -1667,8 +1699,7 @@
                     
                     <div class="menu-item-card" data-filter="bakery-bites">
                         <div class="menu-item-image">
-                            <i class="fas fa-apple-alt icon-placeholder"></i>
-
+                            <img src="../img/food/apple-spice-bites.webp" alt="Apple Spice Bites" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1676,7 +1707,7 @@
                             </div>
                             <div class="menu-item-prices">
                                 <div class="price-badge">
-                                    <span class="price-value">$9.99</span>
+                                    <span class="price-value">$7.99</span>
                                 </div>
                             </div>
                         </div>
@@ -1685,8 +1716,7 @@
                     <!-- 99 Toast & Salad -->
                     <div class="menu-item-card" data-filter="toast-salad">
                         <div class="menu-item-image">
-                            <i class="fas fa-bread-slice icon-placeholder"></i>
-
+                            <i class="fas fa-leaf icon-placeholder"></i>
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1702,8 +1732,7 @@
                     
                     <div class="menu-item-card" data-filter="toast-salad">
                         <div class="menu-item-image">
-                            <i class="fas fa-bread-slice icon-placeholder"></i>
-
+                            <img src="../img/food/Signature Egg Toast.png" alt="Signature Egg Toast" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1719,7 +1748,7 @@
                     
                     <div class="menu-item-card" data-filter="toast-salad">
                         <div class="menu-item-image">
-                            <i class="fas fa-bread-slice icon-placeholder"></i>
+                            <img src="../img/food/Tuna Toast.png" alt="Tuna Toast" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -1737,8 +1766,7 @@
                     <!-- Salad -->
                     <div class="menu-item-card" data-filter="toast-salad">
                         <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
+                            <img src="../img/food/crunchy-caesar-salad.png" alt="Crunchy Caesar Salad" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1752,26 +1780,10 @@
                         </div>
                     </div>
                     
-                    <div class="menu-item-card" data-filter="toast-salad">
-                        <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Greek Salad</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$9.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     
                     <div class="menu-item-card" data-filter="toast-salad">
                         <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
+                            <img src="../img/food/zesty-tuna-salad.webp" alt="Zesty Tuna Salad" loading="lazy">
 
                         </div>
                         <div class="menu-item-content">
@@ -1789,7 +1801,7 @@
                     <!-- Acai Bowl -->
                     <div class="menu-item-card" data-filter="acai-bowl">
                         <div class="menu-item-image">
-                            <i class="fas fa-apple-alt icon-placeholder"></i>
+                            <img src="../img/food/original-acai-bowl.webp" alt="Original Acai Bowl" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -1809,733 +1821,10 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Appetizers -->
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
 
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Popcorn Chicken</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$29.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
+                </div> <!-- end food menu-items-grid -->
+            </div> <!-- end food category -->
 
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Chicken Fingers</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$29.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Nachos</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$34.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Wings</h4>
-                            </div>
-                            <p class="menu-item-description">Buffalo, Barbecue, Sweet Chili</p>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$39.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-fish icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Fish and Chips</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$39.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Mix Platter</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$49.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-french-fries icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Classic Fries</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$14.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-french-fries icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Wedge Fries</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$18.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-french-fries icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Curly Fries</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$18.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-bread-slice icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Garlic Bread</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$19.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Salads -->
-                    <div class="menu-item-card" data-filter="salads">
-                        <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Greek Salad</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$33.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="salads">
-                        <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Haloomi Salad</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$33.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="salads">
-                        <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Quinoa Salad</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$33.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="salads">
-                        <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Caesar Salad</h4>
-                            </div>
-                            <p class="menu-item-description">Add Chicken + $5.00</p>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$29.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="salads">
-                        <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Tabbouleh Quinoa Salad</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$33.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="salads">
-                        <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Tuna Salad</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$29.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="salads">
-                        <div class="menu-item-image">
-                            <i class="fas fa-leaf icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Falahy Salad</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$28.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Sandwiches -->
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Classic Chicken</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$29.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">White Sauce Sandwich</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$34.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Pesto Chicken</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$36.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Mexican Sandwich</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$34.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Italian Sandwich</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$33.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Grilled Chicken Steak</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$29.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Quesadilla Wrap</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$33.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Zingar Wrap</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$34.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Caesar Wrap</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$34.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Halloumi Wrap</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$19.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Tuna Sandwich</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$19.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Omelette Wrap</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$17.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="sandwiches">
-                        <div class="menu-item-image">
-                            <i class="fas fa-hamburger icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Labaneh Wrap</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$14.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Pastas -->
-                    <div class="menu-item-card" data-filter="pastas">
-                        <div class="menu-item-image">
-                            <i class="fas fa-utensils icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Fettuccine Alfredo</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$44.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="pastas">
-                        <div class="menu-item-image">
-                            <i class="fas fa-utensils icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Spaghetti Rose</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$44.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="pastas">
-                        <div class="menu-item-image">
-                            <i class="fas fa-utensils icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Penne Pesto</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$44.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Pizzas -->
-                    <div class="menu-item-card" data-filter="pizzas">
-                        <div class="menu-item-image">
-                            <i class="fas fa-pizza-slice icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Alfredo Pizza</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$49.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="pizzas">
-                        <div class="menu-item-image">
-                            <i class="fas fa-pizza-slice icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">BBQ Pizza</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$45.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="pizzas">
-                        <div class="menu-item-image">
-                            <i class="fas fa-pizza-slice icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Veggies Pizza</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$45.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="pizzas">
-                        <div class="menu-item-image">
-                            <i class="fas fa-pizza-slice icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Margherita Pizza</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$45.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="pizzas">
-                        <div class="menu-item-image">
-                            <i class="fas fa-pizza-slice icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Pepperoni Pizza</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$45.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Main Dishes -->
-                    <div class="menu-item-card" data-filter="main-dishes">
-                        <div class="menu-item-image">
-                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Classic Grilled Chicken</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$49.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="main-dishes">
-                        <div class="menu-item-image">
-                            <i class="fas fa-drumstick-bite icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">White Sauce Mushroom</h4>
-                            </div>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$54.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- New Items -->
-                    <div class="menu-item-card" data-filter="appetizers">
-                        <div class="menu-item-image">
-                            <i class="fas fa-star icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Classic Burger</h4>
-                            </div>
-                            <p class="menu-item-description">Extra Cheese + $3.00 | Extra Patty + $15.00</p>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$39.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-item-card" data-filter="main-dishes">
-                        <div class="menu-item-image">
-                            <i class="fas fa-star icon-placeholder"></i>
-
-                        </div>
-                        <div class="menu-item-content">
-                            <div class="menu-item-header">
-                                <h4 class="menu-item-title">Mushroom White Sauce</h4>
-                            </div>
-                            <p class="menu-item-description">Extra Patty + $15.00</p>
-                            <div class="menu-item-prices">
-                                <div class="price-badge">
-                                    <span class="price-value">$44.99</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Healthy Options Category -->
             <div id="healthy" class="category-content hidden fade-section">
@@ -2792,7 +2081,7 @@
                     <!-- 99 Energy Boost Drinks -->
                     <div class="menu-item-card" data-filter="energy-boost">
                         <div class="menu-item-image">
-                            <i class="fas fa-bolt icon-placeholder"></i>
+                            <img src="../img/drinks/Raspberry%20Energy.webp" alt="Raspberry Energy" loading="lazy">
                         </div>
                         <div class="menu-item-content">
                             <div class="menu-item-header">
@@ -2872,9 +2161,6 @@
 
     <!-- Footer -->
     <footer class="bg-cafe-black text-cafe-white py-8">
-        <button id="backToTop" aria-label="Back to top" class="hidden fixed bottom-6 right-6 z-40 bg-cafe-red text-white w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 grid place-items-center">
-            <i class="fas fa-arrow-up"></i>
-        </button>
         <div class="container mx-auto px-4 text-center">
             <div class="flex flex-col items-center justify-center mb-4">
                 <img src="../ps/99logo2.png" alt="99 Cafe Logo" class="w-24 h-24 object-contain mb-3" />

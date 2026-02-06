@@ -52,6 +52,36 @@ const i18n = {
 const categoryTabs = document.querySelectorAll('.category-tab');
 const categoryContents = document.querySelectorAll('.category-content');
 
+// Ensure lazy loading + placeholder tagging once DOM is ready
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('img').forEach(img => {
+        if (!img.hasAttribute('loading')) {
+            img.setAttribute('loading', 'lazy');
+        }
+    });
+
+    const markPlaceholders = () => {
+        document.querySelectorAll('.menu-item-image').forEach(container => {
+            const hasImg = container.querySelector('img');
+            if (hasImg) {
+                container.classList.add('has-image');
+                container.classList.remove('no-image');
+            } else {
+                container.classList.add('no-image');
+                container.classList.remove('has-image');
+                // Remove icon placeholders from cards without images
+                container.querySelectorAll('.icon-placeholder').forEach(icon => icon.remove());
+            }
+        });
+    };
+
+    markPlaceholders();
+
+    // If images load later (lazy), ensure classes are updated
+    const observer = new MutationObserver(markPlaceholders);
+    observer.observe(document.body, { childList: true, subtree: true });
+});
+
 function updateCategoryTabIcons() {
     categoryTabs.forEach(tab => {
         const img = tab.querySelector('img[data-default-icon][data-active-icon]');
@@ -724,22 +754,52 @@ window.addEventListener('load', () => {
     }, 300);
 });
 
-// Back to top button
-(function initBackToTop() {
+// Back to top button + go to filters button
+(function initScrollButtons() {
     const btn = document.getElementById('backToTop');
     if (!btn) return;
     
-    window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-            btn.classList.remove('hidden');
-        } else {
-            btn.classList.add('hidden');
-        }
-    });
+    const updateState = () => {
+        const shouldShow = window.pageYOffset > 300;
+        btn.classList.toggle('hidden', !shouldShow);
+    };
+    
+    window.addEventListener('scroll', updateState);
+    // initialize on load in case الصفحة فتحت من منتصف المحتوى
+    updateState();
     
     btn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+})();
+
+// Map modal (Find us)
+(function initMapModal() {
+    const openBtn = document.getElementById('findUsBtn');
+    const modal = document.getElementById('mapModal');
+    const closeBtn = document.getElementById('closeMap');
+    const backdropClose = modal?.querySelector('[data-close-map]');
+    if (!openBtn || !modal) return;
+
+    const open = () => {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        requestAnimationFrame(() => modal.classList.add('show'));
+        document.body.style.overflow = 'hidden';
+    };
+
+    const close = () => {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }, 220);
+    };
+
+    openBtn.addEventListener('click', open);
+    closeBtn && closeBtn.addEventListener('click', close);
+    backdropClose && backdropClose.addEventListener('click', close);
 })();
 
 // Enhanced Image Loading for Menu Items
@@ -860,8 +920,9 @@ document.head.appendChild(style);
         
         const filterButtons = categoryEl.querySelectorAll('.filter-btn');
         const menuItems = categoryEl.querySelectorAll('.menu-item-card');
-        
         if (!filterButtons.length || !menuItems.length) return;
+
+        let isInitializing = true;
         
         filterButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -872,11 +933,16 @@ document.head.appendChild(style);
                 // Add active class to clicked button
                 this.classList.add('active');
                 
+                // Reset stagger index for visible items
+                let visibleIndex = 0;
+
                 // Filter menu items in this category only
                 menuItems.forEach(item => {
                     const itemFilter = item.getAttribute('data-filter');
                     
                     if ((filterValue && filterValue.startsWith('all')) || itemFilter === filterValue) {
+                        item.style.setProperty('--index', visibleIndex);
+                        visibleIndex += 1;
                         // Show item with animation
                         item.style.display = '';
                         item.style.opacity = '0';
@@ -900,9 +966,16 @@ document.head.appendChild(style);
                 });
 
                 // Keep the category content in view on filter change (useful on mobile)
-                categoryEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (!isInitializing) {
+                    categoryEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             });
         });
+
+        // Ensure default view shows all items on load without scrolling
+        const initialActive = categoryEl.querySelector('.filter-btn.active') || filterButtons[0];
+        if (initialActive) initialActive.click();
+        isInitializing = false;
     }
     
     // Initialize filtering for each category
