@@ -7,6 +7,8 @@ body {
     color: #1a1a1a;
     background: #ffffff;
     line-height: 1.6;
+    overflow-x: hidden;
+    max-width: 100vw;
 }
 
 /* Premium Container */
@@ -24,9 +26,11 @@ body {
     }
 }
 
-/* Smooth Scrolling */
+/* Smooth Scrolling - prevent horizontal overflow beyond content/footer */
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100vw;
 }
 
 /* Selection Color */
@@ -913,13 +917,15 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     grid-column: 1 / -1;
     display: flex;
     justify-content: center;
+    align-items: center;
+    width: 100%;
     padding: 0.5rem 0 1rem 0;
 }
 
 .acai-bowl-card {
     width: 100%;
     max-width: min(100%, 360px);
-    margin: 0 auto;
+    margin-inline: auto;
     border-radius: 20px;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.06);
@@ -955,7 +961,7 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     margin-top: 0.5rem;
 }
 
-/* Tablet+ horizontal layout - compact, no excess white space */
+/* Tablet+ horizontal layout - image responsive to card size */
 @media (min-width: 640px) {
     .acai-bowl-card {
         width: fit-content;
@@ -965,9 +971,9 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
         min-height: 0;
     }
     .acai-bowl-card .menu-item-image {
-        width: 160px;
-        min-width: 160px;
-        flex-shrink: 0;
+        flex: 0 0 38%;
+        min-width: 120px;
+        max-width: 220px;
         aspect-ratio: 1;
         border-bottom: none;
         border-right: 1px solid rgba(0, 0, 0, 0.04);
@@ -983,15 +989,22 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     }
 }
 
-/* Desktop - slightly larger image, card still fit-content */
+/* Desktop - content padding */
 @media (min-width: 1024px) {
-    .acai-bowl-card .menu-item-image {
-        width: 180px;
-        min-width: 180px;
-    }
     .acai-bowl-card .menu-item-content {
         min-width: 220px;
         padding: 1.25rem 1.5rem;
+    }
+}
+
+/* Small screens - center card between page sides */
+@media (max-width: 639px) {
+    .acai-bowl-section {
+        justify-content: center;
+        padding-inline: 1rem;
+    }
+    .acai-bowl-card {
+        margin-inline: auto;
     }
 }
 
@@ -1002,6 +1015,42 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     }
     .acai-bowl-card .menu-item-content {
         padding: 0.875rem 1rem;
+    }
+}
+
+/* 350px screens - card fully responsive and visible */
+@media (max-width: 350px) {
+    .acai-bowl-section {
+        padding-inline: 0.75rem;
+    }
+    .acai-bowl-card {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .acai-bowl-card .menu-item-image {
+        aspect-ratio: 4 / 3;
+        min-height: 0;
+    }
+    .acai-bowl-card .menu-item-content {
+        padding: 0.75rem 0.875rem;
+    }
+    .acai-bowl-card .menu-item-title {
+        font-size: 0.95rem;
+    }
+    .acai-bowl-card .menu-item-description {
+        font-size: 0.7rem;
+        line-height: 1.4;
+    }
+    .acai-bowl-card .menu-item-prices {
+        gap: 0.35rem;
+    }
+    .acai-bowl-card .price-badge {
+        padding: 0.35rem 0.5rem;
+        font-size: 0.75rem;
+    }
+    .acai-bowl-card .price-value {
+        font-size: 0.8rem;
     }
 }
 
