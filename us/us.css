@@ -907,6 +907,115 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     }
 }
 
+/* Acai Bowl - Professional featured card, 100% responsive */
+#acai-bowl-section,
+.acai-bowl-section {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0 1rem 0;
+}
+
+.acai-bowl-card {
+    width: 100%;
+    max-width: min(100%, 360px);
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.acai-bowl-card:hover {
+    box-shadow: 0 12px 32px rgba(217, 4, 41, 0.12);
+    border-color: rgba(217, 4, 41, 0.2);
+}
+
+.acai-bowl-card .menu-item-image {
+    aspect-ratio: 4 / 3;
+    flex-shrink: 0;
+}
+
+.acai-bowl-card .menu-item-content {
+    padding: 1rem 1.25rem 1.25rem;
+}
+
+.acai-bowl-card .menu-item-title {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+}
+
+.acai-bowl-card .menu-item-description {
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+    line-height: 1.5;
+}
+
+.acai-bowl-card .menu-item-prices {
+    margin-top: 0.5rem;
+}
+
+/* Tablet+ horizontal layout - compact, no excess white space */
+@media (min-width: 640px) {
+    .acai-bowl-card {
+        width: fit-content;
+        max-width: 100%;
+        display: flex;
+        flex-direction: row;
+        min-height: 0;
+    }
+    .acai-bowl-card .menu-item-image {
+        width: 160px;
+        min-width: 160px;
+        flex-shrink: 0;
+        aspect-ratio: 1;
+        border-bottom: none;
+        border-right: 1px solid rgba(0, 0, 0, 0.04);
+    }
+    .acai-bowl-card .menu-item-content {
+        width: auto;
+        flex: 0 1 auto;
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1rem 1.25rem;
+    }
+}
+
+/* Desktop - slightly larger image, card still fit-content */
+@media (min-width: 1024px) {
+    .acai-bowl-card .menu-item-image {
+        width: 180px;
+        min-width: 180px;
+    }
+    .acai-bowl-card .menu-item-content {
+        min-width: 220px;
+        padding: 1.25rem 1.5rem;
+    }
+}
+
+/* Very small screens - ensure full responsiveness */
+@media (max-width: 370px) {
+    .acai-bowl-card {
+        max-width: 100%;
+    }
+    .acai-bowl-card .menu-item-content {
+        padding: 0.875rem 1rem;
+    }
+}
+
+/* Arabic RTL - swap image/content sides in horizontal layout */
+@media (min-width: 640px) {
+    html.ar .acai-bowl-card .menu-item-image {
+        border-right: none;
+        border-left: 1px solid rgba(0, 0, 0, 0.04);
+    }
+    html.ar .acai-bowl-card {
+        flex-direction: row-reverse;
+    }
+}
+
 /* Premium Menu Item Card - World-Class Design */
 .menu-item-card {
     position: relative;
@@ -1580,13 +1689,9 @@ html.ar .menu-item-tagline {
 }
 
 @media (max-width: 370px) {
-    /* Hide images on very small screens to prioritize content */
-    .menu-item-image.has-image {
-        display: none;
-    }
-
+    /* Normal/full size images on very small screens */
     .menu-item-card {
-        padding: 0.75rem 0.9rem 3.2rem 0.9rem;
+        padding: 0.75rem 0.9rem 1rem 0.9rem;
         overflow: hidden;
         width: 100%;
         max-width: 100%;
@@ -1595,13 +1700,16 @@ html.ar .menu-item-tagline {
         min-height: 0;
     }
     .menu-item-image {
-        max-height: 120px;
         width: 100%;
+        aspect-ratio: 1248 / 832;
+        height: auto;
+        flex-shrink: 0;
     }
     .menu-item-image img {
-        max-height: 120px;
         width: 100%;
-        object-fit: contain;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
     }
     .menu-item-content {
         padding: 0.7rem 0.85rem 1.8rem 0.85rem;
