@@ -1104,6 +1104,32 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     opacity: 0;
 }
 
+/* Acai Bowl card: allow height to expand for notes (unique ID) */
+#card-acai-bowl {
+    aspect-ratio: auto !important;
+    min-height: auto !important;
+    height: auto !important;
+}
+#card-acai-bowl .menu-item-content {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+#card-acai-bowl .acai-notes {
+    font-size: 0.6rem;
+    line-height: 1.35;
+}
+#card-acai-bowl .acai-notes p:first-child {
+    color: #374151;
+    font-weight: 600;
+}
+#card-acai-bowl .acai-notes p:nth-child(2) {
+    color: #D90429;
+    opacity: 0.85;
+}
+#card-acai-bowl .acai-notes p:last-child {
+    color: #4b5563;
+}
+
 /* Image Container - Premium Design */
 .menu-item-image {
     position: relative;
@@ -1385,6 +1411,11 @@ html.ar .menu-item-tagline {
         border-radius: 16px;
         min-height: auto;
         aspect-ratio: 50/70;
+    }
+    #card-acai-bowl {
+        aspect-ratio: auto !important;
+        min-height: auto !important;
+        height: auto !important;
     }
     
     .menu-item-image {
@@ -1843,6 +1874,11 @@ html.ar .menu-item-tagline {
         aspect-ratio: 50/70;
         min-height: 350px;
     }
+    #card-acai-bowl {
+        aspect-ratio: auto !important;
+        min-height: auto !important;
+        height: auto !important;
+    }
 }
 
 .menu-item-card * {
@@ -2054,6 +2090,11 @@ footer {
     .menu-item-card {
         aspect-ratio: 50/70;
         min-height: 300px;
+    }
+    #card-acai-bowl {
+        aspect-ratio: auto !important;
+        min-height: auto !important;
+        height: auto !important;
     }
     
     .menu-item-image {
