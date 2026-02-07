@@ -1115,8 +1115,8 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
     min-height: 0;
 }
 #card-acai-bowl .acai-notes {
-    font-size: 0.6rem;
-    line-height: 1.35;
+    font-size: 0.7rem;
+    line-height: 1.4;
 }
 #card-acai-bowl .acai-notes p:first-child {
     color: #374151;
@@ -1128,6 +1128,9 @@ html.ar #langToggle.lang-toggle-luxe .seg.ar { direction: ltr; }
 }
 #card-acai-bowl .acai-notes p:last-child {
     color: #4b5563;
+}
+#card-acai-bowl .acai-notes .text-cafe-red {
+    color: #D90429 !important;
 }
 
 /* Image Container - Premium Design */

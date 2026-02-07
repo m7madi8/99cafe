@@ -1099,6 +1099,17 @@ document.head.appendChild(style);
         const categoryCounts = { drinks: 0, food: 0, desserts: 0, healthy: 0 };
         
         cards.forEach(card => {
+            // Acai bowl: fill the in-card slot with food tagline from JS (single phrase, no duplicate)
+            if (card.id === 'card-acai-bowl') {
+                const slot = card.querySelector('.acai-js-tagline');
+                if (slot) {
+                    const categoryTaglines = taglines.food || taglines.drinks;
+                    const index = categoryCounts.food % categoryTaglines.length;
+                    slot.textContent = categoryTaglines[index];
+                    categoryCounts.food++;
+                }
+                return;
+            }
             // Skip if tagline already exists
             if (card.querySelector('.menu-item-tagline')) return;
             
